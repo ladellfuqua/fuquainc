@@ -42,6 +42,19 @@ const linkedin = 'https://www.linkedin.com/in/ladellfuqua/';
 // the localhost preview build and cannot pollute production reporting.
 const GA_ID = 'G-K7TBK1TGXX';
 const enableAnalytics = import.meta.env.PROD;
+// Inline GA4 loader. Runs only on the live domain (guards localhost/preview so
+// they never pollute reporting). Emitted via set:html so the JS executes as-is.
+const gaScript = `if (location.hostname === 'fuquainc.com' || location.hostname === 'www.fuquainc.com') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag('js', new Date());
+  gtag('config', '${GA_ID}');
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_ID}';
+  document.head.appendChild(s);
+}`;
 
 // Person + Organization schema, shared site-wide (§25)
 const personSchema = {
@@ -116,30 +129,7 @@ const websiteSchema = {
       set:html={JSON.stringify(websiteSchema)}
     />
 
-    {
-      enableAnalytics && (
-        <script is:inline define:vars={{ GA_ID }}>
-          {`
-          // Load GA4 only on the live domain — never on localhost/preview,
-          // so local dev and preview builds don't pollute production reporting.
-          if (
-            location.hostname === 'fuquainc.com' ||
-            location.hostname === 'www.fuquainc.com'
-          ) {
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){ dataLayer.push(arguments); }
-            window.gtag = gtag;
-            gtag('js', new Date());
-            gtag('config', GA_ID);
-            var s = document.createElement('script');
-            s.async = true;
-            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-            document.head.appendChild(s);
-          }
-          `}
-        </script>
-      )
-    }
+    {enableAnalytics && <script is:inline set:html={gaScript} />}
 
     <slot name="head" />
   </head>
