@@ -1,0 +1,643 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandGraphic from '../components/BrandGraphic.astro';
+
+// Areas of Focus (§17-19) — six areas; Operational Strategy removed, woven in elsewhere.
+const focus = [
+  {
+    title: 'Growth Strategy',
+    body: 'Identifying opportunities for sustainable audience, customer and revenue growth.',
+  },
+  {
+    title: 'Audience & Customer Growth',
+    body: 'Understanding behavior and building stronger relationships across the customer lifecycle.',
+  },
+  {
+    title: 'Marketing & Media',
+    body: 'Connecting brand, performance, content, audience and channel strategy.',
+  },
+  {
+    title: 'Digital, Technology & AI',
+    body: 'Exploring how technology can improve experiences, capabilities and business performance.',
+  },
+  {
+    title: 'Building Growth Teams',
+    body: 'Bringing together people, capabilities and disciplines around shared growth objectives.',
+  },
+  {
+    title: 'Business Transformation',
+    body: 'Helping organizations adapt their capabilities, structures and ways of working as the business changes.',
+  },
+];
+
+// Growth-team principles (§21) — restrained typography, not cards.
+const teamPrinciples = [
+  {
+    title: 'Clear Mandate',
+    body: 'A team needs one outcome it is collectively responsible for — not a stack of functional targets that quietly compete with one another.',
+  },
+  {
+    title: 'Cross-Functional by Design',
+    body: 'Growth problems do not respect the org chart. The team is assembled around the problem, with the people who can actually move it in the room from the start.',
+  },
+  {
+    title: 'Accountability Without Bureaucracy',
+    body: 'Structure should make ownership and progress obvious — who decides, and what "done" means — without adding process that slows the work it was meant to support.',
+  },
+];
+
+// How I Think (§23) — rebalanced across growth, cross-functional leadership, technology, customer behavior.
+const principles = [
+  'Growth is an organizational capability, not simply a marketing function.',
+  'The most interesting opportunities often sit between traditional functions, not neatly inside them.',
+  'Technology changes what is possible. Customer behavior determines what matters.',
+];
+
+// Latest Writing (§16) — wired to real content later. Elegant single-feature state, never empty cards.
+const featured: {
+  category: string;
+  title: string;
+  deck: string;
+  date: string;
+  readingTime: string;
+  href: string;
+} | null = null;
+---
+
+<BaseLayout
+  title="Fuqua Inc."
+  description="Fuqua Inc. is the platform of Ladell Fuqua: ideas and work on building growth by connecting ideas, people, technology and opportunity."
+  bareTitle={true}
+>
+  {/* ---------- Hero (§8, §9) ---------- */}
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <h1 class="hero__headline reveal">
+          Building growth by connecting ideas, people, technology and
+          opportunity.
+        </h1>
+        <p class="lead hero__lead reveal" data-delay="1">
+          I work across growth, marketing, technology and business
+          transformation, often bringing different disciplines and
+          teams together to solve problems that do not fit neatly within one
+          function.
+        </p>
+        <div class="hero__actions reveal" data-delay="2">
+          <a href="/writing" class="btn btn--primary">
+            Read the latest <span aria-hidden="true">&rarr;</span>
+          </a>
+          <a href="/about" class="arrow-link">
+            About Ladell <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero__art reveal" data-delay="2">
+        <BrandGraphic variant="hero" />
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- Latest Writing — moved directly below hero (§16) ---------- */}
+  <section class="section section--tight writing">
+    <div class="container">
+      <div class="writing__head">
+        <p class="eyebrow">Latest Writing</p>
+        <a href="/writing" class="arrow-link writing__all">
+          View all writing <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+      {
+        featured ? (
+          <a href={featured.href} class="feature">
+            <div class="feature__art">
+              <BrandGraphic variant="motif" />
+            </div>
+            <div class="feature__body">
+              <p class="feature__meta">
+                <span class="feature__cat">{featured.category}</span>
+                <span class="feature__dot" aria-hidden="true">
+                  &middot;
+                </span>
+                <span>{featured.date}</span>
+                <span class="feature__dot" aria-hidden="true">
+                  &middot;
+                </span>
+                <span>{featured.readingTime}</span>
+              </p>
+              <h2 class="feature__title">{featured.title}</h2>
+              <p class="feature__deck">{featured.deck}</p>
+              <span class="arrow-link">
+                Read article <span class="arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </div>
+          </a>
+        ) : (
+          <div class="feature feature--coming">
+            <div class="feature__art" aria-hidden="true">
+              <BrandGraphic variant="motif" />
+            </div>
+            <div class="feature__body">
+              <p class="feature__meta">
+                <span class="feature__cat">Essays &amp; ideas</span>
+              </p>
+              <p class="feature__title feature__title--soft">
+                Writing about work and leadership, identity and belonging,
+                technology and change, and culture and opportunity.
+              </p>
+              <p class="feature__deck">
+                The first essays are on the way. This is where new writing will
+                live &mdash; ideas, observations and personal reflections on how
+                we work and live.
+              </p>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  {/* ---------- Areas of Focus (§17-19) ---------- */}
+  <section class="section section--stone focus">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Areas of Focus</p>
+      </div>
+      <ul class="focus__grid" role="list">
+        {
+          focus.map((area) => (
+            <li class="focus__item">
+              <h2 class="focus__title">{area.title}</h2>
+              <p class="focus__body">{area.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* ---------- Building Growth Teams (§20-22) ---------- */}
+  <section class="section teams">
+    <div class="teams__art" aria-hidden="true">
+      <BrandGraphic variant="motif" />
+    </div>
+    <div class="container teams__inner">
+      <div class="teams__lead">
+        <p class="eyebrow">Building Growth Teams</p>
+        <p class="lead">
+          Growth is rarely one team's job. It happens when marketing, product,
+          technology and commercial leadership pull in the same direction — and
+          stalls when each optimizes for its own scorecard instead of a shared
+          one.
+        </p>
+        <p>
+          Much of my work sits in that connective space: giving a group of
+          talented, specialized people a single objective they can organize
+          around, then removing the ambiguity — about ownership, priorities and
+          how decisions get made — that quietly slows most growth efforts down.
+        </p>
+        <p>
+          In my experience, the hard part is rarely the strategy itself. It is
+          building the conditions in which a cross-functional team can move
+          quickly without losing coordination: shared goals, clear decision
+          rights, and enough trust that people surface problems early rather
+          than protect their corner.
+        </p>
+      </div>
+
+      <p class="teams__pull">
+        The best strategy in the world does not matter if nobody can figure out
+        how to make it happen.
+      </p>
+
+      <ol class="teams__principles" role="list">
+        {
+          teamPrinciples.map((p) => (
+            <li class="teams__principle">
+              <h3 class="teams__principle-title">{p.title}</h3>
+              <p class="teams__principle-body">{p.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {/* ---------- How I Think (§23) ---------- */}
+  <section class="section section--navy pov">
+    <div class="pov__field" aria-hidden="true">
+      <BrandGraphic variant="field" />
+    </div>
+    <div class="container split pov__inner">
+      <div class="split__label">
+        <p class="eyebrow">How I Think</p>
+      </div>
+      <div class="split__content">
+        <ol class="pov__list" role="list">
+          {principles.map((p) => <li class="pov__item">{p}</li>)}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- About Ladell — shortened on home (§25) ---------- */}
+  <section class="section section--tight about">
+    <div class="container split">
+      <div class="split__label">
+        <p class="eyebrow">About Ladell</p>
+        <div class="about__art" aria-hidden="true">
+          <BrandGraphic variant="motif" />
+        </div>
+      </div>
+      <div class="split__content">
+        <p class="lead">
+          I&rsquo;ve spent my career in executive leadership roles helping
+          organizations grow, solve difficult problems and bring people together
+          around shared goals.
+        </p>
+        <p>
+          My work spans marketing, technology, operations and business
+          transformation &mdash; but the parts I&rsquo;ve found most meaningful have
+          always been about people: building relationships, developing teams and
+          turning ideas into results.
+        </p>
+        <p class="split__cta">
+          <a href="/about" class="arrow-link">
+            More about Ladell
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- Connect / LinkedIn (§28) ---------- */}
+  <section class="section--tight connect">
+    <div class="container connect__inner">
+      <p class="connect__text">
+        I also share ideas and join conversations on LinkedIn.
+      </p>
+      <a
+        href="https://www.linkedin.com/in/ladellfuqua/"
+        class="arrow-link"
+        target="_blank"
+        rel="me noopener"
+      >
+        Connect on LinkedIn <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero {
+    padding-block: clamp(3rem, 2.4rem + 5vw, 6rem) clamp(2.5rem, 2rem + 3vw, 4rem);
+    overflow: hidden;
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+    gap: clamp(2rem, 1rem + 5vw, 5rem);
+  }
+  .hero__headline {
+    max-width: 16ch;
+    font-size: var(--fs-2xl);
+    font-weight: var(--weight-semi);
+    letter-spacing: var(--tracking-tight);
+  }
+  .hero__lead {
+    margin-top: 1.5rem;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 2rem;
+    margin-top: 2.2rem;
+  }
+  .hero__art {
+    position: relative;
+    aspect-ratio: 52 / 60;
+    overflow: hidden;
+  }
+  .hero__art :global(.bg-graphic) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  @media (max-width: 52rem) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+    }
+    .hero__art {
+      order: -1;
+      aspect-ratio: 16 / 9;
+      max-height: 34vh;
+      margin-inline: calc(-1 * var(--gutter));
+    }
+  }
+
+  /* ---------- Section head ---------- */
+  .section-head {
+    margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  }
+
+  /* ---------- Latest Writing / featured ---------- */
+  .writing__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: clamp(1.5rem, 1.1rem + 1.5vw, 2.25rem);
+  }
+  .writing__all {
+    font-size: var(--fs-sm);
+  }
+  .feature {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(1.5rem, 1rem + 4vw, 4rem);
+    align-items: center;
+    padding-top: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    border-top: 1px solid var(--line);
+    color: inherit;
+  }
+  a.feature:hover {
+    text-decoration: none;
+  }
+  .feature__art {
+    background: var(--c-ivory-deep);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: clamp(1.5rem, 1rem + 4vw, 3rem);
+    aspect-ratio: 16 / 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .section--stone .feature__art {
+    background: var(--surface);
+  }
+  .feature__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    margin-bottom: 0.9rem;
+  }
+  .feature__cat {
+    color: var(--accent);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.02em;
+  }
+  .feature__dot {
+    color: var(--line-strong);
+  }
+  .feature__title {
+    font-size: var(--fs-xl);
+    letter-spacing: var(--tracking-tight);
+    max-width: 20ch;
+  }
+  .feature__title--soft {
+    font-weight: var(--weight-semi);
+    color: var(--heading);
+  }
+  .feature__deck {
+    margin-top: 1rem;
+    color: var(--text);
+    max-width: 46ch;
+  }
+  a.feature .arrow-link {
+    display: inline-flex;
+    margin-top: 1.4rem;
+  }
+  @media (max-width: 48rem) {
+    .feature {
+      grid-template-columns: 1fr;
+    }
+    .feature__art {
+      order: -1;
+    }
+  }
+
+  /* ---------- Areas of Focus grid ---------- */
+  .focus__grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0 clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
+  }
+  .focus__item {
+    padding-block: clamp(1.4rem, 1rem + 1.4vw, 2rem);
+    border-top: 1px solid var(--line);
+  }
+  .focus__title {
+    font-size: var(--fs-lg);
+    font-weight: var(--weight-semi);
+    color: var(--heading);
+    letter-spacing: var(--tracking-tight);
+  }
+  .focus__body {
+    margin-top: 0.7rem;
+    color: var(--text);
+    font-size: var(--fs-base);
+    max-width: 34ch;
+  }
+  @media (max-width: 60rem) {
+    .focus__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 40rem) {
+    .focus__grid {
+      grid-template-columns: 1fr;
+    }
+    .focus__body {
+      max-width: var(--measure);
+    }
+  }
+
+  /* ---------- Building Growth Teams ---------- */
+  .teams {
+    position: relative;
+    overflow: hidden;
+  }
+  .teams__art {
+    position: absolute;
+    top: clamp(-2rem, -1rem - 2vw, 0rem);
+    right: calc(-1 * clamp(2rem, 1rem + 4vw, 6rem));
+    width: clamp(180px, 26vw, 340px);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .teams__inner {
+    position: relative;
+  }
+  .teams__lead {
+    max-width: 52ch;
+  }
+  .teams__lead > * + * {
+    margin-top: 1.2rem;
+  }
+  .teams__pull {
+    font-family: var(--font-serif);
+    font-size: var(--fs-xl);
+    line-height: var(--lh-snug);
+    color: var(--heading);
+    letter-spacing: var(--tracking-tight);
+    max-width: 24ch;
+    margin-block: clamp(2.5rem, 2rem + 3vw, 4rem);
+  }
+  .teams__principles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.25rem, 1rem + 2vw, 2.75rem);
+    counter-reset: tp;
+  }
+  .teams__principle {
+    counter-increment: tp;
+    padding-top: 1.1rem;
+    border-top: 2px solid var(--accent);
+  }
+  .teams__principle-title {
+    font-size: var(--fs-md);
+    font-weight: var(--weight-semi);
+    color: var(--heading);
+  }
+  .teams__principle-body {
+    margin-top: 0.6rem;
+    color: var(--text);
+    font-size: var(--fs-base);
+  }
+  @media (max-width: 48rem) {
+    .teams__principles {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .teams__principle {
+      padding-block: 1.1rem;
+    }
+    .teams__principle + .teams__principle {
+      border-top-width: 1px;
+    }
+    .teams__art {
+      width: 150px;
+      right: calc(-1 * var(--gutter));
+      opacity: 0.5;
+    }
+  }
+
+  /* ---------- Split label/content layout ---------- */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    gap: clamp(1.5rem, 1rem + 4vw, 5rem);
+  }
+  .split__label {
+    padding-top: 0.35rem;
+  }
+  .split__content > * + * {
+    margin-top: 1.3rem;
+  }
+  .split__cta {
+    margin-top: 1.8rem;
+  }
+  @media (max-width: 48rem) {
+    .split {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  /* ---------- How I Think ---------- */
+  .pov {
+    position: relative;
+    overflow: hidden;
+  }
+  .pov__field {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .pov__field :global(.bg-graphic) {
+    width: 100%;
+    height: 100%;
+  }
+  .pov__inner {
+    position: relative;
+  }
+  .pov__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: pov;
+  }
+  .pov__item {
+    counter-increment: pov;
+    font-family: var(--font-serif);
+    font-size: var(--fs-lg);
+    line-height: var(--lh-snug);
+    color: var(--on-dark);
+    padding-block: clamp(1.25rem, 1rem + 1vw, 1.9rem);
+    max-width: 34ch;
+    position: relative;
+    padding-left: 2.6rem;
+  }
+  .pov__item + .pov__item {
+    border-top: 1px solid var(--on-dark-line);
+  }
+  .pov__item::before {
+    content: counter(pov, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: clamp(1.35rem, 1.1rem + 1vw, 2rem);
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: var(--weight-semi);
+    letter-spacing: 0.08em;
+    color: var(--accent-2);
+  }
+
+  /* ---------- About (home) ---------- */
+  .about__art {
+    margin-top: 1.5rem;
+    max-width: 140px;
+    opacity: 0.85;
+  }
+  @media (max-width: 48rem) {
+    .about__art {
+      display: none;
+    }
+  }
+
+  /* ---------- Connect ---------- */
+  .connect {
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+  }
+  .connect__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+  }
+  .connect__text {
+    color: var(--text);
+    font-size: var(--fs-md);
+    max-width: none;
+    margin: 0;
+  }
+</style>

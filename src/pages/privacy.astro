@@ -1,0 +1,109 @@
+---
+/**
+ * Privacy page (§ footer). Plain-language baseline that reflects the site's
+ * analytics use (LAD-6). Draft for review — not legal advice.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const updated = 'August 8, 2026';
+---
+
+<BaseLayout
+  title="Privacy"
+  description="How Fuqua Inc. handles information and analytics on fuquainc.com."
+>
+  <section class="section section--tight">
+    <div class="container container--narrow legal">
+      <p class="eyebrow">Privacy</p>
+      <h1 class="legal__title">Privacy Policy</h1>
+      <p class="legal__updated">Last updated: {updated}</p>
+
+      <p class="lead">
+        This site, <strong>fuquainc.com</strong>, is the personal platform of Ladell Fuqua
+        (Fuqua Inc.). This page explains what limited information the site collects and how it
+        is used. It is written to be clear rather than legalistic.
+      </p>
+
+      <h2>What is collected</h2>
+      <p>
+        <strong>Analytics.</strong> The site uses Google Analytics 4 to understand how visitors
+        use it — for example which pages are viewed, roughly where visits come from (country or
+        region), and general device and browser information. This is collected in aggregate to
+        improve the site. Google Analytics sets cookies to do this.
+      </p>
+      <p>
+        <strong>Messages you send.</strong> If you contact Ladell through the site or by the
+        links provided, the information you choose to share (such as your name, email address
+        and message) is used only to read and respond to your message.
+      </p>
+
+      <h2>What is not done</h2>
+      <p>
+        Your information is not sold, rented, or shared for advertising. The site does not create
+        marketing profiles about you, and there are no third-party advertising trackers.
+      </p>
+
+      <h2>Cookies and analytics choices</h2>
+      <p>
+        You can control or block cookies through your browser settings. You can also opt out of
+        Google Analytics across all websites using Google's <a
+          href="https://tools.google.com/dlpage/gaoptout"
+          target="_blank"
+          rel="noopener">opt-out browser add-on</a>. Blocking analytics cookies does not affect
+        your ability to read the site.
+      </p>
+
+      <h2>Services used</h2>
+      <p>
+        The site is hosted on Vercel and uses Google Analytics for the measurement described
+        above. These providers process technical data (such as your IP address) as part of
+        delivering and measuring the site.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy or your information can be sent through the <a
+          href="/contact">contact page</a> or via <a
+          href="https://www.linkedin.com/in/ladellfuqua/"
+          target="_blank"
+          rel="me noopener">LinkedIn</a>.
+      </p>
+
+      <p class="legal__note">
+        This is a general privacy statement provided for transparency and is not legal advice.
+        It may be updated as the site evolves; the date above reflects the latest revision.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal__title {
+    margin-top: 0.6rem;
+    font-size: var(--fs-xl);
+    letter-spacing: var(--tracking-tight);
+  }
+  .legal__updated {
+    margin-top: 0.5rem;
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+  }
+  .legal .lead {
+    margin-top: 1.75rem;
+  }
+  .legal h2 {
+    margin-top: 2.25rem;
+    font-size: var(--fs-lg);
+  }
+  .legal p {
+    margin-top: 0.9rem;
+    max-width: var(--measure);
+  }
+  .legal__note {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+  }
+</style>

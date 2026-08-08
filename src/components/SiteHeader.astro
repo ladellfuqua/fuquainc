@@ -1,0 +1,207 @@
+---
+/**
+ * Site header (§8). Nav: About / Writing / Contact. Logo returns home.
+ * LinkedIn visible but not occupying primary nav weight.
+ * Mobile: extremely simple disclosure menu.
+ */
+import Wordmark from './Wordmark.astro';
+import LinkedInLink from './LinkedInLink.astro';
+
+const nav = [
+  { label: 'About', href: '/about' },
+  { label: 'Writing', href: '/writing' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+---
+
+<header class="site-header">
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="container site-header__inner">
+    <Wordmark href="/" class="site-header__brand" />
+
+    <button
+      class="site-header__toggle"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      aria-label="Open menu"
+    >
+      <span class="site-header__toggle-bar"></span>
+      <span class="site-header__toggle-bar"></span>
+    </button>
+
+    <nav id="site-menu" class="site-nav" aria-label="Primary">
+      <ul class="site-nav__list">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="site-nav__link"
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="site-nav__linkedin">
+          <LinkedInLink label="LinkedIn" />
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--c-ivory) 88%, transparent);
+    backdrop-filter: saturate(1.1) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    min-height: 4.5rem;
+  }
+
+  .site-nav__list {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.25rem, 0.5rem + 2vw, 2.5rem);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .site-nav__link {
+    position: relative;
+    color: var(--heading);
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.01em;
+    padding-block: 0.4rem;
+  }
+  .site-nav__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.05rem;
+    height: 1.5px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur) var(--ease);
+  }
+  .site-nav__link:hover {
+    text-decoration: none;
+    color: var(--heading);
+  }
+  .site-nav__link:hover::after,
+  .site-nav__link[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+  .site-nav__link[aria-current='page'] {
+    color: var(--accent);
+  }
+
+  .site-nav__linkedin {
+    display: flex;
+    align-items: center;
+    padding-left: clamp(0.5rem, 2vw, 1.25rem);
+    border-left: 1px solid var(--line);
+  }
+  .site-nav__linkedin :global(.linkedin-link) {
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-medium);
+  }
+
+  /* Mobile toggle (hidden on desktop) */
+  .site-header__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  .site-header__toggle-bar {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    margin-inline: auto;
+    background: var(--heading);
+    transition: transform var(--dur) var(--ease),
+      opacity var(--dur-fast) var(--ease);
+  }
+
+  @media (max-width: 46rem) {
+    .site-header__toggle {
+      display: flex;
+    }
+    .site-nav {
+      position: absolute;
+      inset: 100% 0 auto 0;
+      background: var(--c-ivory);
+      border-bottom: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows var(--dur) var(--ease);
+    }
+    .site-nav__list {
+      overflow: hidden;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+    .site-header[data-open='true'] .site-nav {
+      grid-template-rows: 1fr;
+    }
+    .site-nav__link {
+      display: block;
+      padding: 1rem var(--gutter);
+      border-top: 1px solid var(--line);
+      font-size: var(--fs-md);
+    }
+    .site-nav__link::after {
+      display: none;
+    }
+    .site-nav__linkedin {
+      padding: 1rem var(--gutter);
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+    .site-header[data-open='true'] .site-header__toggle-bar:nth-child(1) {
+      transform: translateY(3.25px) rotate(45deg);
+    }
+    .site-header[data-open='true'] .site-header__toggle-bar:nth-child(2) {
+      transform: translateY(-3.25px) rotate(-45deg);
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('.site-header');
+  const toggle = header?.querySelector<HTMLButtonElement>('.site-header__toggle');
+  toggle?.addEventListener('click', () => {
+    const open = header?.getAttribute('data-open') === 'true';
+    header?.setAttribute('data-open', String(!open));
+    toggle.setAttribute('aria-expanded', String(!open));
+    toggle.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+  });
+</script>

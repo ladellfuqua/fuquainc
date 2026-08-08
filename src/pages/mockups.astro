@@ -1,0 +1,278 @@
+---
+/**
+ * TEMPORARY design-exploration page (not part of the real site).
+ * Three hero directions on the same content, to choose a direction.
+ * noindex + excluded from sitemap. Remove once a direction is chosen.
+ */
+import '../styles/global.css';
+import BrandGraphic from '../components/BrandGraphic.astro';
+
+const headline =
+  'Building growth by connecting ideas, people, technology and opportunity.';
+const lead =
+  'I work across growth, marketing, customer strategy, technology and business transformation, often bringing different disciplines and teams together to solve problems that do not fit neatly within one function.';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>FUQUA INC. — Design Directions</title>
+  </head>
+  <body class="mock">
+    <header class="mock__bar">
+      <p><strong>FUQUA INC.</strong> — design directions</p>
+      <p class="mock__hint">Same words, three looks. Tell me which you're drawn to.</p>
+    </header>
+
+    <!-- ============ Direction A — Refined Classic (current) ============ -->
+    <section class="dir dirA">
+      <span class="dir__tag">A · Refined Classic <em>(current)</em></span>
+      <div class="wrap heroA">
+        <div class="heroA__copy">
+          <h1 class="hl">{headline}</h1>
+          <p class="ld">{lead}</p>
+          <div class="acts">
+            <a class="btn btn--primary" href="#">Read the latest &rarr;</a>
+            <a class="arrow-link" href="#">About Ladell &rarr;</a>
+          </div>
+        </div>
+        <div class="heroA__art"><BrandGraphic variant="hero" /></div>
+      </div>
+      <p class="dir__note">
+        The clean, understated executive base you already have. Quiet, timeless,
+        typography-led.
+      </p>
+    </section>
+
+    <!-- ============ Direction B — Warm Tailored ============ -->
+    <section class="dir dirB">
+      <span class="dir__tag">B · Warm Tailored</span>
+      <div class="wrap heroB">
+        <div class="heroB__copy">
+          <p class="kicker">Fuqua Inc.</p>
+          <h1 class="hl">{headline}</h1>
+          <p class="ld">{lead}</p>
+          <div class="acts">
+            <a class="btn btn--primary" href="#">Read the latest &rarr;</a>
+            <a class="arrow-link" href="#">About Ladell &rarr;</a>
+          </div>
+        </div>
+        <div class="heroB__art">
+          <div class="heroB__panel"></div>
+          <BrandGraphic variant="hero" />
+        </div>
+      </div>
+      <p class="dir__note">
+        Same base, warmer and more tailored: a soft stone field, a plum spine and
+        a touch more colour, echoing the pocket-square detail. Still executive,
+        a little more human.
+      </p>
+    </section>
+
+    <!-- ============ Direction C — Modern Signature ============ -->
+    <section class="dir dirC">
+      <span class="dir__tag">C · Modern Signature</span>
+      <div class="wrap heroC">
+        <div class="heroC__art"><BrandGraphic variant="hero" /></div>
+        <div class="heroC__copy">
+          <p class="kicker">Fuqua Inc.</p>
+          <h1 class="hl hl--big">{headline}</h1>
+          <p class="ld">{lead}</p>
+          <div class="acts">
+            <a class="btn btn--primary" href="#">Read the latest &rarr;</a>
+            <a class="arrow-link" href="#">About Ladell &rarr;</a>
+          </div>
+        </div>
+      </div>
+      <p class="dir__note">
+        The "signature" idea: the FUQUA graphic gets larger and more present, like
+        your eyewear on a classic outfit. Bigger, more confident, more distinctly
+        FUQUA, still on a light executive base.
+      </p>
+    </section>
+  </body>
+</html>
+
+<style is:global>
+  body.mock {
+    background: #fff;
+  }
+  .mock__bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0.85rem var(--gutter);
+    background: var(--c-navy);
+    color: #fff;
+    font-size: 0.85rem;
+  }
+  .mock__bar strong {
+    letter-spacing: 0.02em;
+  }
+  .mock__hint {
+    color: var(--on-dark-muted);
+  }
+
+  .dir {
+    position: relative;
+    padding: clamp(3rem, 2rem + 5vw, 6rem) 0 clamp(2.5rem, 2rem + 3vw, 4rem);
+    border-bottom: 8px solid var(--c-navy);
+    overflow: hidden;
+  }
+  .dir__tag {
+    position: absolute;
+    top: 1rem;
+    left: var(--gutter);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    z-index: 5;
+  }
+  .dir__tag em {
+    color: var(--text-muted);
+    font-style: normal;
+  }
+  .dir__note {
+    max-width: 60ch;
+    margin: 2.5rem auto 0;
+    padding-inline: var(--gutter);
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+  .wrap {
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .hl {
+    color: var(--heading);
+    font-weight: var(--weight-semi);
+    letter-spacing: var(--tracking-tight);
+    font-size: var(--fs-2xl);
+    line-height: 1.05;
+    max-width: 16ch;
+  }
+  .hl--big {
+    font-size: var(--fs-display);
+  }
+  .ld {
+    margin-top: 1.4rem;
+    font-size: var(--fs-md);
+    line-height: var(--lh-relaxed);
+    color: var(--text);
+    max-width: 48ch;
+  }
+  .acts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.1rem 2rem;
+    margin-top: 2rem;
+  }
+  .kicker {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  /* Direction A */
+  .dirA {
+    background: var(--c-ivory);
+  }
+  .heroA {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+  }
+  .heroA__art {
+    aspect-ratio: 52/60;
+    overflow: hidden;
+  }
+
+  /* Direction B */
+  .dirB {
+    background: var(--c-stone);
+  }
+  .heroB {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+  }
+  .heroB__copy {
+    padding-left: 1.5rem;
+    border-left: 3px solid var(--accent);
+  }
+  .heroB__art {
+    position: relative;
+    aspect-ratio: 52/60;
+    overflow: hidden;
+  }
+  .heroB__panel {
+    position: absolute;
+    inset: 12% 6% 12% 18%;
+    background: color-mix(in srgb, var(--c-plum) 12%, transparent);
+    border-radius: 2px;
+  }
+
+  /* Direction C */
+  .dirC {
+    background: var(--c-ivory);
+  }
+  .heroC {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(1.5rem, 0.5rem + 4vw, 4rem);
+  }
+  .heroC__art {
+    aspect-ratio: 5/6;
+    overflow: visible;
+    transform: scale(1.12);
+    transform-origin: left center;
+  }
+  .heroC__copy {
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (max-width: 52rem) {
+    .heroA,
+    .heroB,
+    .heroC {
+      grid-template-columns: 1fr;
+    }
+    .heroA__art,
+    .heroB__art {
+      order: -1;
+      aspect-ratio: 16/9;
+      max-height: 32vh;
+    }
+    .heroC__art {
+      order: -1;
+      transform: none;
+      aspect-ratio: 16/10;
+    }
+    .hl--big {
+      font-size: var(--fs-2xl);
+    }
+  }
+</style>

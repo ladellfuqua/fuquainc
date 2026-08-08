@@ -1,0 +1,110 @@
+/* ==========================================================================
+   FUQUA INC. — Design Tokens
+   The single source of truth for brand color, type, spacing and motion.
+   Ref: brief §5 (color), §6 (type), §31 (visual direction).
+   ========================================================================== */
+
+:root {
+  /* --- Brand palette (raw) ------------------------------------------------ */
+  --c-ivory: #f7f5f0; /* Warm Ivory  — primary background */
+  --c-stone: #e3dfd8; /* Soft Stone  — secondary background / section shift */
+  --c-navy: #182536; /* Midnight Navy — primary dark: headings, footer */
+  --c-graphite: #4b5056; /* Graphite   — body copy, muted UI */
+  --c-plum: #6f5368; /* Dusty Plum  — signature accent, used sparingly */
+  --c-slate: #7f91a5; /* Muted Slate Blue — secondary accent, very sparing */
+
+  /* Tints / shades derived from the palette (kept minimal & on-brand) */
+  --c-ivory-deep: #efece4; /* subtle fill on ivory */
+  --c-stone-line: #d6d1c7; /* hairline rules on light backgrounds */
+  --c-navy-soft: #24344a; /* raised surface within dark sections */
+  --c-plum-deep: #5c4457; /* plum hover / active */
+  --c-graphite-soft: #6b7178; /* lighter muted text (meta, captions) */
+
+  /* --- Semantic color roles ---------------------------------------------- */
+  --bg: var(--c-ivory);
+  --bg-alt: var(--c-stone);
+  --surface: #fffdf9; /* cards / raised light surfaces, barely lifted */
+  --text: var(--c-graphite);
+  --text-muted: var(--c-graphite-soft);
+  --heading: var(--c-navy);
+  --accent: var(--c-plum);
+  --accent-hover: var(--c-plum-deep);
+  --accent-2: var(--c-slate);
+  --line: var(--c-stone-line);
+  --line-strong: #c9c3b7;
+
+  /* On dark (navy) sections */
+  --on-dark: #eef0f2;
+  --on-dark-muted: #aeb8c4;
+  --on-dark-line: rgba(255, 255, 255, 0.14);
+
+  /* --- Typography --------------------------------------------------------- */
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-serif: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+
+  /* Fluid type scale (min .. max), controlled and editorial */
+  --fs-eyebrow: 0.78rem; /* section labels / small caps */
+  --fs-sm: 0.9rem;
+  --fs-base: clamp(1.02rem, 0.98rem + 0.22vw, 1.14rem); /* body */
+  --fs-md: clamp(1.18rem, 1.08rem + 0.5vw, 1.4rem); /* lead / large body */
+  --fs-lg: clamp(1.45rem, 1.25rem + 1vw, 1.9rem); /* h3 */
+  --fs-xl: clamp(1.9rem, 1.5rem + 1.9vw, 2.7rem); /* h2 */
+  --fs-2xl: clamp(2.4rem, 1.8rem + 3vw, 3.9rem); /* h1 / hero */
+  --fs-display: clamp(2.7rem, 1.9rem + 4vw, 4.4rem); /* rare display */
+
+  --lh-tight: 1.08;
+  --lh-snug: 1.22;
+  --lh-body: 1.65;
+  --lh-relaxed: 1.75;
+
+  --tracking-eyebrow: 0.14em;
+  --tracking-tight: -0.02em;
+  --tracking-wordmark: 0.02em;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semi: 600;
+  --weight-bold: 680; /* restrained "bold" — avoid excessively heavy type (§6) */
+
+  /* Measure (line length control) */
+  --measure: 62ch;
+  --measure-narrow: 46ch;
+  --measure-wide: 74ch;
+
+  /* --- Spacing scale ------------------------------------------------------ */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+  --space-3xl: 9rem;
+
+  /* Section rhythm (generous, open — §5 "light and open") */
+  --section-y: clamp(4rem, 3rem + 7vw, 8.5rem);
+  --section-y-tight: clamp(3rem, 2.4rem + 4vw, 5.5rem);
+
+  /* --- Layout ------------------------------------------------------------- */
+  --container: 72rem; /* ~1152px */
+  --container-narrow: 46rem; /* long-form / article measure */
+  --container-wide: 82rem;
+  --gutter: clamp(1.25rem, 0.8rem + 3vw, 2.75rem);
+
+  /* --- Radius (restrained — avoid excessive rounding, §30) ---------------- */
+  --radius-sm: 3px;
+  --radius: 5px;
+  --radius-lg: 8px;
+
+  /* --- Elevation (whisper-soft, never flashy) ---------------------------- */
+  --shadow-sm: 0 1px 2px rgba(24, 37, 54, 0.05);
+  --shadow: 0 4px 18px -8px rgba(24, 37, 54, 0.14);
+
+  /* --- Motion (subtle — §29) --------------------------------------------- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 140ms;
+  --dur: 240ms;
+  --dur-slow: 620ms;
+}

@@ -1,0 +1,237 @@
+---
+/**
+ * Essays & Ideas landing (/writing) — LAD-17.
+ * Launch-safe pre-publication state: approved editorial framing, the five
+ * overlapping themes, and a quiet "forthcoming" note that reads as intentional,
+ * not unfinished. Never framed as consulting/organizational/growth content.
+ *
+ * Content model is ready to expand: when articles exist, the `articles` array
+ * populates and the "featured/list" region below renders them instead of the
+ * pre-publication note (First Article + Publishing milestone).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandGraphic from '../components/BrandGraphic.astro';
+
+// The five overlapping editorial themes (order per brief).
+const themes = [
+  {
+    name: 'Work and Leadership',
+    note: 'How people lead, build teams and find meaning in the work itself.',
+  },
+  {
+    name: 'Identity and Belonging',
+    note: 'Being seen and included — race, access, power, and who gets to belong.',
+  },
+  {
+    name: 'Technology and Change',
+    note: 'How technology reshapes what we do, and what it asks of us.',
+  },
+  {
+    name: 'Culture and Opportunity',
+    note: 'The forces that widen or narrow the paths available to people.',
+  },
+  {
+    name: 'Personal Reflections',
+    note: 'Shorter, more personal notes and observations from along the way.',
+  },
+];
+
+// Populated during First Article + Publishing; empty for the v1.2 launch state.
+const articles: { title: string; href: string }[] = [];
+---
+
+<BaseLayout
+  title="Essays & Ideas"
+  description="Essays and ideas by Ladell Fuqua on work and leadership, identity and belonging, technology and change, culture and opportunity, and personal reflections."
+>
+  {/* ---------- Intro ---------- */}
+  <section class="section section--tight writing-hero">
+    <div class="container writing-hero__inner">
+      <div class="writing-hero__copy">
+        <p class="eyebrow">Essays &amp; Ideas</p>
+        <h1 class="writing-hero__title">Essays &amp; Ideas</h1>
+        <p class="lead">
+          Writing about work and leadership, identity and belonging, technology and change,
+          culture and opportunity, and the experiences that connect them. A collection of
+          ideas, observations, and personal reflections on how we work and live.
+        </p>
+      </div>
+      <div class="writing-hero__art" aria-hidden="true">
+        <BrandGraphic variant="motif" />
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- Themes ---------- */}
+  <section class="section section--stone writing-themes">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">The themes</p>
+        <p class="writing-themes__lede">
+          Five overlapping threads I keep returning to. Essays often sit where they meet.
+        </p>
+      </div>
+      <ol class="themes" role="list">
+        {
+          themes.map((t) => (
+            <li class="theme">
+              <h2 class="theme__name">{t.name}</h2>
+              <p class="theme__note">{t.note}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {/* ---------- Articles / pre-publication state ---------- */}
+  <section class="section section--tight writing-latest">
+    <div class="container">
+      {
+        articles.length > 0 ? (
+          <ul class="article-list" role="list">
+            {articles.map((a) => (
+              <li>
+                <a href={a.href} class="arrow-link">
+                  {a.title} <span class="arrow" aria-hidden="true">&rarr;</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="coming">
+            <p class="eyebrow">First essays</p>
+            <p class="coming__line">The first essays are on the way.</p>
+            <p class="coming__note">
+              New writing will appear here as it&rsquo;s published. In the meantime, you can
+              learn more <a href="/about">about Ladell</a> or
+              <a href="/contact"> get in touch</a>.
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---------- Intro ---------- */
+  .writing-hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.5fr);
+    align-items: center;
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+  }
+  .writing-hero__title {
+    margin-top: 0.5rem;
+    font-size: var(--fs-2xl);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-tight);
+  }
+  .writing-hero__copy .lead {
+    margin-top: 1.5rem;
+    max-width: 54ch;
+  }
+  .writing-hero__art {
+    max-width: 240px;
+    margin-inline: auto;
+    opacity: 0.9;
+  }
+  @media (max-width: 52rem) {
+    .writing-hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .writing-hero__art {
+      display: none;
+    }
+  }
+
+  /* ---------- Themes ---------- */
+  .section-head {
+    margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  }
+  .writing-themes__lede {
+    margin-top: 0.75rem;
+    color: var(--text);
+    font-size: var(--fs-md);
+    max-width: 48ch;
+  }
+  .themes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: theme;
+  }
+  .theme {
+    counter-increment: theme;
+    display: grid;
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    gap: clamp(0.75rem, 0.5rem + 2vw, 3rem);
+    align-items: baseline;
+    padding-block: clamp(1.25rem, 1rem + 1vw, 1.9rem);
+    border-top: 1px solid var(--line);
+  }
+  .theme:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  .theme__name {
+    position: relative;
+    font-size: var(--fs-lg);
+    font-weight: var(--weight-semi);
+    color: var(--heading);
+    letter-spacing: var(--tracking-tight);
+    padding-left: 2.6rem;
+  }
+  .theme__name::before {
+    content: counter(theme, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.35em;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: var(--weight-semi);
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+  .theme__note {
+    color: var(--text);
+    font-size: var(--fs-base);
+    max-width: 46ch;
+  }
+  @media (max-width: 44rem) {
+    .theme {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .theme__note {
+      padding-left: 2.6rem;
+    }
+  }
+
+  /* ---------- Pre-publication ---------- */
+  .coming {
+    border-top: 1px solid var(--line);
+    padding-top: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  }
+  .coming__line {
+    margin-top: 0.9rem;
+    font-family: var(--font-serif);
+    font-size: var(--fs-xl);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--heading);
+    max-width: 20ch;
+  }
+  .coming__note {
+    margin-top: 1.1rem;
+    color: var(--text);
+    max-width: 52ch;
+  }
+  .article-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+</style>

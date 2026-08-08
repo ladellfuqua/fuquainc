@@ -1,0 +1,303 @@
+---
+/**
+ * About Ladell (LAD-10). Approved content-and-design brief.
+ * Warm, human, quietly confident editorial page — not a résumé template.
+ * Uses the FUQUA visual system with restraint; portrait leads, graphic used
+ * selectively and never over the face or copy.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandGraphic from '../components/BrandGraphic.astro';
+import { Picture } from 'astro:assets';
+import portrait from '../assets/ladell-portrait.png';
+---
+
+<BaseLayout
+  title="About"
+  description="About Ladell Fuqua — executive leadership across marketing, technology, operations and business transformation, built on curiosity and people."
+>
+  {/* ---------- Intro: portrait + opening ---------- */}
+  <section class="section section--tight about-intro">
+    <div class="container about-intro__grid">
+      <div class="about-intro__copy">
+        <p class="eyebrow">About</p>
+        <h1 class="about-intro__title">About Ladell</h1>
+        <p class="lead">
+          I&rsquo;ve spent my career in executive leadership roles helping organizations grow,
+          solve difficult problems and bring people together around shared goals.
+        </p>
+        <p class="about-intro__body">
+          My experience spans marketing, technology, operations and business transformation.
+          Across those disciplines, the work I&rsquo;ve found most meaningful has involved building
+          relationships, developing teams and helping people turn ideas into results.
+        </p>
+      </div>
+
+      <figure class="portrait">
+        <div class="portrait__frame">
+          <Picture
+            src={portrait}
+            formats={['avif', 'webp']}
+            widths={[420, 640, 900, 1023]}
+            sizes="(max-width: 52rem) 78vw, 40vw"
+            alt="Portrait of Ladell Fuqua"
+            class="portrait__img"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  {/* ---------- Connecting people and ideas ---------- */}
+  <section class="section section--tight about-block">
+    <div class="container split">
+      <div class="split__label">
+        <h2 class="about-block__title">Connecting people and ideas</h2>
+      </div>
+      <div class="split__content">
+        <p>
+          I&rsquo;m naturally curious and drawn to questions that don&rsquo;t have obvious answers.
+          I enjoy working across traditional boundaries&mdash;connecting people, perspectives and
+          capabilities that might otherwise remain separate.
+        </p>
+        <p>
+          Marketing became the foundation of my career. It gave me the opportunity to learn how
+          consumers, creative ideas and business decisions come together&mdash;and how much strong
+          results depend on the people doing the work. As my experience grew, so did the scope of
+          my leadership. I moved into broader executive roles, bringing together teams and
+          disciplines to solve problems and work toward shared goals.
+        </p>
+        <p>
+          I&rsquo;ve also had opportunities to help organizations work more clearly and effectively.
+          I tend to notice unnecessary friction, unclear responsibilities and disconnected efforts.
+          Addressing those issues is not simply about efficiency; it is about helping people focus
+          their energy where it can have the greatest effect.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- A formative chapter (stone, with a selective motif) ---------- */}
+  <section class="section section--stone about-chapter">
+    <div class="about-chapter__art" aria-hidden="true">
+      <BrandGraphic variant="motif" />
+    </div>
+    <div class="container split about-chapter__inner">
+      <div class="split__label">
+        <h2 class="about-block__title">A formative chapter</h2>
+      </div>
+      <div class="split__content">
+        <p>
+          AOL was one of the most formative chapters of my career and has influenced how I&rsquo;ve
+          thought about work for nearly three decades.
+        </p>
+        <p>
+          I arrived after changing fields and had to learn a new industry while it was transforming
+          in real time. One of my early leaders there, Bruce Thompson, taught me a great deal about
+          navigating corporate life, building credibility and understanding how organizations really
+          work.
+        </p>
+        <p>
+          That experience established a pattern that has continued throughout my career: enter
+          complex situations, listen carefully, build trusted relationships and help teams find a
+          clearer way forward.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- Relationships beyond the work ---------- */}
+  <section class="section section--tight about-block">
+    <div class="container split">
+      <div class="split__label">
+        <h2 class="about-block__title">Relationships beyond the work</h2>
+      </div>
+      <div class="split__content">
+        <p>
+          One of the things I value most about my career is the relationships that have continued
+          beyond a particular role or company.
+        </p>
+        <p>
+          Over the years, colleagues have become friends. We&rsquo;ve stayed connected through career
+          changes, weddings, growing families and new chapters in our lives. I&rsquo;ve been fortunate
+          to share in some of those moments, including officiating the wedding of a former colleague
+          and friend.
+        </p>
+        <p>
+          Those relationships have shaped how I think about leadership. Work asks a great deal of
+          people, and results matter&mdash;but so do trust, care and the experience people have while
+          pursuing them together.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- Beyond work ---------- */}
+  <section class="section section--tight about-block">
+    <div class="container split">
+      <div class="split__label">
+        <h2 class="about-block__title">Beyond work</h2>
+      </div>
+      <div class="split__content">
+        <p>
+          I&rsquo;m an introvert who values genuine connection. Outside work, I enjoy cycling,
+          traveling, discovering places that shift my perspective and settling in with genuinely
+          good television.
+        </p>
+        <p>
+          Today, I remain focused on leading, building teams and helping organizations navigate
+          growth and change. I also value thoughtful relationships with people who are building
+          something meaningful, working through an interesting problem or exploring ideas about work,
+          technology, culture and opportunity.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- Closing ---------- */}
+  <section class="section section--tight about-close">
+    <div class="container">
+      <p class="about-close__line">
+        I believe good work begins with curiosity and becomes meaningful through people.
+      </p>
+      <div class="about-close__links">
+        <a href="/writing" class="arrow-link">
+          Read Essays &amp; Ideas <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="/contact" class="arrow-link">
+          Contact <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---------- Intro ---------- */
+  .about-intro__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
+    align-items: center;
+    gap: clamp(2rem, 1rem + 5vw, 5rem);
+  }
+  .about-intro__title {
+    margin-top: 0.5rem;
+    font-size: var(--fs-2xl);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-tight);
+  }
+  .about-intro__copy .lead {
+    margin-top: 1.5rem;
+  }
+  .about-intro__body {
+    margin-top: 1.2rem;
+    max-width: var(--measure);
+  }
+
+  .portrait {
+    margin: 0;
+  }
+  .portrait__frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--c-stone);
+    box-shadow: var(--shadow);
+  }
+  .portrait__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+    display: block;
+  }
+
+  @media (max-width: 52rem) {
+    .about-intro__grid {
+      grid-template-columns: 1fr;
+    }
+    .portrait {
+      order: -1;
+      max-width: 22rem;
+      margin-inline: auto;
+    }
+    .portrait__frame {
+      aspect-ratio: 4 / 5;
+    }
+  }
+
+  /* ---------- Narrative blocks (editorial sideheads) ---------- */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    gap: clamp(1.5rem, 1rem + 4vw, 5rem);
+  }
+  .split__label {
+    padding-top: 0.3rem;
+  }
+  @media (max-width: 48rem) {
+    .split {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+  .about-block__title {
+    font-size: var(--fs-md);
+    font-weight: var(--weight-semi);
+    color: var(--heading);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-snug);
+  }
+  .about-block .split__content > * + *,
+  .about-chapter .split__content > * + * {
+    margin-top: 1.2rem;
+  }
+  .about-block .split__content p,
+  .about-chapter .split__content p {
+    max-width: var(--measure);
+  }
+
+  /* ---------- Formative chapter (stone) ---------- */
+  .about-chapter {
+    position: relative;
+    overflow: hidden;
+  }
+  .about-chapter__art {
+    position: absolute;
+    top: clamp(-1rem, -0.5rem - 1vw, 0rem);
+    right: calc(-1 * clamp(1.5rem, 1rem + 3vw, 4rem));
+    width: clamp(140px, 20vw, 240px);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .about-chapter__inner {
+    position: relative;
+  }
+  @media (max-width: 48rem) {
+    .about-chapter__art {
+      width: 120px;
+      opacity: 0.45;
+    }
+  }
+
+  /* ---------- Closing ---------- */
+  .about-close__line {
+    font-family: var(--font-serif);
+    font-size: var(--fs-xl);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--heading);
+    max-width: 28ch;
+  }
+  .about-close__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2.25rem;
+    margin-top: 2rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+</style>

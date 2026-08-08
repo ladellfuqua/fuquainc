@@ -1,0 +1,399 @@
+---
+/**
+ * FUQUA INC. — Visual System reference (Linear LAD-5).
+ *
+ * A durable, internal reference for the brand's graphic language: principles,
+ * color, type, the reusable composition types, anatomy, spacing, motion, and
+ * do/don't guidance. Standalone (no site chrome), noindex, excluded from the
+ * sitemap. The governing *rules* live in docs/visual-system.md; this page is
+ * the illustrated companion.
+ */
+import '../styles/global.css';
+import BrandGraphic from '../components/BrandGraphic.astro';
+
+const swatches = [
+  { name: 'Warm Ivory', hex: '#f7f5f0', role: 'Primary background', on: 'ink' },
+  { name: 'Soft Stone', hex: '#e3dfd8', role: 'Secondary background / section shift', on: 'ink' },
+  { name: 'Midnight Navy', hex: '#182536', role: 'Headings, footer, dark sections', on: 'light' },
+  { name: 'Graphite', hex: '#4b5056', role: 'Body copy, muted UI', on: 'light' },
+  { name: 'Dusty Plum', hex: '#6f5368', role: 'Signature accent — sparingly', on: 'light', accent: true },
+  { name: 'Muted Slate', hex: '#7f91a5', role: 'Secondary accent — very sparingly', on: 'light', accent: true },
+];
+
+const type = [
+  { token: '--fs-2xl', use: 'H1 / hero', sample: 'Building growth', cls: 't-2xl' },
+  { token: '--fs-xl', use: 'H2 / section', sample: 'Areas of focus', cls: 't-xl' },
+  { token: '--fs-lg', use: 'H3', sample: 'Building growth teams', cls: 't-lg' },
+  { token: '--fs-md', use: 'Lead / large body', sample: 'Growth rarely belongs to one department.', cls: 't-md' },
+  { token: '--fs-base', use: 'Body', sample: 'Connecting ideas, people, technology and opportunity.', cls: 't-base' },
+  { token: '--fs-eyebrow', use: 'Eyebrow / section label', sample: 'How I think', cls: 't-eyebrow' },
+];
+
+const variants = [
+  { v: 'hero', label: 'Hero', use: 'The large signature composition — homepage hero only. One per view.', tone: 'ink' },
+  { v: 'motif', label: 'Motif', use: 'A compact cropped signature for small brand moments (footer, feature card, About).', tone: 'ink' },
+  { v: 'field', label: 'Field', use: 'Ultra-subtle linework behind dark (navy) sections. Never competes with content.', tone: 'light' },
+] as const;
+
+const spacing = [
+  { token: '--space-2xs', px: '8px' },
+  { token: '--space-xs', px: '12px' },
+  { token: '--space-sm', px: '16px' },
+  { token: '--space-md', px: '24px' },
+  { token: '--space-lg', px: '40px' },
+  { token: '--space-xl', px: '64px' },
+  { token: '--space-2xl', px: '96px' },
+];
+
+const motion = [
+  { token: '--dur-fast', ms: '140ms', use: 'Color / hover state changes' },
+  { token: '--dur', ms: '240ms', use: 'Arrow nudge, menu, transitions' },
+  { token: '--dur-slow', ms: '620ms', use: 'Entrance reveal (above the fold)' },
+];
+
+const dos = [
+  'Use plum for roughly one deliberate moment per view — the primary button, an eyebrow, the current nav link, or its reserved roles in the graphic.',
+  'Keep linework thin and architectural, running off-canvas so it reads as art.',
+  'Let the overlap of 2–3 planes carry the "convergence" idea.',
+  'Use the spacing and type scales; control paragraph width with the measure tokens.',
+  'Gate every animation behind prefers-reduced-motion, keep it short and small.',
+  'Treat the graphic as decorative: aria-hidden, never the sole carrier of meaning.',
+];
+
+const donts = [
+  'Don’t use plum for body text, large fills, or a second filled button in the same view.',
+  'Don’t let slate compete with plum — it’s a quiet, occasional accent only.',
+  'Don’t add arrowheads or wire nodes together — it must never become a flowchart, network or org chart.',
+  'Don’t scatter nodes (one per intersection) or stack more than ~3 planes.',
+  'Don’t introduce new background colors outside ivory / stone / navy.',
+  'Don’t add parallax, autoplay, looping-attention or scroll-jacking motion.',
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>FUQUA INC. — Visual System</title>
+  </head>
+  <body class="vs">
+    <header class="vs__bar">
+      <p><strong>FUQUA INC.</strong> — Visual System</p>
+      <p class="vs__hint">Internal reference · governing rules in <code>docs/visual-system.md</code></p>
+    </header>
+
+    <main class="vs__main">
+      <!-- Intro -->
+      <section class="vs__section">
+        <h1 class="vs__display">The FUQUA visual language</h1>
+        <p class="vs__intro">
+          A contemporary, editorial identity built on restraint: quiet type, open space, a
+          disciplined palette, and an abstract graphic language of thin architectural lines,
+          overlapping planes and a few deliberate nodes — suggesting ideas, people and
+          disciplines <em>converging</em>. It should read like gallery graphic art, never a
+          diagram, dashboard or marketing template.
+        </p>
+      </section>
+
+      <!-- Principles -->
+      <section class="vs__section">
+        <p class="eyebrow">Principles</p>
+        <ol class="vs__principles">
+          <li><strong>Restraint first.</strong> When in doubt, use less — less color, less motion, less weight, more space.</li>
+          <li><strong>Convergence is the idea.</strong> The overlap of planes and the meeting of lines expresses disciplines and teams coming together.</li>
+          <li><strong>Art, not diagram.</strong> Linework crops off-canvas and never explains a process; no arrows, no connectors.</li>
+          <li><strong>Neutrals carry, accents punctuate.</strong> Ivory, stone, navy and graphite do the work; plum and slate appear sparingly.</li>
+          <li><strong>Editorial typography.</strong> Clear hierarchy, controlled line length, restrained weight.</li>
+          <li><strong>Accessible and calm.</strong> Everything is reduced-motion safe and meets AA contrast; the graphic is decorative only.</li>
+        </ol>
+      </section>
+
+      <!-- Color -->
+      <section class="vs__section">
+        <p class="eyebrow">Color</p>
+        <div class="vs__swatches">
+          {swatches.map((s) => (
+            <div class="sw">
+              <div class="sw__chip" style={`background:${s.hex};color:${s.on === 'light' ? '#fff' : '#182536'}`}>
+                {s.accent && <span class="sw__accent">accent</span>}
+              </div>
+              <p class="sw__name">{s.name}</p>
+              <p class="sw__hex">{s.hex}</p>
+              <p class="sw__role">{s.role}</p>
+            </div>
+          ))}
+        </div>
+        <p class="vs__note">
+          <strong>Plum</strong> is the signature — about one moment per view. <strong>Slate</strong> is
+          even more restrained and never competes with plum. Section grounds alternate
+          ivory → stone → navy; don't add new background colors.
+        </p>
+      </section>
+
+      <!-- Type -->
+      <section class="vs__section">
+        <p class="eyebrow">Typography</p>
+        <p class="vs__note">
+          Sans: <strong>Inter Variable</strong> (UI, headings, body). Serif:
+          <strong>Source Serif 4 Variable</strong> (pull quotes, points of view). Fluid scale,
+          restrained weights (max ~680).
+        </p>
+        <ul class="vs__type">
+          {type.map((t) => (
+            <li class="ty">
+              <span class={`ty__sample ${t.cls}`}>{t.sample}</span>
+              <span class="ty__meta"><code>{t.token}</code> · {t.use}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Composition types -->
+      <section class="vs__section">
+        <p class="eyebrow">Composition types</p>
+        <p class="vs__note">Three sanctioned variants of the brand graphic. Don't invent new ones without a rule.</p>
+        <div class="vs__variants">
+          {variants.map((c) => (
+            <figure class={`va va--${c.tone}`}>
+              <div class="va__art"><BrandGraphic variant={c.v} /></div>
+              <figcaption>
+                <p class="va__label">{c.label} <code>variant="{c.v}"</code></p>
+                <p class="va__use">{c.use}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <!-- Anatomy -->
+      <section class="vs__section">
+        <p class="eyebrow">Anatomy</p>
+        <div class="vs__anatomy">
+          <div class="an">
+            <h3 class="an__h">Linework</h3>
+            <p>Thin (~1.15) architectural strokes, <code>non-scaling-stroke</code>. Hierarchy by opacity (path .72, arc .5, hairline .18), not weight. Runs past the frame.</p>
+          </div>
+          <div class="an">
+            <h3 class="an__h">Planes</h3>
+            <p>2–3 overlapping cropped rectangles, low opacity (stone ~.62, plum ~.17 <code>multiply</code>). The overlap is the point. Rotations ≤ ~8°.</p>
+          </div>
+          <div class="an">
+            <h3 class="an__h">Nodes</h3>
+            <p>2–3 only, not one per intersection. Three styles: plum, slate, and the ring node (ground fill, navy stroke). At most one of each.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Spacing -->
+      <section class="vs__section">
+        <p class="eyebrow">Spacing</p>
+        <p class="vs__note">Generous and open. Section rhythm comes from <code>.section</code> / <code>.section--tight</code>; use the scale, avoid arbitrary values.</p>
+        <ul class="vs__spacing">
+          {spacing.map((s) => (
+            <li class="sp">
+              <span class="sp__bar" style={`width:${s.px}`}></span>
+              <span class="sp__meta"><code>{s.token}</code> · {s.px}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Motion -->
+      <section class="vs__section">
+        <p class="eyebrow">Motion</p>
+        <ul class="vs__motion">
+          {motion.map((m) => (
+            <li class="mo"><code>{m.token}</code><span class="mo__ms">{m.ms}</span><span class="mo__use">{m.use}</span></li>
+          ))}
+        </ul>
+        <p class="vs__note">Easing <code>cubic-bezier(0.22, 1, 0.36, 1)</code>. All motion is gated behind <code>prefers-reduced-motion: no-preference</code>. Entrance reveal is for above-the-fold content only.</p>
+      </section>
+
+      <!-- Do / Don't -->
+      <section class="vs__section">
+        <p class="eyebrow">Do &amp; Don't</p>
+        <div class="vs__dodont">
+          <div class="dd dd--do">
+            <p class="dd__head"><span aria-hidden="true">✓</span> Do</p>
+            <ul>{dos.map((d) => <li>{d}</li>)}</ul>
+          </div>
+          <div class="dd dd--dont">
+            <p class="dd__head"><span aria-hidden="true">✗</span> Don't</p>
+            <ul>{donts.map((d) => <li>{d}</li>)}</ul>
+          </div>
+        </div>
+      </section>
+
+      <footer class="vs__foot">
+        <p>Governing rules: <code>docs/visual-system.md</code> · Tokens: <code>src/styles/tokens.css</code> · Graphic: <code>src/components/BrandGraphic.astro</code></p>
+      </footer>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  body.vs {
+    background: var(--c-ivory);
+    color: var(--text);
+  }
+  .vs__bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0.85rem var(--gutter);
+    background: var(--c-navy);
+    color: #fff;
+    font-size: 0.85rem;
+  }
+  .vs__bar strong { letter-spacing: 0.02em; }
+  .vs__hint { color: var(--on-dark-muted); }
+  .vs__bar code { color: #fff; font-size: 0.82em; }
+
+  .vs__main {
+    max-width: 62rem;
+    margin-inline: auto;
+    padding: clamp(2rem, 1.5rem + 3vw, 4rem) var(--gutter) 5rem;
+  }
+  .vs__section {
+    padding-block: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+    border-top: 1px solid var(--line);
+  }
+  .vs__section:first-of-type { border-top: 0; }
+
+  .vs__display {
+    font-size: var(--fs-2xl);
+    color: var(--heading);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-tight);
+    max-width: 18ch;
+  }
+  .vs__intro {
+    margin-top: 1.25rem;
+    font-size: var(--fs-md);
+    line-height: var(--lh-relaxed);
+    max-width: 60ch;
+  }
+  .vs__note {
+    margin-top: 1.25rem;
+    color: var(--text);
+    max-width: 66ch;
+    font-size: var(--fs-base);
+  }
+  .vs__section code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.85em;
+    background: var(--c-ivory-deep);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    color: var(--c-navy);
+  }
+
+  /* Principles */
+  .vs__principles {
+    margin-top: 1.25rem;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.85rem;
+    max-width: 68ch;
+  }
+  .vs__principles li { line-height: var(--lh-body); }
+  .vs__principles strong { color: var(--heading); }
+
+  /* Color */
+  .vs__swatches {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.25rem;
+  }
+  .sw__chip {
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 0.5rem;
+  }
+  .sw__accent {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: rgba(255,255,255,0.85);
+    color: var(--c-navy);
+    padding: 0.15rem 0.4rem;
+    border-radius: 999px;
+  }
+  .sw__name { margin-top: 0.6rem; font-weight: 600; color: var(--heading); font-size: 0.95rem; }
+  .sw__hex { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; color: var(--text-muted); }
+  .sw__role { margin-top: 0.25rem; font-size: 0.85rem; color: var(--text); }
+
+  /* Type */
+  .vs__type { list-style: none; padding: 0; margin-top: 1.5rem; display: grid; gap: 1.1rem; }
+  .ty { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 1.1rem; }
+  .ty__sample { color: var(--heading); letter-spacing: var(--tracking-tight); }
+  .ty__meta { color: var(--text-muted); font-size: 0.85rem; white-space: nowrap; }
+  .t-2xl { font-size: var(--fs-2xl); font-weight: 600; }
+  .t-xl { font-size: var(--fs-xl); font-weight: 600; }
+  .t-lg { font-size: var(--fs-lg); font-weight: 600; }
+  .t-md { font-size: var(--fs-md); }
+  .t-base { font-size: var(--fs-base); }
+  .t-eyebrow { font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--accent); }
+
+  /* Variants */
+  .vs__variants { margin-top: 1.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .va { margin: 0; }
+  .va__art {
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .va--light .va__art { background: var(--c-navy); }
+  .va__label { margin-top: 0.7rem; font-weight: 600; color: var(--heading); font-size: 0.92rem; }
+  .va__use { margin-top: 0.25rem; font-size: 0.85rem; color: var(--text); }
+
+  /* Anatomy */
+  .vs__anatomy { margin-top: 1.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .an__h { font-size: var(--fs-md); color: var(--heading); border-top: 2px solid var(--accent); padding-top: 0.7rem; }
+  .an p { margin-top: 0.6rem; font-size: 0.9rem; line-height: var(--lh-body); }
+
+  /* Spacing */
+  .vs__spacing { list-style: none; padding: 0; margin-top: 1.5rem; display: grid; gap: 0.7rem; }
+  .sp { display: flex; align-items: center; gap: 1rem; }
+  .sp__bar { height: 14px; background: var(--c-plum); opacity: 0.55; border-radius: 2px; flex-shrink: 0; }
+  .sp__meta { font-size: 0.85rem; color: var(--text-muted); }
+
+  /* Motion */
+  .vs__motion { list-style: none; padding: 0; margin-top: 1.5rem; display: grid; gap: 0.6rem; }
+  .mo { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .mo__ms { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; color: var(--accent); }
+  .mo__use { color: var(--text); font-size: 0.9rem; }
+
+  /* Do / Don't */
+  .vs__dodont { margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .dd { border: 1px solid var(--line); border-radius: var(--radius); padding: 1.25rem 1.4rem; background: var(--surface); }
+  .dd__head { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.8rem; }
+  .dd--do .dd__head { color: #2f6b46; }
+  .dd--dont .dd__head { color: var(--c-plum-deep); }
+  .dd ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.55rem; }
+  .dd li { font-size: 0.9rem; line-height: var(--lh-body); }
+
+  .vs__foot { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); font-size: 0.82rem; color: var(--text-muted); }
+
+  @media (max-width: 46rem) {
+    .vs__variants, .vs__anatomy, .vs__dodont { grid-template-columns: 1fr; }
+  }
+</style>

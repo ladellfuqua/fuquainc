@@ -1,0 +1,251 @@
+---
+/**
+ * FUQUA INC. graphic language (§10-13).
+ *
+ * An abstract, reusable composition: thin architectural lines, intersecting
+ * paths, a few anchor nodes, overlapping planes, cropped geometric forms and
+ * generous negative space. It should read as contemporary gallery graphic art,
+ * NOT a flowchart, network, org chart or infographic (§11). Purely decorative:
+ * aria-hidden, never carries meaning content depends on (§39).
+ *
+ * Variants:
+ *   'hero'  — the large signature composition for the homepage hero.
+ *   'motif' — a compact cropped signature (footer / small brand moment).
+ *   'field' — ultra-subtle linework for behind dark sections.
+ */
+interface Props {
+  variant?: 'hero' | 'motif' | 'field' | 'contact';
+  tone?: 'ink' | 'light';
+  class?: string;
+}
+const { variant = 'hero', tone = 'ink', class: className = '' } = Astro.props;
+---
+
+{
+  variant === 'hero' && (
+    <svg
+      class:list={['bg-graphic', `bg-graphic--${tone}`, className]}
+      viewBox="0 0 520 600"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      {/* Large thin navy circle, cropped top-right — an "orbit", never an arrow */}
+      <circle class="g-line g-arc" cx="440" cy="150" r="262" />
+
+      {/* Convergence: three planes overlap into a single, richer field.
+          This overlap is the whole idea — things coming together (§10). */}
+      <rect class="g-field" x="250" y="66" width="252" height="300" />
+      <rect
+        class="g-line g-slate-line"
+        x="118"
+        y="150"
+        width="152"
+        height="152"
+        transform="rotate(-8 194 226)"
+      />
+      <rect class="g-plane-plum" x="180" y="244" width="204" height="212" />
+
+      {/* Structural lines — an asymmetric grid, extending off-canvas */}
+      <line class="g-line g-path-a" x1="26" y1="540" x2="544" y2="86" />
+      <line class="g-line g-path-b g-graphite" x1="150" y1="-12" x2="470" y2="612" />
+      <line class="g-hair g-vert" x1="300" y1="18" x2="300" y2="566" />
+      <line class="g-hair" x1="180" y1="366" x2="520" y2="366" />
+
+      {/* Corner bracket (plum), cropped top-right — a cropped geometric form */}
+      <path class="g-bracket" d="M466 28 H548 V110" />
+
+      {/* Anchor nodes — few and deliberate, not one per intersection */}
+      <circle class="g-node g-node-plum g-drift" cx="300" cy="300" r="6" />
+      <circle class="g-node g-node-ring" cx="250" cy="150" r="6.5" />
+      <circle class="g-node g-node-slate g-drift-2" cx="384" cy="366" r="4" />
+    </svg>
+  )
+}
+
+{
+  variant === 'motif' && (
+    <svg
+      class:list={['bg-graphic', `bg-graphic--${tone}`, className]}
+      viewBox="0 0 160 160"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle class="g-line g-arc" cx="118" cy="52" r="70" />
+      <line class="g-line g-path-a" x1="8" y1="120" x2="150" y2="26" />
+      <rect class="g-plane-plum" x="34" y="70" width="52" height="52" />
+      <circle class="g-node g-node-plum" cx="86" cy="60" r="4" />
+      <circle class="g-node g-node-ring" cx="34" cy="122" r="4.5" />
+    </svg>
+  )
+}
+
+{
+  variant === 'field' && (
+    <svg
+      class:list={['bg-graphic', 'bg-graphic--light', className]}
+      viewBox="0 0 1200 500"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <circle class="g-field-line" cx="980" cy="120" r="360" />
+      <line class="g-field-line" x1="-40" y1="430" x2="1240" y2="90" />
+      <line class="g-field-line" x1="760" y1="-40" x2="1140" y2="540" />
+      <circle class="g-field-node" cx="905" cy="223" r="4.5" />
+    </svg>
+  )
+}
+
+{
+  variant === 'contact' && (
+    <svg
+      class:list={['bg-graphic', `bg-graphic--${tone}`, className]}
+      viewBox="0 0 420 420"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      {/* Convergence — two structural lines and two overlapping planes meeting
+          at a single plum node. Connection without any literal symbol. */}
+      <circle class="g-line g-arc" cx="360" cy="86" r="172" />
+      <rect
+        class="g-line g-slate-line"
+        x="150"
+        y="150"
+        width="120"
+        height="120"
+        transform="rotate(-8 210 210)"
+      />
+      <rect class="g-plane-plum" x="206" y="196" width="150" height="150" />
+      <line class="g-line g-path-a" x1="6" y1="404" x2="336" y2="120" />
+      <line class="g-line g-graphite" x1="120" y1="-16" x2="326" y2="440" />
+      <line class="g-hair" x1="150" y1="210" x2="420" y2="210" />
+      <circle class="g-node g-node-plum g-drift" cx="248" cy="214" r="6" />
+      <circle class="g-node g-node-ring" cx="150" cy="150" r="6.5" />
+      <circle class="g-node g-node-slate g-drift-2" cx="330" cy="300" r="4" />
+    </svg>
+  )
+}
+
+<style>
+  .bg-graphic {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Structural strokes */
+  .g-line {
+    fill: none;
+    stroke: var(--c-navy);
+    stroke-width: 1.15;
+    vector-effect: non-scaling-stroke;
+  }
+  .g-arc {
+    opacity: 0.5;
+  }
+  .g-graphite {
+    stroke: var(--c-graphite);
+    opacity: 0.42;
+  }
+  .g-path-a {
+    opacity: 0.72;
+  }
+  .g-slate-line {
+    stroke: var(--c-slate);
+    opacity: 0.6;
+  }
+  .g-hair {
+    stroke: var(--c-graphite);
+    stroke-width: 1;
+    opacity: 0.18;
+    vector-effect: non-scaling-stroke;
+  }
+  .g-bracket {
+    fill: none;
+    stroke: var(--c-plum);
+    stroke-width: 1.3;
+    opacity: 0.7;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Planes */
+  .g-field {
+    fill: var(--c-stone);
+    opacity: 0.62;
+  }
+  .g-plane-plum {
+    fill: var(--c-plum);
+    opacity: 0.17;
+    mix-blend-mode: multiply;
+  }
+
+  /* Nodes */
+  .g-node-plum {
+    fill: var(--c-plum);
+  }
+  .g-node-slate {
+    fill: var(--c-slate);
+  }
+  .g-node-ring {
+    fill: var(--bg, var(--c-ivory));
+    stroke: var(--c-navy);
+    stroke-width: 1.4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Light tone (on navy) */
+  .bg-graphic--light .g-line {
+    stroke: rgba(255, 255, 255, 0.5);
+  }
+  .bg-graphic--light .g-graphite {
+    stroke: rgba(255, 255, 255, 0.28);
+  }
+  .bg-graphic--light .g-hair {
+    stroke: rgba(255, 255, 255, 0.16);
+  }
+  .bg-graphic--light .g-field {
+    fill: rgba(255, 255, 255, 0.04);
+  }
+  .bg-graphic--light .g-node-ring {
+    fill: var(--c-navy);
+    stroke: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Field variant (subtle background linework) */
+  .g-field-line {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.07);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .g-field-node {
+    fill: rgba(127, 145, 165, 0.5);
+  }
+
+  /* Subtle drift motion (§33), reduced-motion safe */
+  @media (prefers-reduced-motion: no-preference) {
+    .g-drift {
+      animation: drift 9s var(--ease) infinite alternate;
+    }
+    .g-drift-2 {
+      animation: drift-2 11s var(--ease) infinite alternate;
+    }
+  }
+  @keyframes drift {
+    to {
+      transform: translate(3px, -4px);
+    }
+  }
+  @keyframes drift-2 {
+    to {
+      transform: translate(-3px, 3px);
+    }
+  }
+</style>

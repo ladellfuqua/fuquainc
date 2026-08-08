@@ -1,0 +1,425 @@
+---
+/**
+ * Contact (LAD-18) — revised composition.
+ * Asymmetrical 60/40: the form leads (left); an original FUQUA convergence
+ * composition sits on a warm stone field (right) with the understated LinkedIn
+ * beneath it. On mobile the artwork becomes a compact horizontal band between
+ * the introduction and the form. Not a card; no literal contact imagery.
+ *
+ * Delivery, server validation, anti-spam, rate limiting and secrets are LAD-14.
+ * Integration: the form POSTs (fetch) JSON to `/api/contact`; response.ok ->
+ * success, else error. `?state=success|error` also render those states.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandGraphic from '../components/BrandGraphic.astro';
+
+const linkedin = 'https://www.linkedin.com/in/ladellfuqua/';
+const reasons = [
+  'Leadership inquiry',
+  'Advisory inquiry',
+  'Response to an essay or idea',
+  'Other professional inquiry',
+];
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contact Ladell Fuqua for professional inquiries related to leadership, advisory work or the ideas shared here."
+>
+  <section class="section section--tight contact">
+    <div class="container">
+      {/* ---------- Form state ---------- */}
+      <div class="contact__panel" data-panel="form">
+        <div class="contact__grid">
+          <div class="c-intro">
+            <p class="eyebrow">Contact</p>
+            <h1 class="contact__title">Contact</h1>
+            <p class="lead contact__intro">
+              For professional inquiries related to leadership, advisory work or the ideas
+              shared here, you may use the form below.
+            </p>
+          </div>
+
+          <aside class="c-aside">
+            <div class="contact__visual" aria-hidden="true">
+              <BrandGraphic variant="contact" />
+            </div>
+            <p class="contact__alt">
+              You can also find me on <a
+                href={linkedin}
+                target="_blank"
+                rel="me noopener">LinkedIn</a>.
+            </p>
+          </aside>
+
+          <div class="c-form">
+            <form class="form" id="contact-form" method="POST" action="/api/contact" novalidate>
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" autocomplete="name" required
+                  aria-required="true" />
+                <p class="field__error" data-error-for="name" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required
+                  aria-required="true" />
+                <p class="field__error" data-error-for="email" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="organization">Organization <span class="field__opt">(optional)</span></label>
+                <input id="organization" name="organization" type="text"
+                  autocomplete="organization" />
+              </div>
+
+              <div class="field">
+                <label for="reason">Reason for reaching out</label>
+                <select id="reason" name="reason" required aria-required="true">
+                  <option value="" selected disabled>Select a reason…</option>
+                  {reasons.map((r) => <option value={r}>{r}</option>)}
+                </select>
+                <p class="field__error" data-error-for="reason" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="7" required aria-required="true"
+                ></textarea>
+                <p class="field__error" data-error-for="message" hidden></p>
+              </div>
+
+              {/* Honeypot — bots that fill it are silently dropped (LAD-14).
+                  `inert` removes it from focus order and the accessibility tree
+                  (so it's inaccessible to keyboard and assistive tech, with no
+                  aria-hidden-focus violation); aria-hidden covers pre-inert
+                  browsers; it stays in the DOM + submits so bots still fill it. */}
+              <div class="hp" inert aria-hidden="true">
+                <label for="website">Website</label>
+                <input id="website" name="website" type="text" tabindex="-1"
+                  autocomplete="off" />
+              </div>
+
+              <div class="form__actions">
+                <button type="submit" class="btn btn--primary" data-submit>Send message</button>
+              </div>
+
+              <p class="form__privacy">
+                Your information will only be used to review and respond to your inquiry.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* ---------- Success state ---------- */}
+      <div class="contact__panel contact__state" data-panel="success" hidden role="status">
+        <h1 class="contact__title">Message received.</h1>
+        <p class="lead">
+          Thank you for reaching out. I&rsquo;ll respond if the inquiry is a fit.
+        </p>
+      </div>
+
+      {/* ---------- Error state ---------- */}
+      <div class="contact__panel contact__state" data-panel="error" hidden role="alert">
+        <h1 class="contact__title">Your message could not be sent.</h1>
+        <p class="lead">
+          Please check the form and try again. If the problem continues, you can find me
+          on <a href={linkedin} target="_blank" rel="me noopener">LinkedIn</a>.
+        </p>
+        <p class="contact__alt">
+          <button type="button" class="arrow-link contact__retry" data-retry>
+            <span class="arrow" aria-hidden="true">&larr;</span> Back to the form
+          </button>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---------- Asymmetrical composition ---------- */
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'intro' 'aside' 'form';
+    gap: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  }
+  .c-intro {
+    grid-area: intro;
+  }
+  .c-aside {
+    grid-area: aside;
+  }
+  .c-form {
+    grid-area: form;
+  }
+
+  @media (min-width: 48rem) {
+    .contact__grid {
+      grid-template-columns: 3fr 2fr; /* ~60 / 40 */
+      grid-template-areas:
+        'intro aside'
+        'form  aside';
+      column-gap: clamp(2.5rem, 1.5rem + 4vw, 5.5rem);
+      row-gap: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+      align-items: start;
+    }
+  }
+
+  .contact__title {
+    margin-top: 0.5rem;
+    font-size: var(--fs-xl);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-tight);
+  }
+  .contact__intro {
+    margin-top: 1.25rem;
+    max-width: 46ch;
+  }
+
+  /* Stronger separation between introduction and fields */
+  .c-form {
+    border-top: 1px solid var(--line);
+    padding-top: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+  }
+
+  /* ---------- Visual: original convergence composition on a stone field ---------- */
+  .contact__visual {
+    background: var(--c-stone);
+    border-radius: var(--radius);
+    overflow: hidden;
+    aspect-ratio: 16 / 7; /* mobile: compact horizontal band */
+  }
+  .contact__visual :global(.bg-graphic) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  @media (min-width: 48rem) {
+    .contact__visual {
+      aspect-ratio: 4 / 5; /* desktop: tall panel beside the form */
+    }
+  }
+
+  /* ---------- Form ---------- */
+  .form {
+    margin-top: 0;
+    display: grid;
+    gap: 1.4rem;
+    max-width: 33rem; /* slightly narrowed */
+  }
+  .field {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .field label {
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-medium);
+    color: var(--heading);
+    letter-spacing: 0.01em;
+  }
+  .field__opt {
+    color: var(--text-muted);
+    font-weight: var(--weight-normal);
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    font-size: var(--fs-base);
+    color: var(--heading);
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    transition: border-color var(--dur-fast) var(--ease),
+      box-shadow var(--dur-fast) var(--ease);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 9.5rem; /* deliberate proportions */
+    line-height: var(--lh-body);
+  }
+  .field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%234b5056' stroke-width='1.5' d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    padding-right: 2.25rem;
+  }
+  .field input:hover,
+  .field select:hover,
+  .field textarea:hover {
+    border-color: var(--heading);
+  }
+  .field input:focus-visible,
+  .field select:focus-visible,
+  .field textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--accent);
+  }
+  .field input[aria-invalid='true'],
+  .field select[aria-invalid='true'],
+  .field textarea[aria-invalid='true'] {
+    border-color: var(--c-plum-deep);
+  }
+  .field__error {
+    font-size: var(--fs-sm);
+    color: var(--c-plum-deep);
+    margin: 0;
+  }
+
+  .form__actions {
+    margin-top: 0.5rem;
+  }
+  .form__privacy {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    max-width: 46ch;
+    margin: 0;
+  }
+
+  /* Alternate contact — understated, beneath the visual */
+  .contact__alt {
+    margin-top: 1.1rem;
+    font-size: var(--fs-base);
+    color: var(--text);
+  }
+  .contact__retry {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: var(--accent);
+  }
+
+  /* ---------- Success / error states ---------- */
+  .contact__state {
+    padding-block: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+    max-width: 46ch;
+  }
+  .contact__state .lead {
+    margin-top: 1.1rem;
+  }
+
+  [data-submit][aria-busy='true'] {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  /* Honeypot — off-screen, not shown to users, excluded from tab order */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  type PanelName = 'form' | 'success' | 'error';
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const panels = new Map<PanelName, HTMLElement>();
+  document.querySelectorAll<HTMLElement>('[data-panel]').forEach((el) => {
+    panels.set(el.dataset.panel as PanelName, el);
+  });
+
+  function showState(state: PanelName) {
+    panels.forEach((el, name) => {
+      el.hidden = name !== state;
+    });
+    if (state !== 'form') window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  // Redirect-friendly state (LAD-14 delivery can redirect to ?state=success|error)
+  const urlState = new URLSearchParams(location.search).get('state');
+  if (urlState === 'success' || urlState === 'error') showState(urlState);
+
+  const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function validate(): boolean {
+    if (!form) return false;
+    const checks: Array<[string, (v: string) => boolean, string]> = [
+      ['name', (v) => v.trim().length > 0, 'Please enter your name.'],
+      ['email', (v) => EMAIL.test(v.trim()), 'Please enter a valid email address.'],
+      ['reason', (v) => v.trim().length > 0, 'Please choose a reason.'],
+      ['message', (v) => v.trim().length > 0, 'Please enter a message.'],
+    ];
+    let firstInvalid: HTMLElement | null = null;
+    for (const [id, test, msg] of checks) {
+      const input = form.elements.namedItem(id) as
+        | HTMLInputElement
+        | HTMLSelectElement
+        | HTMLTextAreaElement
+        | null;
+      const errEl = form.querySelector<HTMLElement>(`[data-error-for="${id}"]`);
+      const ok = input ? test(input.value) : false;
+      if (input) {
+        input.setAttribute('aria-invalid', ok ? 'false' : 'true');
+        if (errEl) input.setAttribute('aria-describedby', `err-${id}`);
+      }
+      if (errEl) {
+        errEl.id = `err-${id}`;
+        errEl.textContent = ok ? '' : msg;
+        errEl.hidden = ok;
+      }
+      if (!ok && !firstInvalid) firstInvalid = input;
+    }
+    if (firstInvalid) firstInvalid.focus();
+    return !firstInvalid;
+  }
+
+  // Clear a field's error as the user corrects it
+  form?.querySelectorAll<HTMLElement>('input, select, textarea').forEach((el) => {
+    el.addEventListener('input', () => {
+      if (el.getAttribute('aria-invalid') === 'true') {
+        el.setAttribute('aria-invalid', 'false');
+        const errEl = form.querySelector<HTMLElement>(
+          `[data-error-for="${(el as HTMLInputElement).id}"]`
+        );
+        if (errEl) errEl.hidden = true;
+      }
+    });
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const btn = form.querySelector<HTMLButtonElement>('[data-submit]');
+    btn?.setAttribute('aria-busy', 'true');
+    if (btn) btn.textContent = 'Sending…';
+
+    try {
+      const data = Object.fromEntries(new FormData(form).entries());
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(data),
+      });
+      showState(res.ok ? 'success' : 'error');
+      // Non-personal success signal only — never send names/emails/message to GA4.
+      if (res.ok && typeof (window as any).gtag === 'function') {
+        (window as any).gtag('event', 'contact_form_submit');
+      }
+    } catch {
+      // Network error or endpoint not yet available (delivery wired in LAD-14)
+      showState('error');
+    } finally {
+      btn?.removeAttribute('aria-busy');
+      if (btn) btn.textContent = 'Send message';
+    }
+  });
+
+  // "Back to the form" from the error state
+  document.querySelector('[data-retry]')?.addEventListener('click', () => {
+    showState('form');
+    (document.getElementById('name') as HTMLInputElement | null)?.focus();
+  });
+</script>

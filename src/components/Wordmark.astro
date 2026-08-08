@@ -1,0 +1,71 @@
+---
+/**
+ * FUQUA INC. wordmark (§2)
+ * FUQUA carries the visual weight; INC. is quieter and more refined.
+ * Never render standalone "FUQUA".
+ */
+interface Props {
+  /** Render as a link back to home (default) or plain text (e.g. in footer heading). */
+  href?: string | null;
+  /** Visual tone: 'ink' on light backgrounds, 'light' on navy. */
+  tone?: 'ink' | 'light';
+  class?: string;
+}
+const { href = '/', tone = 'ink', class: className = '' } = Astro.props;
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag
+  {...href ? { href } : {}}
+  class:list={['wordmark', `wordmark--${tone}`, className]}
+  aria-label="Fuqua Inc. — home"
+>
+  <span class="wordmark__name">FUQUA</span><span class="wordmark__inc">INC.</span>
+</Tag>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.42em;
+    font-family: var(--font-sans);
+    line-height: 1;
+    letter-spacing: var(--tracking-wordmark);
+    white-space: nowrap;
+    color: var(--heading);
+  }
+  a.wordmark:hover {
+    text-decoration: none;
+  }
+
+  .wordmark__name {
+    font-size: 1.16rem;
+    font-weight: var(--weight-bold);
+    color: currentColor;
+  }
+
+  .wordmark__inc {
+    font-size: 0.86rem;
+    font-weight: var(--weight-normal);
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    transform: translateY(-0.02em);
+  }
+
+  .wordmark--ink {
+    color: var(--heading);
+  }
+  .wordmark--light {
+    color: var(--on-dark);
+  }
+  .wordmark--light .wordmark__inc {
+    color: var(--accent-2);
+  }
+
+  a.wordmark:hover .wordmark__inc {
+    color: var(--accent-hover);
+  }
+  a.wordmark--light:hover .wordmark__inc {
+    color: #fff;
+  }
+</style>
