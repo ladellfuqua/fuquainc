@@ -1,0 +1,133 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import BrandGraphic from '../components/BrandGraphic.astro';
+import {
+  formatArticleDate,
+  type ArticleEntry,
+} from '../lib/articles';
+
+interface Props {
+  article: ArticleEntry;
+}
+
+const { article } = Astro.props;
+const { title, deck, summary, publishedAt, readingTime, themes, image } =
+  article.data;
+---
+
+<BaseLayout title={title} description={summary} image={image} type="article">
+  <article>
+    <header class="article-hero">
+      <div class="container article-hero__inner">
+        <div class="article-hero__copy">
+          <p class="eyebrow">{themes.join(' · ')}</p>
+          <h1 class="article-hero__title">{title}</h1>
+          <p class="article-hero__deck">{deck}</p>
+          <p class="article-hero__meta">
+            <time datetime={publishedAt.toISOString()}>{formatArticleDate(publishedAt)}</time>
+            <span aria-hidden="true">·</span>
+            <span>{readingTime}</span>
+          </p>
+        </div>
+        <div class="article-hero__art" aria-hidden="true">
+          <BrandGraphic variant="motif" />
+        </div>
+      </div>
+    </header>
+
+    <div class="section article-body">
+      <div class="container container--narrow article-prose">
+        <slot />
+        <p class="article-back">
+          <a href="/writing" class="arrow-link">
+            <span class="arrow arrow--back" aria-hidden="true">&larr;</span>
+            All articles
+          </a>
+        </p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .article-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(4rem, 3rem + 5vw, 7rem);
+    background: var(--bg-alt);
+  }
+  .article-hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(10rem, 0.35fr);
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+    align-items: center;
+  }
+  .article-hero__copy {
+    position: relative;
+    z-index: 1;
+  }
+  .article-hero__title {
+    max-width: 18ch;
+    margin-top: 0.85rem;
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 1.9rem + 3vw, 4.2rem);
+  }
+  .article-hero__deck {
+    max-width: 48ch;
+    margin-top: 1.35rem;
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: var(--fs-md);
+    font-style: italic;
+  }
+  .article-hero__meta {
+    display: flex;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+  }
+  .article-hero__art {
+    opacity: 0.72;
+  }
+  .article-prose {
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: clamp(1.08rem, 1.02rem + 0.26vw, 1.2rem);
+    line-height: 1.75;
+  }
+  .article-prose :global(p) {
+    max-width: 68ch;
+  }
+  .article-prose :global(p + p) {
+    margin-top: 1.35rem;
+  }
+  .article-prose :global(h2) {
+    max-width: 26ch;
+    margin-top: clamp(2.75rem, 2.2rem + 2vw, 3.75rem);
+    margin-bottom: 1rem;
+    font-family: var(--font-serif);
+    font-size: clamp(1.65rem, 1.4rem + 0.8vw, 2.1rem);
+  }
+  .article-back {
+    margin-top: clamp(3.5rem, 3rem + 2vw, 5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-sans);
+    font-size: var(--fs-sm);
+  }
+  .arrow--back {
+    will-change: auto;
+  }
+  .article-back .arrow-link:hover .arrow--back {
+    transform: translateX(-4px);
+  }
+  @media (max-width: 48rem) {
+    .article-hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .article-hero__art {
+      display: none;
+    }
+  }
+</style>
