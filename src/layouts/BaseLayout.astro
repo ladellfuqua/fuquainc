@@ -15,6 +15,8 @@ interface Props {
   type?: 'website' | 'article';
   /** Suppress " — Fuqua Inc." title suffix (e.g. homepage). */
   bareTitle?: boolean;
+  /** Page-level header treatment. */
+  headerTone?: 'light' | 'dark';
   noindex?: boolean;
 }
 
@@ -24,6 +26,7 @@ const {
   image = '/og-default.png',
   type = 'website',
   bareTitle = false,
+  headerTone = 'light',
   noindex = false,
 } = Astro.props;
 
@@ -135,8 +138,8 @@ const websiteSchema = {
 
     <slot name="head" />
   </head>
-  <body>
-    <SiteHeader />
+  <body data-header-tone={headerTone}>
+    <SiteHeader tone={headerTone} />
     <main id="main">
       <slot />
     </main>

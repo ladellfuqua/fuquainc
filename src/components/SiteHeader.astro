@@ -7,6 +7,12 @@
 import Wordmark from './Wordmark.astro';
 import LinkedInLink from './LinkedInLink.astro';
 
+interface Props {
+  tone?: 'light' | 'dark';
+}
+
+const { tone = 'light' } = Astro.props;
+
 const nav = [
   { label: 'About', href: '/about' },
   { label: 'Writing', href: '/writing' },
@@ -18,10 +24,10 @@ const isCurrent = (href: string) =>
   href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
 ---
 
-<header class="site-header">
+<header class:list={['site-header', `site-header--${tone}`]}>
   <a href="#main" class="skip-link">Skip to content</a>
   <div class="container site-header__inner">
-    <Wordmark href="/" class="site-header__brand" />
+    <Wordmark href="/" tone={tone === 'dark' ? 'light' : 'ink'} class="site-header__brand" />
 
     <button
       class="site-header__toggle"
@@ -149,6 +155,54 @@ const isCurrent = (href: string) =>
       opacity var(--dur-fast) var(--ease);
   }
 
+  .site-header--dark {
+    background: color-mix(in srgb, var(--c-navy) 94%, transparent);
+    border-bottom-color: var(--on-dark-line);
+  }
+  .site-header--dark .site-nav__link {
+    color: #c9cfd7;
+  }
+  .site-header--dark .site-nav__link:hover {
+    color: var(--on-dark);
+  }
+  .site-header--dark .site-nav__link[aria-current='page'] {
+    color: #c9adc0;
+  }
+  .site-header--dark .site-nav__linkedin {
+    border-left-color: var(--on-dark-line);
+  }
+  .site-header--dark .site-nav__linkedin :global(.linkedin-link) {
+    color: #aeb8c4;
+  }
+  .site-header--dark .site-header__toggle-bar {
+    background: var(--on-dark);
+  }
+  .site-header--dark[data-scrolled='true'] {
+    background: color-mix(in srgb, var(--c-ivory) 92%, transparent);
+    border-bottom-color: var(--line);
+  }
+  .site-header--dark[data-scrolled='true'] :global(.wordmark) {
+    color: var(--heading);
+  }
+  .site-header--dark[data-scrolled='true'] :global(.wordmark__inc) {
+    color: var(--accent);
+  }
+  .site-header--dark[data-scrolled='true'] .site-nav__link {
+    color: var(--heading);
+  }
+  .site-header--dark[data-scrolled='true'] .site-nav__link[aria-current='page'] {
+    color: var(--accent);
+  }
+  .site-header--dark[data-scrolled='true'] .site-nav__linkedin {
+    border-left-color: var(--line);
+  }
+  .site-header--dark[data-scrolled='true'] .site-nav__linkedin :global(.linkedin-link) {
+    color: var(--text-muted);
+  }
+  .site-header--dark[data-scrolled='true'] .site-header__toggle-bar {
+    background: var(--heading);
+  }
+
   @media (max-width: 46rem) {
     .site-header__toggle {
       display: flex;
@@ -162,6 +216,14 @@ const isCurrent = (href: string) =>
       display: grid;
       grid-template-rows: 0fr;
       transition: grid-template-rows var(--dur) var(--ease);
+    }
+    .site-header--dark .site-nav {
+      background: var(--c-navy);
+      border-bottom-color: var(--on-dark-line);
+    }
+    .site-header--dark[data-scrolled='true'] .site-nav {
+      background: var(--c-ivory);
+      border-bottom-color: var(--line);
     }
     .site-nav__list {
       overflow: hidden;
@@ -177,6 +239,14 @@ const isCurrent = (href: string) =>
       padding: 1rem var(--gutter);
       border-top: 1px solid var(--line);
       font-size: var(--fs-md);
+    }
+    .site-header--dark .site-nav__link,
+    .site-header--dark .site-nav__linkedin {
+      border-top-color: var(--on-dark-line);
+    }
+    .site-header--dark[data-scrolled='true'] .site-nav__link,
+    .site-header--dark[data-scrolled='true'] .site-nav__linkedin {
+      border-top-color: var(--line);
     }
     .site-nav__link::after {
       display: none;
@@ -200,6 +270,11 @@ const isCurrent = (href: string) =>
   const toggle = header?.querySelector<HTMLButtonElement>('.site-header__toggle');
   const menu = header?.querySelector<HTMLElement>('#site-menu');
   const mobile = window.matchMedia('(max-width: 46rem)');
+
+  function syncHeaderTone() {
+    if (!header?.classList.contains('site-header--dark')) return;
+    header.setAttribute('data-scrolled', String(window.scrollY > 40));
+  }
 
   function setMenuState(open: boolean, returnFocus = false) {
     if (!header || !toggle || !menu) return;
@@ -225,7 +300,9 @@ const isCurrent = (href: string) =>
   }
 
   syncMenuForViewport();
+  syncHeaderTone();
   mobile.addEventListener('change', syncMenuForViewport);
+  window.addEventListener('scroll', syncHeaderTone, { passive: true });
 
   toggle?.addEventListener('click', () => {
     const open = header?.getAttribute('data-open') === 'true';
