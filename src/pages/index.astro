@@ -3,6 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BrandGraphic from '../components/BrandGraphic.astro';
 import HomepageHero from '../components/HomepageHero.astro';
 import { getImage } from 'astro:assets';
+import {
+  articleHref,
+  formatArticleMonth,
+  getPublishedArticles,
+} from '../lib/articles';
 import heroPortrait from '../assets/ladell-home-portrait.png';
 
 const heroPortraitWidths = [280, 320, 400, 560];
@@ -79,15 +84,7 @@ const principles = [
   },
 ];
 
-// Latest Writing (§16) — wired to real content later. Elegant single-feature state, never empty cards.
-const featured: {
-  category: string;
-  title: string;
-  deck: string;
-  date: string;
-  readingTime: string;
-  href: string;
-} | null = null;
+const [featured] = await getPublishedArticles();
 ---
 
 <BaseLayout
@@ -126,61 +123,31 @@ const featured: {
     </div>
   </section>
 
-  {/* ---------- Latest Writing — moved directly below hero (§16) ---------- */}
-  <section class="section section--tight writing">
+  {/* ---------- Writing (LAD-30) ---------- */}
+  <section class="writing" aria-labelledby="writing-heading">
     <div class="container">
       <div class="writing__head">
-        <p class="eyebrow">Latest Writing</p>
-        <a href="/writing" class="arrow-link writing__all">
-          View all writing <span class="arrow" aria-hidden="true">&rarr;</span>
-        </a>
+        <h2 id="writing-heading" class="eyebrow">
+          <span class="writing__index" aria-hidden="true">01</span> Writing
+        </h2>
+        <a href="/writing" class="writing__all">All articles <span aria-hidden="true">&rarr;</span></a>
       </div>
+      <p class="writing__dek">Occasional short articles on work, technology and culture.</p>
 
       {
         featured ? (
-          <a href={featured.href} class="feature">
-            <div class="feature__art">
-              <BrandGraphic variant="motif" />
-            </div>
-            <div class="feature__body">
-              <p class="feature__meta">
-                <span class="feature__cat">{featured.category}</span>
-                <span class="feature__dot" aria-hidden="true">
-                  &middot;
-                </span>
-                <span>{featured.date}</span>
-                <span class="feature__dot" aria-hidden="true">
-                  &middot;
-                </span>
-                <span>{featured.readingTime}</span>
-              </p>
-              <h2 class="feature__title">{featured.title}</h2>
-              <p class="feature__deck">{featured.deck}</p>
-              <span class="arrow-link">
-                Read article <span class="arrow" aria-hidden="true">&rarr;</span>
-              </span>
+          <a href={articleHref(featured)} class="writing-entry">
+            <time class="writing-entry__date" datetime={featured.data.publishedAt.toISOString()}>
+              {formatArticleMonth(featured.data.publishedAt)}
+            </time>
+            <div class="writing-entry__body">
+              <h3 class="writing-entry__title"><span>{featured.data.title}</span></h3>
+              <p class="writing-entry__deck">{featured.data.deck}</p>
+              <span class="writing-entry__theme">{featured.data.themes[0]}</span>
             </div>
           </a>
         ) : (
-          <div class="feature feature--coming">
-            <div class="feature__art" aria-hidden="true">
-              <BrandGraphic variant="motif" />
-            </div>
-            <div class="feature__body">
-              <p class="feature__meta">
-                <span class="feature__cat">Essays &amp; ideas</span>
-              </p>
-              <p class="feature__title feature__title--soft">
-                Writing about work and leadership, identity and belonging,
-                technology and change, and culture and opportunity.
-              </p>
-              <p class="feature__deck">
-                The first essays are on the way. This is where new writing will
-                live &mdash; ideas, observations and personal reflections on how
-                we work and live.
-              </p>
-            </div>
-          </div>
+          <p class="writing__empty">No articles are published right now.</p>
         )
       }
     </div>
@@ -299,84 +266,119 @@ const featured: {
     margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
   }
 
-  /* ---------- Latest Writing / featured ---------- */
+  /* ---------- Writing ---------- */
+  .writing {
+    padding-block: clamp(2.5rem, 2rem + 2vw, 3.75rem);
+    background: var(--bg-alt);
+  }
   .writing__head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
-    margin-bottom: clamp(1.5rem, 1.1rem + 1.5vw, 2.25rem);
+  }
+  .writing__index {
+    margin-right: 0.55rem;
+    color: var(--accent);
   }
   .writing__all {
+    color: var(--heading);
     font-size: var(--fs-sm);
+    font-weight: var(--weight-medium);
   }
-  .feature {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: clamp(1.5rem, 1rem + 4vw, 4rem);
-    align-items: center;
-    padding-top: clamp(1.5rem, 1rem + 2vw, 2.5rem);
-    border-top: 1px solid var(--line);
-    color: inherit;
-  }
-  a.feature:hover {
+  .writing__all:hover {
+    color: var(--accent);
     text-decoration: none;
   }
-  .feature__art {
-    background: var(--c-ivory-deep);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: clamp(1.5rem, 1rem + 4vw, 3rem);
-    aspect-ratio: 16 / 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  .section--stone .feature__art {
-    background: var(--surface);
-  }
-  .feature__meta {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: var(--fs-sm);
-    color: var(--text-muted);
-    margin-bottom: 0.9rem;
-  }
-  .feature__cat {
-    color: var(--accent);
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.02em;
-  }
-  .feature__dot {
-    color: var(--line-strong);
-  }
-  .feature__title {
-    font-size: var(--fs-xl);
-    letter-spacing: var(--tracking-tight);
-    max-width: 20ch;
-  }
-  .feature__title--soft {
-    font-weight: var(--weight-semi);
-    color: var(--heading);
-  }
-  .feature__deck {
-    margin-top: 1rem;
+  .writing__dek {
+    margin-top: 0.55rem;
     color: var(--text);
-    max-width: 46ch;
+    font-family: var(--font-serif);
+    font-size: var(--fs-md);
   }
-  a.feature .arrow-link {
-    display: inline-flex;
-    margin-top: 1.4rem;
+  .writing-entry {
+    display: grid;
+    grid-template-columns: 118px minmax(0, 1fr);
+    gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+    margin-top: clamp(1.5rem, 1.15rem + 1.3vw, 2.1rem);
+    padding-block: 18px;
+    border-block: 1px solid var(--line);
+    color: inherit;
   }
-  @media (max-width: 48rem) {
-    .feature {
-      grid-template-columns: 1fr;
+  .writing-entry:hover {
+    text-decoration: none;
+  }
+  .writing-entry__date {
+    padding-top: 0.15rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .writing-entry__body {
+    min-width: 0;
+  }
+  .writing-entry__title {
+    color: var(--heading);
+    font-family: var(--font-serif);
+    font-size: 1.3125rem;
+    font-weight: var(--weight-semi);
+    line-height: var(--lh-snug);
+  }
+  .writing-entry__title span {
+    position: relative;
+    display: inline;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0 1px;
+  }
+  .writing-entry:hover .writing-entry__title span,
+  .writing-entry:focus-visible .writing-entry__title span {
+    background-size: 100% 1px;
+  }
+  .writing-entry__deck {
+    margin-top: 0.35rem;
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: 0.9375rem;
+    font-style: italic;
+  }
+  .writing-entry__theme {
+    display: block;
+    margin-top: 0.65rem;
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: var(--weight-semi);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .writing__empty {
+    margin-top: 1.5rem;
+    padding-block: 18px;
+    border-block: 1px solid var(--line);
+    color: var(--text-muted);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .writing-entry__body {
+      transition: transform var(--dur) var(--ease);
     }
-    .feature__art {
-      order: -1;
+    .writing-entry__title span {
+      transition: background-size var(--dur) var(--ease);
+    }
+    .writing-entry:hover .writing-entry__body,
+    .writing-entry:focus-visible .writing-entry__body {
+      transform: translateX(0.5rem);
+    }
+  }
+  @media (max-width: 36rem) {
+    .writing-entry {
+      grid-template-columns: 1fr;
+      gap: 0.55rem;
+    }
+    .writing-entry__date {
+      padding-top: 0;
     }
   }
 
