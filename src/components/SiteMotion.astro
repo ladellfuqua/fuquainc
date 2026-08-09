@@ -1,0 +1,81 @@
+<div class="site-scroll-progress" data-scroll-progress aria-hidden="true"></div>
+
+<style is:global>
+  .site-scroll-progress {
+    position: fixed;
+    z-index: 200;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 2px;
+    pointer-events: none;
+    background: var(--c-plum);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-motion='enabled'] .site-scroll-progress {
+      transform: scaleX(var(--site-scroll-progress, 0));
+      will-change: transform;
+    }
+
+    html[data-motion='enabled'] .site-footer__wordmark {
+      transform: translate3d(0, calc(18% + var(--footer-parallax, 0px)), 0);
+      will-change: transform;
+    }
+  }
+</style>
+
+<script>
+  const siteMotionPreference = window.matchMedia('(prefers-reduced-motion: no-preference)');
+  const siteMotionRoot = document.documentElement;
+  const footerWordmark = document.querySelector<HTMLElement>('.site-footer__wordmark');
+  let siteMotionFrame = 0;
+
+  function resetSiteMotion() {
+    siteMotionRoot.style.removeProperty('--site-scroll-progress');
+    footerWordmark?.style.removeProperty('--footer-parallax');
+  }
+
+  function updateSiteMotion() {
+    siteMotionFrame = 0;
+    if (
+      siteMotionRoot.dataset.motion !== 'enabled' ||
+      !siteMotionPreference.matches
+    ) {
+      resetSiteMotion();
+      return;
+    }
+
+    const scrollable = Math.max(
+      siteMotionRoot.scrollHeight - window.innerHeight,
+      1
+    );
+    const progress = Math.max(0, Math.min(1, window.scrollY / scrollable));
+    let footerShift: number | undefined;
+
+    if (footerWordmark) {
+      const rect = footerWordmark.getBoundingClientRect();
+      const viewport = Math.max(window.innerHeight, 1);
+      const centerOffset = (rect.top + rect.height / 2 - viewport / 2) / viewport;
+      const maxShift = Math.min(18, viewport * 0.022);
+      footerShift = Math.max(-maxShift, Math.min(maxShift, centerOffset * -maxShift));
+    }
+
+    siteMotionRoot.style.setProperty('--site-scroll-progress', progress.toFixed(5));
+    if (footerShift !== undefined) {
+      footerWordmark?.style.setProperty('--footer-parallax', `${footerShift.toFixed(2)}px`);
+    }
+  }
+
+  function requestSiteMotionUpdate() {
+    if (!siteMotionFrame) siteMotionFrame = window.requestAnimationFrame(updateSiteMotion);
+  }
+
+  window.addEventListener('scroll', requestSiteMotionUpdate, { passive: true });
+  window.addEventListener('resize', requestSiteMotionUpdate, { passive: true });
+  window.addEventListener('load', requestSiteMotionUpdate, { once: true });
+  siteMotionPreference.addEventListener?.('change', requestSiteMotionUpdate);
+  requestSiteMotionUpdate();
+</script>

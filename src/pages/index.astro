@@ -60,9 +60,9 @@ const [featured] = await getPublishedArticles();
   <HomepageHero />
 
   {/* ---------- About / bio (LAD-29) ---------- */}
-  <section class="section bio" aria-labelledby="bio-heading">
-    <div class="container bio__inner">
-      <h2 id="bio-heading" class="eyebrow bio__heading">About</h2>
+  <section class="section bio home-section-motion" aria-labelledby="bio-heading" data-home-section>
+    <div class="container bio__inner" data-home-parallax>
+      <h2 id="bio-heading" class="eyebrow bio__heading home-reveal">About</h2>
       <p class="bio__copy" data-bio-reveal>
         <strong>Ladell Fuqua</strong> is Chief Operating Officer at&nbsp;
         <strong>PWX Solutions</strong>. Three decades in media &mdash; Condé Nast,

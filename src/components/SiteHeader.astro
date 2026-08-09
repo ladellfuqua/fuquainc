@@ -276,10 +276,20 @@ const isCurrent = (href: string) =>
   const toggle = header?.querySelector<HTMLButtonElement>('.site-header__toggle');
   const menu = header?.querySelector<HTMLElement>('#site-menu');
   const mobile = window.matchMedia('(max-width: 46rem)');
+  const darkRegion = document.querySelector<HTMLElement>('.home-hero, .about-hero, .page-band');
 
   function syncHeaderTone() {
     if (!header?.classList.contains('site-header--dark')) return;
-    header.setAttribute('data-scrolled', String(window.scrollY > 40));
+    let threshold = 40;
+    if (darkRegion?.classList.contains('home-hero')) {
+      threshold = header.offsetHeight + Math.min(
+        darkRegion.offsetHeight * 0.72,
+        window.innerHeight * 0.72
+      );
+    } else if (darkRegion) {
+      threshold = darkRegion.offsetTop + darkRegion.offsetHeight - header.offsetHeight;
+    }
+    header.setAttribute('data-scrolled', String(window.scrollY >= threshold));
   }
 
   function setMenuState(open: boolean, returnFocus = false) {
@@ -309,6 +319,7 @@ const isCurrent = (href: string) =>
   syncHeaderTone();
   mobile.addEventListener('change', syncMenuForViewport);
   window.addEventListener('scroll', syncHeaderTone, { passive: true });
+  window.addEventListener('resize', syncHeaderTone, { passive: true });
 
   toggle?.addEventListener('click', () => {
     const open = header?.getAttribute('data-open') === 'true';
