@@ -7,9 +7,6 @@
  * activate after the global motion-readiness guard confirms support and the
  * visitor has not requested reduced motion.
  */
-import { Picture } from 'astro:assets';
-import portrait from '../assets/ladell-home-portrait.png';
-
 const headlineLines = [
   'Building growth by',
   'connecting ideas,',
@@ -20,6 +17,23 @@ const headlineLines = [
 
 <section class="home-hero" aria-labelledby="home-hero-title">
   <div class="home-hero__backdrop" aria-hidden="true">
+    <picture class="home-hero__backdrop-media">
+      <source
+        type="image/webp"
+        srcset="/images/hero/hero-backdrop-1000.webp 1000w, /images/hero/hero-backdrop-1600.webp 1600w, /images/hero/hero-backdrop-2400.webp 2400w"
+        sizes="100vw"
+      />
+      <img
+        src="/images/hero/hero-backdrop-1600.jpg"
+        srcset="/images/hero/hero-backdrop-1000.jpg 1000w, /images/hero/hero-backdrop-1600.jpg 1600w, /images/hero/hero-backdrop-2400.jpg 2400w"
+        sizes="100vw"
+        width="2400"
+        height="1400"
+        alt=""
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
     <span class="home-hero__plane home-hero__plane--one"></span>
     <span class="home-hero__plane home-hero__plane--two"></span>
     <span class="home-hero__light"></span>
@@ -58,15 +72,25 @@ const headlineLines = [
 
     <figure class="home-hero__portrait">
       <div class="home-hero__portrait-frame">
-        <Picture
-          src={portrait}
-          formats={['avif', 'webp']}
-          widths={[280, 320, 400, 560]}
-          sizes="(max-width: 56.24rem) min(72vw, 22rem), 20rem"
-          alt="Ladell Fuqua"
-          class="home-hero__portrait-image"
-          priority
-        />
+        <picture>
+          <source
+            type="image/webp"
+            srcset="/images/hero/portrait-560.webp 560w, /images/hero/portrait-760.webp 760w, /images/hero/portrait-1120.webp 1120w"
+            sizes="(max-width: 56.24rem) min(82vw, 22rem), 20rem"
+          />
+          <img
+            src="/images/hero/portrait-560.png"
+            srcset="/images/hero/portrait-560.png 560w, /images/hero/portrait-760.png 760w, /images/hero/portrait-1120.png 1120w"
+            sizes="(max-width: 56.24rem) min(82vw, 22rem), 20rem"
+            width="560"
+            height="728"
+            alt="Ladell Fuqua"
+            class="home-hero__portrait-image"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
       </div>
       <figcaption class="home-hero__caption">
         <span class="home-hero__caption-name">Ladell Fuqua</span>
@@ -114,8 +138,24 @@ const headlineLines = [
       linear-gradient(112deg, #111c2a 5%, #182536 43%, #283346 70%, #171f2e 100%);
   }
 
+  .home-hero__backdrop-media {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    display: block;
+  }
+
+  .home-hero__backdrop-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
   .home-hero__backdrop::before {
     content: '';
+    z-index: 1;
     inset: 10% 7% 13% 33%;
     opacity: 0.62;
     filter: blur(15px);
@@ -127,6 +167,7 @@ const headlineLines = [
 
   .home-hero__backdrop::after {
     content: '';
+    z-index: 2;
     inset: 0;
     background:
       linear-gradient(96deg, rgba(15, 25, 39, 0.9) 0%, rgba(24, 37, 54, 0.74) 38%, rgba(24, 37, 54, 0.26) 76%, rgba(17, 27, 42, 0.5) 100%),

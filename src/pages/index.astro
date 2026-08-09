@@ -2,24 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BrandGraphic from '../components/BrandGraphic.astro';
 import HomepageHero from '../components/HomepageHero.astro';
-import { getImage } from 'astro:assets';
 import {
   articleHref,
   formatArticleMonth,
   getPublishedArticles,
 } from '../lib/articles';
-import heroPortrait from '../assets/ladell-home-portrait.png';
-
-const heroPortraitWidths = [280, 320, 400, 560];
-const heroPortraitSizes = '(max-width: 56.24rem) min(72vw, 22rem), 20rem';
-const heroPortraitAvif = await Promise.all(
-  heroPortraitWidths.map((width) =>
-    getImage({ src: heroPortrait, width, format: 'avif' })
-  )
-);
-const heroPortraitSrcset = heroPortraitAvif
-  .map((image, index) => `${image.src} ${heroPortraitWidths[index]}w`)
-  .join(', ');
 
 // How I Think (LAD-28) — one typographic block; no icons or illustrations.
 const principles = [
@@ -53,10 +40,20 @@ const [featured] = await getPublishedArticles();
     slot="head"
     rel="preload"
     as="image"
-    type="image/avif"
-    href={heroPortraitAvif[1].src}
-    imagesrcset={heroPortraitSrcset}
-    imagesizes={heroPortraitSizes}
+    type="image/webp"
+    href="/images/hero/hero-backdrop-1600.webp"
+    imagesrcset="/images/hero/hero-backdrop-1000.webp 1000w, /images/hero/hero-backdrop-1600.webp 1600w, /images/hero/hero-backdrop-2400.webp 2400w"
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/webp"
+    href="/images/hero/portrait-560.webp"
+    imagesrcset="/images/hero/portrait-560.webp 560w, /images/hero/portrait-760.webp 760w, /images/hero/portrait-1120.webp 1120w"
+    imagesizes="(max-width: 56.24rem) min(82vw, 22rem), 20rem"
     fetchpriority="high"
   />
 
