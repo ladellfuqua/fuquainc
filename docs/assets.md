@@ -27,8 +27,11 @@ treatment, the same alt text, and the documented ownership or license informatio
 - **Largest dimensions:** 2400 × 1400 pixels
 - **Formats:** WebP with JPEG fallback
 
-The backdrop is a generated asset delivered for production use, not licensed
-photography. It sits beneath the hero's navy scrim and is intentionally treated
-as light and atmosphere rather than a representational photograph. The browser
-selects from the supplied 1000, 1600, and 2400 pixel widths, and the responsive
-WebP source is preloaded.
+The backdrop is the blurred city-through-window image approved in the homepage
+prototype. It was extracted from the prototype's embedded data URL and converted
+to standalone production files; the base64 data is not shipped. It is a generated
+asset delivered for production use, not licensed photography.
+
+The image sits beneath the hero's navy scrim and is intentionally treated as
+light and atmosphere rather than a crisp photograph. The browser selects from
+the 1000, 1600, and 2400 pixel widths, and the responsive WebP source is preloaded.
