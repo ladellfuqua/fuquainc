@@ -109,6 +109,23 @@ const featured: {
 
   <HomepageHero />
 
+  {/* ---------- About / bio (LAD-29) ---------- */}
+  <section class="section bio" aria-labelledby="bio-heading">
+    <div class="container bio__inner">
+      <h2 id="bio-heading" class="eyebrow bio__heading">About</h2>
+      <p class="bio__copy" data-bio-reveal>
+        <strong>Ladell Fuqua</strong> is Chief Operating Officer at&nbsp;
+        <strong>PWX Solutions</strong>. Three decades in media &mdash; Condé Nast,
+        AOL, TheStreet. Known for creating clarity, building accountability, and
+        developing teams that deliver results.
+      </p>
+      <blockquote class="bio__quote" data-bio-quote>
+        <span class="bio__quote-line"><span>Good strategy sets the direction;{' '}</span></span>
+        <span class="bio__quote-line"><span>disciplined execution creates the outcome.</span></span>
+      </blockquote>
+    </div>
+  </section>
+
   {/* ---------- Latest Writing — moved directly below hero (§16) ---------- */}
   <section class="section section--tight writing">
     <div class="container">
@@ -255,37 +272,6 @@ const featured: {
           ))
         }
       </ol>
-    </div>
-  </section>
-
-  {/* ---------- About Ladell — shortened on home (§25) ---------- */}
-  <section class="section section--tight about">
-    <div class="container split">
-      <div class="split__label">
-        <p class="eyebrow">About Ladell</p>
-        <div class="about__art" aria-hidden="true">
-          <BrandGraphic variant="motif" />
-        </div>
-      </div>
-      <div class="split__content">
-        <p class="lead">
-          I&rsquo;ve spent my career in executive leadership roles helping
-          organizations grow, solve difficult problems and bring people together
-          around shared goals.
-        </p>
-        <p>
-          My work spans marketing, technology, operations and business
-          transformation &mdash; but the parts I&rsquo;ve found most meaningful have
-          always been about people: building relationships, developing teams and
-          turning ideas into results.
-        </p>
-        <p class="split__cta">
-          <a href="/about" class="arrow-link">
-            More about Ladell
-            <span class="arrow" aria-hidden="true">&rarr;</span>
-          </a>
-        </p>
-      </div>
     </div>
   </section>
 
@@ -506,28 +492,6 @@ const featured: {
     }
   }
 
-  /* ---------- Split label/content layout ---------- */
-  .split {
-    display: grid;
-    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
-    gap: clamp(1.5rem, 1rem + 4vw, 5rem);
-  }
-  .split__label {
-    padding-top: 0.35rem;
-  }
-  .split__content > * + * {
-    margin-top: 1.3rem;
-  }
-  .split__cta {
-    margin-top: 1.8rem;
-  }
-  @media (max-width: 48rem) {
-    .split {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-  }
-
   /* ---------- How I Think ---------- */
   .pov {
     position: relative;
@@ -610,15 +574,76 @@ const featured: {
     }
   }
 
-  /* ---------- About (home) ---------- */
-  .about__art {
-    margin-top: 1.5rem;
-    max-width: 140px;
-    opacity: 0.85;
+  /* ---------- About / bio ---------- */
+  .bio {
+    background: var(--bg);
+    overflow: hidden;
   }
-  @media (max-width: 48rem) {
-    .about__art {
-      display: none;
+  .bio__inner {
+    padding-block: clamp(0.5rem, 1vw, 1rem);
+  }
+  .bio__heading {
+    margin-bottom: clamp(1.5rem, 1.1rem + 1.4vw, 2rem);
+  }
+  .bio__copy {
+    max-width: 30em;
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: clamp(1.3rem, 1.08rem + 0.8vw, 1.7rem);
+    line-height: 1.55;
+  }
+  .bio__copy strong {
+    color: var(--c-navy);
+    font-weight: var(--weight-semi);
+  }
+  .bio__quote {
+    max-width: 36em;
+    margin-top: clamp(2rem, 1.6rem + 1.4vw, 2.5rem);
+    padding-left: 1.35rem;
+    border-left: 2px solid var(--accent);
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: clamp(1rem, 0.96rem + 0.14vw, 1.06rem);
+    font-style: italic;
+    line-height: 1.55;
+  }
+  .bio__quote-line {
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-motion='enabled']) .bio--prepared .bio__word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(0.875rem);
+      transition:
+        opacity 620ms var(--ease),
+        transform 620ms var(--ease);
+      transition-delay: calc(var(--word-index) * 26ms);
+    }
+    :global(html[data-motion='enabled']) .bio--prepared.bio--visible .bio__word {
+      opacity: 1;
+      transform: none;
+    }
+    :global(html[data-motion='enabled']) .bio--prepared .bio__quote-line {
+      overflow: hidden;
+    }
+    :global(html[data-motion='enabled']) .bio--prepared .bio__quote-line > span {
+      display: block;
+      transform: translateY(115%);
+      transition: transform 820ms var(--ease);
+    }
+    :global(html[data-motion='enabled'])
+      .bio--prepared.bio--visible
+      .bio__quote-line
+      > span {
+      transform: none;
+    }
+    :global(html[data-motion='enabled'])
+      .bio--prepared.bio--visible
+      .bio__quote-line:nth-child(2)
+      > span {
+      transition-delay: 110ms;
     }
   }
 
@@ -641,3 +666,51 @@ const featured: {
     margin: 0;
   }
 </style>
+
+<script>
+  const bio = document.querySelector<HTMLElement>('.bio');
+  const bioCopy = bio?.querySelector<HTMLElement>('[data-bio-reveal]');
+
+  if (
+    bio &&
+    bioCopy &&
+    document.documentElement.dataset.motion === 'enabled' &&
+    'IntersectionObserver' in window
+  ) {
+    const walker = document.createTreeWalker(bioCopy, NodeFilter.SHOW_TEXT);
+    const textNodes: Text[] = [];
+    let node: Node | null;
+
+    while ((node = walker.nextNode())) textNodes.push(node as Text);
+
+    let wordIndex = 0;
+    textNodes.forEach((textNode) => {
+      const fragment = document.createDocumentFragment();
+      textNode.textContent?.split(/(\s+)/).forEach((token) => {
+        if (!token.trim()) {
+          fragment.appendChild(document.createTextNode(token));
+          return;
+        }
+
+        const word = document.createElement('span');
+        word.className = 'bio__word';
+        word.style.setProperty('--word-index', String(wordIndex));
+        word.textContent = token;
+        wordIndex += 1;
+        fragment.appendChild(word);
+      });
+      textNode.replaceWith(fragment);
+    });
+
+    bio.classList.add('bio--prepared');
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        bio.classList.add('bio--visible');
+        observer.disconnect();
+      },
+      { threshold: 0.16, rootMargin: '0px 0px -6% 0px' }
+    );
+    observer.observe(bio);
+  }
+</script>
