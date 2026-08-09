@@ -2,25 +2,36 @@
 
 ## Homepage portrait
 
-- **Production file:** `src/assets/ladell-home-portrait.png`
-- **Delivered source:** `headshot_cut.png`
-- **Source dimensions:** 560 × 728 pixels
-- **Source format:** transparent PNG
+- **Production files:** `public/images/hero/portrait-{560,760,1120}.{webp,png}`
+- **Delivered source:** `fuqua-hero-assets.zip`
+- **Largest dimensions:** 1120 × 1456 pixels
+- **Formats:** transparent WebP with transparent PNG fallback
 - **Alt text:** `Ladell Fuqua`
-- **Copyright owner:** Ladell Fuqua
-- **Usage rights:** Ladell Fuqua owns the source photography and approved its use on
-  fuquainc.com on 9 August 2026. That approval includes responsive resizing and
-  conversion to production web formats.
 
-The approved source is a background-removed, retouched, and color-graded cut-out
-from the existing studio headshot. The production filename differs from the
-delivered filename so its purpose remains clear in the site source.
+The approved source is a generated, background-removed cut-out delivered for
+production use. It is not licensed third-party photography and requires no
+separate rights record.
 
-Astro generates the responsive AVIF and WebP sources and PNG fallback during the
-build. The homepage uses widths of 280, 320, 400, and 560 pixels. The rendered
-image has explicit 560 × 728 intrinsic dimensions, and only this above-the-fold
-hero asset is preloaded.
+The homepage uses the supplied 560, 760, and 1120 pixel widths. The rendered
+image has explicit 560 × 728 intrinsic dimensions, and its responsive WebP source
+is preloaded with a PNG fallback.
 
 Do not replace the production asset with the base64-embedded image from a design
 prototype. Any future replacement must preserve transparency, the approved color
 treatment, the same alt text, and the documented ownership or license information.
+
+## Homepage backdrop
+
+- **Production files:** `public/images/hero/hero-backdrop-{1000,1600,2400}.{webp,jpg}`
+- **Delivered source:** `fuqua-hero-assets.zip`
+- **Largest dimensions:** 2400 × 1400 pixels
+- **Formats:** WebP with JPEG fallback
+
+The backdrop is the blurred city-through-window image approved in the homepage
+prototype. It was extracted from the prototype's embedded data URL and converted
+to standalone production files; the base64 data is not shipped. It is a generated
+asset delivered for production use, not licensed photography.
+
+The image sits beneath the hero's navy scrim and is intentionally treated as
+light and atmosphere rather than a crisp photograph. The browser selects from
+the 1000, 1600, and 2400 pixel widths, and the responsive WebP source is preloaded.
