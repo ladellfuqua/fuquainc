@@ -1,9 +1,9 @@
 # FUQUA INC. — Visual System Rules
 
-_Status: **locked** for v1.2 (Linear LAD-7). This is the practical ruleset that governs
-how the brand's type, color, linework, planes, spacing and motion are used. It reflects
-the approved foundation already implemented in `src/styles/tokens.css`,
-`src/styles/global.css` and `src/components/BrandGraphic.astro` — it does not redesign it._
+_Status: **updated 9 August 2026** for the approved homepage revision (Linear LAD-32).
+This is the practical ruleset that governs how the brand's type, color, linework, planes,
+spacing and motion are used. The established palette, typography and graphic foundation
+remain intact; this revision amends homepage composition and motion._
 
 _Companion: an illustrated, example-driven reference (principles, composition types,
 do/don't gallery) is tracked separately as **LAD-5** and will build on these rules._
@@ -13,9 +13,9 @@ more space. The system should read as a contemporary editorial / gallery identit
 a dashboard, flowchart or marketing template.
 
 > **Illustrated companion:** a live, viewable reference (swatches, type samples, the graphic
-> variants, anatomy, do/don't) is rendered at **`/visual-system`** (`src/pages/visual-system.astro`)
-> — an internal `noindex` page, excluded from the sitemap, with no site nav. Use it to *see* the
-> system; use this file for the authoritative rules.
+> variants, anatomy, do/don't) is rendered publicly at **`/visual-system`**
+> (`src/pages/visual-system.astro`). It is crawlable and included in the sitemap. Use it to
+> *see* the system; use this file for the authoritative rules.
 
 ---
 
@@ -34,28 +34,22 @@ a dashboard, flowchart or marketing template.
 
 ---
 
-## 1. Hero — locked
+## 1. Homepage composition — approved 9 August 2026
 
-The homepage hero (`src/pages/index.astro`) is final for v1.2. Treat copy and composition as
-fixed; change only with a new decision, not in passing.
+The homepage is informational and editorial, not a conversion surface. Its section grounds
+form a deliberate sequence:
 
-**Copy (locked)**
-- Headline: _"Building growth by connecting ideas, people, technology and opportunity."_
-- Lead: _"I work across growth, marketing, technology and business transformation, often
-  bringing different disciplines and teams together to solve problems that do not fit neatly
-  within one function."_
-- Primary CTA: **Read the latest →** `/writing` (plum button — the one plum moment in view)
-- Secondary CTA: **About Ladell →** `/about` (quiet arrow-link, never a second filled button)
+**Midnight Navy hero → Warm Ivory About → Soft Stone Writing → Midnight Navy How I think →
+Warm Ivory Stay in touch → Midnight Navy footer.**
 
-**Composition (locked)**
-- Two-column grid, `1.05fr / 0.95fr`, vertically centered; copy left, art right.
-- Art uses `BrandGraphic variant="hero"` in a `52 / 60` frame, `overflow: hidden` (intentional crop).
-- ≤ 52rem: single column; the graphic moves **above** the copy (`order: -1`) in a `16 / 9`
-  band bled to the screen edges.
-- Entrance: headline → lead → actions/art reveal in sequence (see §6). Above-the-fold only.
+The hero uses a non-representational lit backdrop rather than the `BrandGraphic` hero variant:
+deep navy at the type side, a soft slate/stone key light behind the transparent portrait, and
+a trace of plum. It contains one quiet **About Ladell →** text link and no filled CTA. On desktop,
+the headline is set on four fixed lines and the hero may pin and gently recede as the page covers
+it. Below the desktop breakpoint, text wraps naturally and the sticky/recede behavior is off.
 
-Rule: exactly **one** hero graphic and **one** primary (plum) button per view. No stacked CTAs
-beyond the primary + one arrow-link.
+The dark mid-page **How I think** section is typographic. The `field` graphic may sit behind it at
+very low opacity, but no icons, illustrations or detached cards are introduced.
 
 ---
 
@@ -73,10 +67,9 @@ Palette (raw tokens in `tokens.css`):
 | `--c-slate` | `#7f91a5` | **Secondary accent — very sparingly** |
 
 **Plum (`--accent`) — the signature.** Roughly **one deliberate plum moment per viewport.**
-Permitted uses: the single primary button, eyebrow/section labels, the current-page nav link,
-arrow-link CTAs, and its reserved roles in the brand graphic (one node, the low-opacity plane,
-the corner bracket). Never use plum for body text, large fills, or more than one filled button
-in view.
+Permitted uses: eyebrow/section labels, the current-page nav link, quiet arrow-link CTAs,
+hairline emphasis, and its reserved roles in the brand graphic (one node, the low-opacity plane,
+the corner bracket). Never use plum for body text or large fills.
 
 **Slate (`--accent-2`) — quiet support.** Even more restrained than plum, and it must never
 compete with it. Permitted uses: eyebrows on **navy** sections, and a single slate node in the
@@ -139,19 +132,34 @@ The structural lines in `BrandGraphic.astro` are the backbone of the identity.
 
 ---
 
-## 7. Motion
+## 7. Motion — amended 9 August 2026
 
-- **Subtle, short, purposeful.** Durations: `--dur-fast` 140ms, `--dur` 240ms,
-  `--dur-slow` 620ms. Easing: `--ease` `cubic-bezier(0.22, 1, 0.36, 1)`.
-- **Entrance reveal** (`.reveal`, +14px rise + fade, staggered 90/180/270ms) is for
-  **above-the-fold content only** (currently the hero). Don't attach it to content below the
-  fold — it would animate before it's seen.
-- **Graphic drift**: only a couple of nodes drift, 3–4px over 9–11s, alternating. Never animate
-  whole planes or lines.
-- **Everything is reduced-motion safe.** All motion lives under
-  `@media (prefers-reduced-motion: no-preference)`, and `scroll-behavior` reverts to `auto`
-  under reduced motion. Any new animation must follow the same gate. No autoplaying,
-  looping-attention, parallax or scroll-jacking effects.
+Motion remains subtle and purposeful. Durations use `--dur-fast` 140ms, `--dur` 240ms and
+`--dur-slow` 620ms with `--ease` `cubic-bezier(0.22, 1, 0.36, 1)` unless an approved ambient
+effect specifically calls for a slower cycle.
+
+**Permitted motion**
+
+- Scroll-triggered fade-and-rise reveals with restrained staggering.
+- Word-by-word reveal for the homepage bio paragraph.
+- Line-mask reveals for the hero headline and pull quote.
+- Gentle parallax on section content (3–4% factors) and decorative elements.
+- A sticky hero with a subtle scale, lift and fade recede effect — **desktop only**.
+- Slow ambient hero-background drift and a periodic, low-contrast light sweep.
+
+**Engineering contract**
+
+- Every effect is gated by `prefers-reduced-motion: no-preference`.
+- Content defaults to its final, visible state. JavaScript may apply a hidden preparation state
+  only after motion preference and required APIs (including `IntersectionObserver`) are confirmed.
+- If JavaScript is disabled, fails, or lacks `IntersectionObserver`, all content remains visible.
+- Under `prefers-reduced-motion: reduce`, parallax, sticky recede, reveals, drift and sweep are off,
+  and smooth scrolling reverts to `auto`.
+- Sticky/recede behavior is disabled below the desktop breakpoint and on short viewports where it
+  could clip content.
+
+Still prohibited: scroll-jacking, autoplay with sound, looping attention-seeking motion and
+parallax strong enough to cause discomfort.
 
 ---
 
@@ -173,7 +181,7 @@ ones without adding a rule here first.
 
 | Variant | Where it's used | Character |
 |---|---|---|
-| `hero` | Homepage hero only — one per view | The large signature composition: arc, three converging planes, structural grid, corner bracket, three nodes. |
+| `hero` | Approved large-format supporting compositions | The large signature composition: arc, three converging planes, structural grid, corner bracket, three nodes. The redesigned homepage hero uses the lit-backdrop treatment instead. |
 | `motif` | Small brand moments — footer, feature card, About aside | A compact, cropped signature: one arc, one line, one plum plane, two nodes. |
 | `field` | Behind **navy** sections only | Ultra-subtle white-on-navy linework; a quiet texture that never competes with content. |
 
@@ -185,12 +193,13 @@ small slot — use `motif`), keep it `aria-hidden`, and respect the linework/pla
 ## 10. Do & Don't
 
 **Do**
-- Use plum for ~one deliberate moment per view (primary button, eyebrow, current nav link, or its
-  reserved graphic roles).
+- Use plum for ~one deliberate moment per view (eyebrow, quiet link, hairline emphasis, current
+  nav link, or its reserved graphic roles).
 - Keep linework thin and architectural, running off-canvas so it reads as art.
 - Let the overlap of 2–3 planes carry the convergence idea.
 - Use the spacing and type scales; control paragraph width with the measure tokens.
-- Gate every animation behind `prefers-reduced-motion`, and keep it short and small.
+- Gate every animation behind `prefers-reduced-motion` and the motion-ready JS guard.
+- Keep content visible by default; prepare hidden reveal states only after required APIs are confirmed.
 - Treat the graphic as decorative: `aria-hidden`, never the sole carrier of meaning.
 
 **Don't**
@@ -199,4 +208,4 @@ small slot — use `motif`), keep it `aria-hidden`, and respect the linework/pla
 - Don't add arrowheads or wire nodes together — never a flowchart, network or org chart.
 - Don't scatter nodes (one per intersection) or stack more than ~3 planes.
 - Don't introduce new background colors outside ivory / stone / navy.
-- Don't add parallax, autoplay, looping-attention or scroll-jacking motion.
+- Don't add scroll-jacking, autoplay with sound, looping-attention motion or strong parallax.

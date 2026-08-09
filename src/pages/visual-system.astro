@@ -2,9 +2,9 @@
 /**
  * FUQUA INC. — Visual System reference (Linear LAD-5).
  *
- * A durable, internal reference for the brand's graphic language: principles,
+ * A durable, public reference for the brand's graphic language: principles,
  * color, type, the reusable composition types, anatomy, spacing, motion, and
- * do/don't guidance. Standalone (no site chrome), noindex, excluded from the
+ * do/don't guidance. Standalone (no site chrome), crawlable and included in the
  * sitemap. The governing *rules* live in docs/visual-system.md; this page is
  * the illustrated companion.
  */
@@ -30,7 +30,7 @@ const type = [
 ];
 
 const variants = [
-  { v: 'hero', label: 'Hero', use: 'The large signature composition — homepage hero only. One per view.', tone: 'ink' },
+  { v: 'hero', label: 'Hero', use: 'A large-format supporting composition. The redesigned homepage hero uses the lit backdrop instead.', tone: 'ink' },
   { v: 'motif', label: 'Motif', use: 'A compact cropped signature for small brand moments (footer, feature card, About).', tone: 'ink' },
   { v: 'field', label: 'Field', use: 'Ultra-subtle linework behind dark (navy) sections. Never competes with content.', tone: 'light' },
 ] as const;
@@ -48,15 +48,17 @@ const spacing = [
 const motion = [
   { token: '--dur-fast', ms: '140ms', use: 'Color / hover state changes' },
   { token: '--dur', ms: '240ms', use: 'Arrow nudge, menu, transitions' },
-  { token: '--dur-slow', ms: '620ms', use: 'Entrance reveal (above the fold)' },
+  { token: '--dur-slow', ms: '620ms', use: 'Reveal motion and line masks' },
+  { token: 'ambient', ms: 'slow', use: 'Hero drift and periodic low-contrast light sweep' },
 ];
 
 const dos = [
-  'Use plum for roughly one deliberate moment per view — the primary button, an eyebrow, the current nav link, or its reserved roles in the graphic.',
+  'Use plum for roughly one deliberate moment per view — an eyebrow, quiet link, hairline emphasis, or its reserved roles in the graphic.',
   'Keep linework thin and architectural, running off-canvas so it reads as art.',
   'Let the overlap of 2–3 planes carry the "convergence" idea.',
   'Use the spacing and type scales; control paragraph width with the measure tokens.',
-  'Gate every animation behind prefers-reduced-motion, keep it short and small.',
+  'Gate every animation behind prefers-reduced-motion and the motion-ready JavaScript guard.',
+  'Keep content visible by default; prepare hidden reveal states only after required APIs are confirmed.',
   'Treat the graphic as decorative: aria-hidden, never the sole carrier of meaning.',
 ];
 
@@ -66,7 +68,7 @@ const donts = [
   'Don’t add arrowheads or wire nodes together — it must never become a flowchart, network or org chart.',
   'Don’t scatter nodes (one per intersection) or stack more than ~3 planes.',
   'Don’t introduce new background colors outside ivory / stone / navy.',
-  'Don’t add parallax, autoplay, looping-attention or scroll-jacking motion.',
+  'Don’t add scroll-jacking, autoplay with sound, looping-attention motion or strong parallax.',
 ];
 ---
 
@@ -75,13 +77,14 @@ const donts = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="The public FUQUA INC. visual-system reference for color, typography, composition, spacing and motion." />
+    <link rel="canonical" href="https://fuquainc.com/visual-system" />
     <title>FUQUA INC. — Visual System</title>
   </head>
   <body class="vs">
     <header class="vs__bar">
       <p><strong>FUQUA INC.</strong> — Visual System</p>
-      <p class="vs__hint">Internal reference · governing rules in <code>docs/visual-system.md</code></p>
+      <p class="vs__hint">Public reference · updated 9 August 2026 · governing rules in <code>docs/visual-system.md</code></p>
     </header>
 
     <main class="vs__main">
@@ -128,8 +131,16 @@ const donts = [
         <p class="vs__note">
           <strong>Plum</strong> is the signature — about one moment per view. <strong>Slate</strong> is
           even more restrained and never competes with plum. Section grounds alternate
-          ivory → stone → navy; don't add new background colors.
+          navy → ivory → stone → navy → ivory → navy; don't add new background colors.
         </p>
+        <div class="vs__ground-rhythm" aria-label="Homepage section-ground sequence">
+          <span class="ground ground--navy">Hero</span>
+          <span class="ground ground--ivory">About</span>
+          <span class="ground ground--stone">Writing</span>
+          <span class="ground ground--navy">How I think</span>
+          <span class="ground ground--ivory">Stay in touch</span>
+          <span class="ground ground--navy">Footer</span>
+        </div>
       </section>
 
       <!-- Type -->
@@ -208,7 +219,18 @@ const donts = [
             <li class="mo"><code>{m.token}</code><span class="mo__ms">{m.ms}</span><span class="mo__use">{m.use}</span></li>
           ))}
         </ul>
-        <p class="vs__note">Easing <code>cubic-bezier(0.22, 1, 0.36, 1)</code>. All motion is gated behind <code>prefers-reduced-motion: no-preference</code>. Entrance reveal is for above-the-fold content only.</p>
+        <p class="vs__note">
+          Permitted: restrained scroll reveals, word-by-word bio reveal, line masks, gentle
+          3–4% parallax, desktop-only sticky hero recede, ambient backdrop drift and a quiet
+          light sweep. Every effect is gated behind
+          <code>prefers-reduced-motion: no-preference</code> and the motion-ready JavaScript guard.
+        </p>
+        <p class="vs__note">
+          Content is visible by default. JavaScript may prepare a hidden state only after it
+          confirms the motion preference and required APIs, including
+          <code>IntersectionObserver</code>. With JavaScript disabled, unsupported, or reduced
+          motion requested, content stays in its final state.
+        </p>
       </section>
 
       <!-- Do / Don't -->
@@ -334,6 +356,26 @@ const donts = [
   .sw__name { margin-top: 0.6rem; font-weight: 600; color: var(--heading); font-size: 0.95rem; }
   .sw__hex { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; color: var(--text-muted); }
   .sw__role { margin-top: 0.25rem; font-size: 0.85rem; color: var(--text); }
+  .vs__ground-rhythm {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    border: 1px solid var(--line);
+  }
+  .ground {
+    min-height: 5.5rem;
+    display: grid;
+    place-items: center;
+    padding: 0.65rem;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .ground--navy { background: var(--c-navy); color: var(--on-dark); }
+  .ground--ivory { background: var(--c-ivory); color: var(--c-navy); }
+  .ground--stone { background: var(--c-stone); color: var(--c-navy); }
 
   /* Type */
   .vs__type { list-style: none; padding: 0; margin-top: 1.5rem; display: grid; gap: 1.1rem; }
@@ -395,5 +437,6 @@ const donts = [
 
   @media (max-width: 46rem) {
     .vs__variants, .vs__anatomy, .vs__dodont { grid-template-columns: 1fr; }
+    .vs__ground-rhythm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 </style>

@@ -288,18 +288,18 @@ a:hover {
 
 /* --- Subtle entrance motion (§29), reduced-motion safe ------------------- */
 @media (prefers-reduced-motion: no-preference) {
-  .reveal {
+  html[data-motion='enabled'] .reveal {
     opacity: 0;
     transform: translateY(14px);
     animation: reveal-up var(--dur-slow) var(--ease) forwards;
   }
-  .reveal[data-delay='1'] {
+  html[data-motion='enabled'] .reveal[data-delay='1'] {
     animation-delay: 90ms;
   }
-  .reveal[data-delay='2'] {
+  html[data-motion='enabled'] .reveal[data-delay='2'] {
     animation-delay: 180ms;
   }
-  .reveal[data-delay='3'] {
+  html[data-motion='enabled'] .reveal[data-delay='3'] {
     animation-delay: 270ms;
   }
 }

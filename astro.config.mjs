@@ -10,8 +10,7 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      filter: (page) =>
-        !page.includes('/mockups') && !page.includes('/visual-system'),
+      filter: (page) => !page.includes('/mockups'),
     }),
   ],
   devToolbar: { enabled: false },
