@@ -2,7 +2,7 @@
 title: Growth rarely belongs to one department
 deck: "On building growth teams: shared goals, clear decision rights, and why the org chart keeps losing."
 summary: "On building growth teams: shared goals, clear decision rights, and why the org chart keeps losing."
-publishedAt: 2026-08-09
+publishedAt: 2026-08-07
 readingTime: 4 min read
 themes:
   - Work and Leadership
@@ -15,6 +15,8 @@ Every company I have worked in or with has tried, at some point, to solve growth
 It rarely works. And the more I have watched it play out, the more convinced I am that the problem is not the person in the box. It is the box.
 
 Growth is not a department. It is an outcome, and it gets produced or blocked at the seams between departments. A subscription business grows where marketing's promise meets the product's first-week experience. A media brand grows where editorial instinct meets audience data meets how the sales side packages it all. Nobody owns those seams. That is why the org chart keeps losing.
+
+> Growth is not a department. It is an outcome, and it gets produced or blocked at the seams between departments.
 
 ## What happens when growth is one team's job
 
@@ -34,9 +36,9 @@ The teams I have seen grow well do not treat growth as a place. They treat it as
 
 The fix is simple, and it works: write it down. For each lever that matters to growth, agree on three things:
 
-- One person who makes the call
-- Who gets consulted before it's made
-- How fast the decision happens
+1. One person who makes the call
+2. Who gets consulted before it's made
+3. How fast the decision happens
 
 It feels bureaucratic for about a week. Then it feels like speed.
 

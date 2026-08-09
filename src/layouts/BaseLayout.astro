@@ -18,6 +18,12 @@ interface Props {
   bareTitle?: boolean;
   /** Page-level header treatment. */
   headerTone?: 'light' | 'dark';
+  /** Let the shared header own its scroll-state transition. */
+  manageHeaderScroll?: boolean;
+  /** Render the document-level progress/footer motion controller. */
+  siteMotion?: boolean;
+  /** Optional page-level body class for template-specific composition. */
+  bodyClass?: string;
   noindex?: boolean;
 }
 
@@ -28,6 +34,9 @@ const {
   type = 'website',
   bareTitle = false,
   headerTone = 'light',
+  manageHeaderScroll = true,
+  siteMotion = true,
+  bodyClass,
   noindex = false,
 } = Astro.props;
 
@@ -146,12 +155,13 @@ const websiteSchema = {
 
     <slot name="head" />
   </head>
-  <body data-header-tone={headerTone}>
-    <SiteHeader tone={headerTone} />
+  <body class={bodyClass} data-header-tone={headerTone}>
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <SiteHeader tone={headerTone} manageScroll={manageHeaderScroll} />
     <main id="main">
       <slot />
     </main>
     <SiteFooter />
-    <SiteMotion />
+    {siteMotion && <SiteMotion />}
   </body>
 </html>

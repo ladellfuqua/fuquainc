@@ -9,9 +9,10 @@ import LinkedInLink from './LinkedInLink.astro';
 
 interface Props {
   tone?: 'light' | 'dark';
+  manageScroll?: boolean;
 }
 
-const { tone = 'light' } = Astro.props;
+const { tone = 'light', manageScroll = true } = Astro.props;
 
 const nav = [
   { label: 'About', href: '/about' },
@@ -24,7 +25,10 @@ const isCurrent = (href: string) =>
   href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
 ---
 
-<header class:list={['site-header', `site-header--${tone}`]}>
+<header
+  class:list={['site-header', `site-header--${tone}`]}
+  data-manage-scroll={String(manageScroll)}
+>
   <a href="#main" class="skip-link">Skip to content</a>
   <div class="container site-header__inner">
     <Wordmark href="/" tone={tone === 'dark' ? 'light' : 'ink'} class="site-header__brand" />
@@ -277,6 +281,7 @@ const isCurrent = (href: string) =>
   const menu = header?.querySelector<HTMLElement>('#site-menu');
   const mobile = window.matchMedia('(max-width: 46rem)');
   const darkRegion = document.querySelector<HTMLElement>('.home-hero, .about-hero, .page-band');
+  const manageScroll = header?.dataset.manageScroll !== 'false';
 
   function syncHeaderTone() {
     if (!header?.classList.contains('site-header--dark')) return;
@@ -316,10 +321,12 @@ const isCurrent = (href: string) =>
   }
 
   syncMenuForViewport();
-  syncHeaderTone();
   mobile.addEventListener('change', syncMenuForViewport);
-  window.addEventListener('scroll', syncHeaderTone, { passive: true });
-  window.addEventListener('resize', syncHeaderTone, { passive: true });
+  if (manageScroll) {
+    syncHeaderTone();
+    window.addEventListener('scroll', syncHeaderTone, { passive: true });
+    window.addEventListener('resize', syncHeaderTone, { passive: true });
+  }
 
   toggle?.addEventListener('click', () => {
     const open = header?.getAttribute('data-open') === 'true';
