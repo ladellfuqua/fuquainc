@@ -155,15 +155,6 @@ const articleSchema = {
         <slot />
 
         <div class="article-end article-reveal" aria-hidden="true"></div>
-
-        <aside class="author-note article-reveal" aria-label="About the author">
-          <span class="article-avatar" aria-hidden="true">LF</span>
-          <p>
-            <strong>Ladell Fuqua</strong> is Chief Operating Officer at PWX Solutions in New York. He writes about work and leadership, identity and belonging, technology and change. Follow him on{' '}
-            <a href="https://www.linkedin.com/in/ladellfuqua/" target="_blank" rel="noopener noreferrer">LinkedIn</a>{' '}
-            or visit the <a href="/contact">contact page</a>.
-          </p>
-        </aside>
       </div>
 
       <div class="article-column article-paper__tail">
@@ -501,17 +492,6 @@ const articleSchema = {
     background: var(--c-navy);
     transform-origin: left;
   }
-  .author-note {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1.125rem;
-    align-items: start;
-    margin-top: 2.125rem;
-    padding-bottom: 0.5rem;
-  }
-  .author-note p { max-width: none; color: var(--c-graphite); font-family: var(--font-sans); font-size: 15px; line-height: 1.6; }
-  .author-note strong { color: #161d26; font-weight: 650; }
-  .author-note a { color: var(--c-plum); font-weight: var(--weight-semi); }
   .article-paper__tail { padding-block: 2.375rem 3.375rem; }
   .article-backlink {
     display: inline-flex;
@@ -658,7 +638,6 @@ const articleSchema = {
     .article-byline { align-items: flex-start; }
     .article-byline__actions { width: 100%; }
     .article-pill { padding-inline: 0.7rem; font-size: 10.5px; }
-    .author-note { grid-template-columns: 1fr; }
   }
   @media print {
     .site-header,
