@@ -5,6 +5,7 @@
 import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import SiteMotion from '../components/SiteMotion.astro';
 
 interface Props {
   title: string;
@@ -151,5 +152,6 @@ const websiteSchema = {
       <slot />
     </main>
     <SiteFooter />
+    <SiteMotion />
   </body>
 </html>
