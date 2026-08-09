@@ -1,0 +1,289 @@
+---
+import { Picture } from 'astro:assets';
+import portrait from '../assets/ladell-portrait.png';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  variant: 'contact' | 'writing';
+  linkHref?: string;
+  linkLabel?: string;
+}
+
+const { eyebrow, title, intro, variant, linkHref, linkLabel } = Astro.props;
+---
+
+<section class:list={['page-band', `page-band--${variant}`]} aria-labelledby="page-band-title">
+  <div class="page-band__backdrop" aria-hidden="true">
+    {
+      variant === 'contact' ? (
+        <picture>
+          <source
+            type="image/webp"
+            srcset="/images/page-headers/contact-header-bg-1800.webp 1800w, /images/page-headers/contact-header-bg.webp 3000w"
+            sizes="100vw"
+          />
+          <img
+            src="/images/page-headers/contact-header-bg.jpg"
+            srcset="/images/page-headers/contact-header-bg-1800.jpg 1800w, /images/page-headers/contact-header-bg.jpg 3000w"
+            sizes="100vw"
+            width="3000"
+            height="760"
+            alt=""
+            loading="eager"
+            fetchpriority="high"
+          />
+        </picture>
+      ) : (
+        <Picture
+          src={portrait}
+          formats={['avif', 'webp']}
+          widths={[640, 900, 1023]}
+          sizes="100vw"
+          alt=""
+          class="page-band__abstract-image"
+          loading="eager"
+          fetchpriority="high"
+        />
+      )
+    }
+  </div>
+  <span class="page-band__scrim" aria-hidden="true"></span>
+  <span class="page-band__grain" aria-hidden="true"></span>
+
+  <svg class="page-band__linework" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <line x1="760" y1="650" x2="1540" y2="-180" />
+    <line x1="1010" y1="-120" x2="1280" y2="620" />
+    <circle class="page-band__arc" cx="1160" cy="205" r="224" />
+    <circle class="page-band__node" cx="1320" cy="70" r="5" />
+  </svg>
+
+  <div class="container page-band__container">
+    <div class="page-band__copy" data-page-parallax data-parallax-factor="0.035">
+      <p class="eyebrow page-band__eyebrow page-reveal">{eyebrow}</p>
+      <h1 id="page-band-title" class="page-band__title page-reveal" data-delay="1">{title}</h1>
+      <p class="page-band__intro page-reveal" data-delay="2">{intro}</p>
+      {
+        linkHref && linkLabel && (
+          <a
+            href={linkHref}
+            class="page-band__link page-reveal"
+            data-delay="3"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {linkLabel} <span aria-hidden="true">&rarr;</span>
+          </a>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-band {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: auto;
+    margin-top: -4.5rem;
+    padding-block: clamp(8rem, 13vw, 9rem) clamp(3.75rem, 6vw, 4.5rem);
+    overflow: hidden;
+    isolation: isolate;
+    color: #f2efe8;
+    background: var(--c-navy);
+  }
+
+  .page-band--contact {
+    padding-block: clamp(8.75rem, 14vw, 9.75rem) clamp(4.25rem, 7vw, 5rem);
+  }
+
+  :global(body:has(.page-band) .site-header--dark:not([data-scrolled='true'])) {
+    background: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .page-band__backdrop,
+  .page-band__scrim,
+  .page-band__grain,
+  .page-band__linework {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .page-band__backdrop {
+    z-index: -4;
+    inset: 0;
+    overflow: hidden;
+    background: linear-gradient(112deg, #101b2a, #334154 64%, #172334);
+  }
+
+  .page-band__backdrop :global(picture),
+  .page-band__backdrop :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .page-band--contact .page-band__backdrop :global(img) {
+    object-fit: cover;
+    object-position: right center;
+  }
+
+  .page-band--writing .page-band__backdrop {
+    inset: -14%;
+  }
+
+  .page-band--writing .page-band__backdrop :global(.page-band__abstract-image) {
+    object-fit: cover;
+    object-position: 50% 34%;
+    opacity: 0.46;
+    filter: blur(48px) saturate(0.34) contrast(0.82) brightness(0.7);
+    transform: scale(1.16);
+  }
+
+  .page-band__scrim {
+    z-index: -3;
+    inset: 0;
+    background:
+      linear-gradient(100deg, rgba(12, 19, 29, 0.94) 0%, rgba(12, 19, 29, 0.78) 43%, rgba(12, 19, 29, 0.34) 78%, rgba(12, 19, 29, 0.5) 100%),
+      radial-gradient(60% 75% at 82% 24%, rgba(127, 145, 165, 0.2), rgba(111, 83, 104, 0.1) 48%, transparent 78%);
+  }
+
+  .page-band--contact .page-band__scrim {
+    background: linear-gradient(95deg, rgba(12, 19, 29, 0.88) 0%, rgba(12, 19, 29, 0.68) 48%, rgba(12, 19, 29, 0.16) 100%);
+  }
+
+  .page-band__grain {
+    z-index: -2;
+    inset: 0;
+    opacity: 0.09;
+    mix-blend-mode: soft-light;
+    background:
+      repeating-linear-gradient(23deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(117deg, rgba(0, 0, 0, 0.08) 0 1px, transparent 1px 5px);
+    background-size: 7px 9px, 11px 13px;
+  }
+
+  .page-band__linework {
+    z-index: -1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .page-band__linework line,
+  .page-band__arc {
+    fill: none;
+    stroke: #f7f5f0;
+    stroke-width: 1.1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .page-band__linework line:first-child { opacity: 0.12; }
+  .page-band__linework line:nth-child(2) { opacity: 0.065; }
+  .page-band__arc { opacity: 0.08; }
+  .page-band__node { fill: #c9adc1; opacity: 0.88; }
+
+  .page-band__container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-band__copy {
+    max-width: 42rem;
+  }
+
+  .page-band__eyebrow { color: #d5b9ce; }
+
+  .page-band__title {
+    max-width: 12em;
+    margin-top: 0.85rem;
+    color: #f7f4ee;
+    font-family: var(--font-serif);
+    font-size: clamp(2.35rem, 4vw, 3.5rem);
+    font-weight: var(--weight-normal);
+    line-height: 1.03;
+    letter-spacing: -0.035em;
+  }
+
+  .page-band__intro {
+    max-width: 39rem;
+    margin-top: 1.35rem;
+    color: #d4dae1;
+    font-size: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+    line-height: 1.65;
+  }
+
+  .page-band__link {
+    position: relative;
+    display: inline-block;
+    margin-top: 1.15rem;
+    color: #d5b9ce;
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-medium);
+  }
+
+  .page-band__link::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -0.22rem;
+    left: 0;
+    height: 1px;
+    background: currentColor;
+    transform-origin: left;
+  }
+
+  .page-band__link:hover {
+    color: #f0d8e8;
+    text-decoration: none;
+  }
+
+  @media (max-width: 48rem) {
+    .page-band {
+      min-height: auto;
+      padding-block: clamp(7.75rem, 22vw, 9rem) clamp(3.75rem, 11vw, 4.75rem);
+    }
+
+    .page-band--contact {
+      padding-block: clamp(8.25rem, 23vw, 9.5rem) clamp(4rem, 12vw, 5rem);
+    }
+
+    .page-band--contact .page-band__backdrop :global(img) {
+      object-position: 72% center;
+    }
+
+    .page-band__linework { transform: translateX(13%); }
+  }
+
+  @media (max-width: 30rem) {
+    .page-band__title { font-size: clamp(2.35rem, 12vw, 3.15rem); }
+    .page-band__intro { line-height: 1.55; }
+  }
+
+  @media (max-height: 34rem) and (orientation: landscape) {
+    .page-band { padding-block: 7.5rem 4rem; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-motion='enabled']) .page-band__backdrop {
+      animation: page-band-drift 48s var(--ease) infinite alternate;
+    }
+
+    .page-band__link::after {
+      transition: transform var(--dur) var(--ease);
+    }
+
+    .page-band__link:hover::after,
+    .page-band__link:focus-visible::after {
+      transform: scaleX(0.62);
+    }
+  }
+
+  @keyframes page-band-drift {
+    from { transform: scale(1.01) translate3d(0, 0, 0); }
+    to { transform: scale(1.045) translate3d(-0.75%, -0.4%, 0); }
+  }
+</style>

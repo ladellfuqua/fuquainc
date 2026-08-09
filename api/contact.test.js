@@ -7,7 +7,6 @@ const validBody = {
   name: 'Test Person',
   email: 'test@example.com',
   organization: 'Example Co',
-  reason: 'Leadership inquiry',
   message: 'A private test message',
   website: '',
 };
@@ -80,6 +79,26 @@ test('passes an abort signal to Resend', async () => {
       await handler(mockRequest(), res);
       assert.equal(res.statusCode, 200);
       assert.ok(signal instanceof AbortSignal);
+    } finally {
+      globalThis.fetch = previousFetch;
+    }
+  });
+});
+
+test('accepts the redesigned form without a reason field', async () => {
+  await withDeliveryEnv(async () => {
+    const previousFetch = globalThis.fetch;
+    let delivery;
+    globalThis.fetch = async (_url, options) => {
+      delivery = JSON.parse(options.body);
+      return { ok: true, status: 200 };
+    };
+    try {
+      const res = mockResponse();
+      await handler(mockRequest(), res);
+      assert.equal(res.statusCode, 200);
+      assert.equal(delivery.subject, 'Website contact');
+      assert.equal(delivery.text.includes('Reason:'), false);
     } finally {
       globalThis.fetch = previousFetch;
     }

@@ -1,0 +1,108 @@
+<style is:global>
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-motion='enabled'] main.page-motion-ready .page-reveal {
+      opacity: 0;
+      transform: translateY(1.65rem);
+      transition: opacity 820ms var(--ease), transform 820ms var(--ease);
+      transition-delay: calc(var(--page-delay, 0) * 110ms);
+    }
+
+    html[data-motion='enabled'] main.page-motion-ready .page-reveal[data-delay='1'] { --page-delay: 1; }
+    html[data-motion='enabled'] main.page-motion-ready .page-reveal[data-delay='2'] { --page-delay: 2; }
+    html[data-motion='enabled'] main.page-motion-ready .page-reveal[data-delay='3'] { --page-delay: 3; }
+    html[data-motion='enabled'] main.page-motion-ready .page-reveal[data-delay='4'] { --page-delay: 4; }
+
+    html[data-motion='enabled'] main.page-motion-ready .page-reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    html[data-motion='enabled'] main.page-motion-ready [data-page-parallax] {
+      transform: translate3d(0, var(--page-parallax, 0), 0);
+    }
+  }
+</style>
+
+<script>
+  const pageMotionQuery = window.matchMedia('(prefers-reduced-motion: no-preference)');
+  const pageMotionRoot = document.documentElement;
+  const pageMotionMain = document.querySelector<HTMLElement>('main');
+  let pageRevealObserver: IntersectionObserver | undefined;
+  let pageMotionFrame = 0;
+
+  function pageRevealItems() {
+    return Array.from(document.querySelectorAll<HTMLElement>('.page-reveal'));
+  }
+
+  function pageParallaxItems() {
+    return Array.from(document.querySelectorAll<HTMLElement>('[data-page-parallax]'));
+  }
+
+  function disablePageMotion() {
+    pageMotionMain?.classList.remove('page-motion-ready');
+    pageRevealObserver?.disconnect();
+    pageRevealObserver = undefined;
+    pageRevealItems().forEach((item) => item.classList.remove('is-visible'));
+    pageParallaxItems().forEach((item) => item.style.removeProperty('--page-parallax'));
+  }
+
+  function observePageReveals() {
+    if (!pageRevealObserver) return;
+    pageRevealItems().forEach((item) => {
+      if (!item.classList.contains('is-visible')) pageRevealObserver?.observe(item);
+    });
+  }
+
+  function preparePageMotion() {
+    if (
+      pageMotionRoot.dataset.motion !== 'enabled' ||
+      !pageMotionQuery.matches ||
+      !('IntersectionObserver' in window)
+    ) {
+      disablePageMotion();
+      return;
+    }
+
+    pageMotionMain?.classList.add('page-motion-ready');
+    pageRevealObserver?.disconnect();
+    pageRevealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).classList.add('is-visible');
+          pageRevealObserver?.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -4% 0px' }
+    );
+    observePageReveals();
+    requestPageParallaxUpdate();
+  }
+
+  function updatePageParallax() {
+    pageMotionFrame = 0;
+    if (pageMotionRoot.dataset.motion !== 'enabled' || !pageMotionQuery.matches) return;
+    const viewport = Math.max(window.innerHeight, 1);
+    pageParallaxItems().forEach((item) => {
+      const rect = item.getBoundingClientRect();
+      const factor = Number(item.dataset.parallaxFactor || 0.035);
+      const centerOffset = (rect.top + rect.height / 2 - viewport / 2) / viewport;
+      const maxShift = Math.max(14, Math.min(30, viewport * factor));
+      const shift = Math.max(-maxShift, Math.min(maxShift, centerOffset * -maxShift));
+      item.style.setProperty('--page-parallax', `${shift.toFixed(2)}px`);
+    });
+  }
+
+  function requestPageParallaxUpdate() {
+    if (!pageMotionFrame) pageMotionFrame = window.requestAnimationFrame(updatePageParallax);
+  }
+
+  window.addEventListener('scroll', requestPageParallaxUpdate, { passive: true });
+  window.addEventListener('resize', requestPageParallaxUpdate, { passive: true });
+  window.addEventListener('page:content-updated', () => {
+    observePageReveals();
+    requestPageParallaxUpdate();
+  });
+  pageMotionQuery.addEventListener?.('change', preparePageMotion);
+  preparePageMotion();
+</script>
