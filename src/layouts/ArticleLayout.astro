@@ -750,7 +750,8 @@ const articleSchema = {
       const rect = article.getBoundingClientRect();
       const total = Math.max(rect.height - viewport, 1);
       const completed = Math.max(0, Math.min(total, -rect.top));
-      root.style.setProperty('--article-progress', (completed / total).toFixed(5));
+      const ratio = rect.bottom <= viewport + 1 ? 1 : completed / total;
+      root.style.setProperty('--article-progress', ratio.toFixed(5));
     } else {
       root.style.removeProperty('--article-progress');
     }
