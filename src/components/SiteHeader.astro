@@ -198,10 +198,53 @@ const isCurrent = (href: string) =>
 <script>
   const header = document.querySelector<HTMLElement>('.site-header');
   const toggle = header?.querySelector<HTMLButtonElement>('.site-header__toggle');
+  const menu = header?.querySelector<HTMLElement>('#site-menu');
+  const mobile = window.matchMedia('(max-width: 46rem)');
+
+  function setMenuState(open: boolean, returnFocus = false) {
+    if (!header || !toggle || !menu) return;
+
+    const mobileOpen = mobile.matches && open;
+    header.setAttribute('data-open', String(mobileOpen));
+    toggle.setAttribute('aria-expanded', String(mobileOpen));
+    toggle.setAttribute('aria-label', mobileOpen ? 'Close menu' : 'Open menu');
+
+    if (mobile.matches) {
+      menu.toggleAttribute('inert', !mobileOpen);
+      menu.setAttribute('aria-hidden', String(!mobileOpen));
+    } else {
+      menu.removeAttribute('inert');
+      menu.removeAttribute('aria-hidden');
+    }
+
+    if (returnFocus) toggle.focus();
+  }
+
+  function syncMenuForViewport() {
+    setMenuState(false);
+  }
+
+  syncMenuForViewport();
+  mobile.addEventListener('change', syncMenuForViewport);
+
   toggle?.addEventListener('click', () => {
     const open = header?.getAttribute('data-open') === 'true';
-    header?.setAttribute('data-open', String(!open));
-    toggle.setAttribute('aria-expanded', String(!open));
-    toggle.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+    setMenuState(!open);
+  });
+
+  menu?.addEventListener('click', (event) => {
+    if (event.target instanceof HTMLAnchorElement && mobile.matches) {
+      setMenuState(false);
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (
+      event.key === 'Escape' &&
+      mobile.matches &&
+      header?.getAttribute('data-open') === 'true'
+    ) {
+      setMenuState(false, true);
+    }
   });
 </script>
