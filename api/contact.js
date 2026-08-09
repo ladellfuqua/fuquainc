@@ -10,6 +10,8 @@
  * never returned to the client, never logged):
  *   - RESEND_API_KEY   : Resend API key (protected)
  *   - CONTACT_TO_EMAIL : private destination inbox (protected)
+ * Optional:
+ *   - CONTACT_RESEND_TIMEOUT_MS : bounded delivery timeout (default 8000)
  * Sender is fixed to the verified domain address (not secret):
  *   FUQUA INC. Website <contact@fuquainc.com>
  *
@@ -36,6 +38,7 @@ const CTRL_ALL = /[\x00-\x1F\x7F]/g;
 // contact form.
 const RL_WINDOW_MS = 10 * 60 * 1000;
 const RL_MAX = 5;
+const RESEND_TIMEOUT_MS = 8_000;
 const hits = new Map(); // ip -> number[] (timestamps)
 
 function rateLimited(ip, now) {
@@ -55,7 +58,33 @@ function cleanBody(s) {
   return String(s).replace(CTRL_KEEP_NEWLINES, '').trim();
 }
 
+function setNoStore(res) {
+  res.setHeader('Cache-Control', 'no-store, max-age=0');
+  res.setHeader('Pragma', 'no-cache');
+}
+
+// Emit only an event code, upstream status and Vercel request ID. Never include
+// form fields, IP addresses, secrets, destination addresses or response bodies.
+function logFailure(req, code, upstreamStatus) {
+  const requestId = oneLine(req.headers['x-vercel-id'] || '').slice(0, 200);
+  console.error(JSON.stringify({
+    event: 'contact_api_failure',
+    code,
+    ...(upstreamStatus ? { upstreamStatus } : {}),
+    ...(requestId ? { requestId } : {}),
+  }));
+}
+
+function resendTimeoutMs() {
+  const configured = Number(process.env.CONTACT_RESEND_TIMEOUT_MS);
+  return Number.isFinite(configured) && configured >= 100 && configured <= 30_000
+    ? configured
+    : RESEND_TIMEOUT_MS;
+}
+
 export default async function handler(req, res) {
+  setNoStore(res);
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false });
@@ -82,6 +111,7 @@ export default async function handler(req, res) {
       ''
   );
   if (ip && rateLimited(ip, Date.now())) {
+    res.setHeader('Retry-After', String(Math.ceil(RL_WINDOW_MS / 1000)));
     return res.status(429).json({ ok: false });
   }
 
@@ -107,6 +137,7 @@ export default async function handler(req, res) {
   const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL;
   if (!RESEND_API_KEY || !CONTACT_TO_EMAIL) {
     // Misconfiguration — generic error to the client, no details leaked.
+    logFailure(req, 'configuration_missing');
     return res.status(500).json({ ok: false });
   }
 
@@ -120,9 +151,13 @@ export default async function handler(req, res) {
     message,
   ].filter((l) => l !== null).join('\n');
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), resendTimeoutMs());
+
   try {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
+      signal: controller.signal,
       headers: {
         Authorization: `Bearer ${RESEND_API_KEY}`,
         'Content-Type': 'application/json',
@@ -137,10 +172,19 @@ export default async function handler(req, res) {
     });
 
     if (!r.ok) {
+      logFailure(req, 'resend_http_failure', r.status);
       return res.status(502).json({ ok: false });
     }
     return res.status(200).json({ ok: true });
-  } catch {
+  } catch (error) {
+    logFailure(
+      req,
+      error && typeof error === 'object' && error.name === 'AbortError'
+        ? 'resend_timeout'
+        : 'resend_network_failure'
+    );
     return res.status(502).json({ ok: false });
+  } finally {
+    clearTimeout(timeout);
   }
 }
