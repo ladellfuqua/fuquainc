@@ -14,9 +14,4 @@ export default defineConfig({
     }),
   ],
   devToolbar: { enabled: false },
-  vite: {
-    // Allow the temporary Cloudflare tunnel host to reach the preview/dev server.
-    preview: { allowedHosts: true },
-    server: { allowedHosts: true },
-  },
 });
