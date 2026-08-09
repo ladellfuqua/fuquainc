@@ -77,19 +77,19 @@ const [featured] = await getPublishedArticles();
   </section>
 
   {/* ---------- Writing (LAD-30) ---------- */}
-  <section class="writing" aria-labelledby="writing-heading">
-    <div class="container">
-      <div class="writing__head">
+  <section class="writing home-section-motion" aria-labelledby="writing-heading" data-home-section>
+    <div class="container" data-home-parallax>
+      <div class="writing__head home-reveal">
         <h2 id="writing-heading" class="eyebrow">
           <span class="writing__index" aria-hidden="true">01</span> Writing
         </h2>
         <a href="/writing" class="writing__all">All articles <span aria-hidden="true">&rarr;</span></a>
       </div>
-      <p class="writing__dek">Occasional short articles on work, technology and culture.</p>
+      <p class="writing__dek home-reveal" style="--home-delay: 1">Occasional short articles on work, technology and culture.</p>
 
       {
         featured ? (
-          <a href={articleHref(featured)} class="writing-entry">
+          <a href={articleHref(featured)} class="writing-entry home-reveal" style="--home-delay: 2">
             <time class="writing-entry__date" datetime={featured.data.publishedAt.toISOString()}>
               {formatArticleMonth(featured.data.publishedAt)}
             </time>
@@ -107,18 +107,18 @@ const [featured] = await getPublishedArticles();
   </section>
 
   {/* ---------- How I Think (section 02) ---------- */}
-  <section class="section section--navy pov">
+  <section class="section section--navy pov home-section-motion" data-home-section>
     <div class="pov__field" aria-hidden="true">
       <BrandGraphic variant="field" />
     </div>
-    <div class="container pov__inner">
-      <h2 class="eyebrow pov__heading">
+    <div class="container pov__inner" data-home-parallax>
+      <h2 class="eyebrow pov__heading home-reveal">
         <span class="pov__index" aria-hidden="true">02</span> How I Think
       </h2>
       <ol class="pov__panels" role="list">
         {
-          principles.map((principle) => (
-            <li class="pov__panel">
+          principles.map((principle, index) => (
+            <li class="pov__panel home-reveal" style={`--home-delay: ${index + 1}`}>
               <span class="pov__number" aria-hidden="true">
                 {principle.number}
               </span>
@@ -132,10 +132,10 @@ const [featured] = await getPublishedArticles();
   </section>
 
   {/* ---------- Stay in touch (LAD-31) ---------- */}
-  <section class="section--tight connect" aria-labelledby="connect-heading">
-    <div class="container connect__inner">
-      <h2 id="connect-heading" class="eyebrow">Stay in touch</h2>
-      <div class="connect__links">
+  <section class="section--tight connect home-section-motion" aria-labelledby="connect-heading" data-home-section>
+    <div class="container connect__inner" data-home-parallax>
+      <h2 id="connect-heading" class="eyebrow home-reveal">Stay in touch</h2>
+      <div class="connect__links home-reveal" style="--home-delay: 1">
         <a
           href="https://www.linkedin.com/in/ladellfuqua/"
           class="arrow-link"
@@ -155,6 +155,8 @@ const [featured] = await getPublishedArticles();
 <style>
   /* ---------- Writing ---------- */
   .writing {
+    position: relative;
+    overflow: hidden;
     padding-block: clamp(2.5rem, 2rem + 2vw, 3.75rem);
     background: var(--bg-alt);
   }
@@ -430,6 +432,8 @@ const [featured] = await getPublishedArticles();
 
   /* ---------- Connect ---------- */
   .connect {
+    position: relative;
+    overflow: hidden;
     background: var(--bg);
     border-top: 1px solid var(--line);
   }
@@ -446,6 +450,55 @@ const [featured] = await getPublishedArticles();
     justify-content: center;
     flex-wrap: wrap;
     gap: 0.9rem clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-motion='enabled'] main.home-motion-ready) .home-reveal {
+      opacity: 0;
+      transform: translateY(2rem);
+      transition: opacity 880ms var(--ease), transform 880ms var(--ease);
+      transition-delay: calc(var(--home-delay, 0) * 120ms);
+    }
+
+    :global(html[data-motion='enabled'] main.home-motion-ready) .home-reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    :global(html[data-motion='enabled'] main.home-motion-ready) .home-section-motion::after {
+      content: '';
+      position: absolute;
+      z-index: 5;
+      top: 0;
+      right: var(--gutter);
+      left: var(--gutter);
+      height: 1px;
+      pointer-events: none;
+      opacity: 0;
+      transform: scaleX(0.18);
+      transform-origin: left;
+      background: color-mix(in srgb, var(--c-plum) 42%, transparent);
+      transition: opacity 900ms var(--ease), transform 1100ms var(--ease);
+    }
+
+    :global(html[data-motion='enabled'] main.home-motion-ready) .home-section-motion.is-section-visible::after {
+      opacity: 0.48;
+      transform: scaleX(1);
+    }
+
+    :global(html[data-motion='enabled'] main.home-motion-ready) [data-home-parallax] {
+      transform: translate3d(0, var(--home-parallax, 0), 0);
+    }
+
+    :global(html[data-motion='enabled'] main.home-motion-ready) .pov__field {
+      transform: scale(1.035);
+      transition: transform 1600ms var(--ease), opacity 1200ms var(--ease);
+    }
+
+    :global(html[data-motion='enabled'] main.home-motion-ready) .pov.is-section-visible .pov__field {
+      transform: scale(1);
+      opacity: 0.24;
+    }
   }
 </style>
 
@@ -495,4 +548,88 @@ const [featured] = await getPublishedArticles();
     );
     observer.observe(bio);
   }
+
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: no-preference)');
+  const main = document.querySelector<HTMLElement>('main');
+  const homeRevealItems = Array.from(document.querySelectorAll<HTMLElement>('.home-reveal'));
+  const homeSections = Array.from(document.querySelectorAll<HTMLElement>('[data-home-section]'));
+  const homeParallaxItems = Array.from(document.querySelectorAll<HTMLElement>('[data-home-parallax]'));
+  let homeRevealObserver: IntersectionObserver | undefined;
+  let homeSectionObserver: IntersectionObserver | undefined;
+  let homeFrame = 0;
+
+  function disableHomeMotion() {
+    main?.classList.remove('home-motion-ready');
+    homeRevealObserver?.disconnect();
+    homeSectionObserver?.disconnect();
+    homeRevealObserver = undefined;
+    homeSectionObserver = undefined;
+    homeRevealItems.forEach((item) => item.classList.remove('is-visible'));
+    homeSections.forEach((section) => section.classList.remove('is-section-visible'));
+    homeParallaxItems.forEach((item) => {
+      item.style.removeProperty('--home-parallax');
+      item.style.removeProperty('transform');
+    });
+  }
+
+  function updateHomeParallax() {
+    homeFrame = 0;
+    if (document.documentElement.dataset.motion !== 'enabled' || !motionQuery.matches) return;
+    const viewport = Math.max(window.innerHeight, 1);
+    homeParallaxItems.forEach((item) => {
+      const rect = item.getBoundingClientRect();
+      const centerOffset = (rect.top + rect.height / 2 - viewport / 2) / viewport;
+      const shift = Math.max(-20, Math.min(20, centerOffset * -20));
+      item.style.setProperty('--home-parallax', `${shift.toFixed(2)}px`);
+      item.style.transform = `translate3d(0, ${shift.toFixed(2)}px, 0)`;
+    });
+  }
+
+  function requestHomeParallax() {
+    if (!homeFrame) homeFrame = window.requestAnimationFrame(updateHomeParallax);
+  }
+
+  function prepareHomeMotion() {
+    if (
+      document.documentElement.dataset.motion !== 'enabled' ||
+      !motionQuery.matches ||
+      !('IntersectionObserver' in window)
+    ) {
+      disableHomeMotion();
+      return;
+    }
+
+    main?.classList.add('home-motion-ready');
+    homeRevealObserver?.disconnect();
+    homeRevealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).classList.add('is-visible');
+          homeRevealObserver?.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+    );
+    homeRevealItems.forEach((item) => homeRevealObserver?.observe(item));
+
+    homeSectionObserver?.disconnect();
+    homeSectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).classList.add('is-section-visible');
+          homeSectionObserver?.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -8% 0px' }
+    );
+    homeSections.forEach((section) => homeSectionObserver?.observe(section));
+    requestHomeParallax();
+  }
+
+  window.addEventListener('scroll', requestHomeParallax, { passive: true });
+  window.addEventListener('resize', requestHomeParallax, { passive: true });
+  motionQuery.addEventListener?.('change', prepareHomeMotion);
+  prepareHomeMotion();
 </script>
