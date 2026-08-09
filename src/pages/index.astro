@@ -60,11 +60,23 @@ const teamPrinciples = [
   },
 ];
 
-// How I Think (§23) — rebalanced across growth, cross-functional leadership, technology, customer behavior.
+// How I Think (LAD-28) — one typographic block; no icons or illustrations.
 const principles = [
-  'Growth is an organizational capability, not simply a marketing function.',
-  'The most interesting opportunities often sit between traditional functions, not neatly inside them.',
-  'Technology changes what is possible. Customer behavior determines what matters.',
+  {
+    number: '01',
+    title: 'Growth is a system',
+    body: 'It happens when ideas, people, technology and opportunity connect — rarely inside one department.',
+  },
+  {
+    number: '02',
+    title: 'Teams outperform heroes',
+    body: 'Shared goals, clear decision rights and enough trust beat any org chart.',
+  },
+  {
+    number: '03',
+    title: 'Clarity is the work',
+    body: "Most stalled work isn't a strategy problem or a talent problem — no one agrees on what matters or who decides.",
+  },
 ];
 
 // Latest Writing (§16) — wired to real content later. Elegant single-feature state, never empty cards.
@@ -228,15 +240,21 @@ const featured: {
     <div class="pov__field" aria-hidden="true">
       <BrandGraphic variant="field" />
     </div>
-    <div class="container split pov__inner">
-      <div class="split__label">
-        <p class="eyebrow">How I Think</p>
-      </div>
-      <div class="split__content">
-        <ol class="pov__list" role="list">
-          {principles.map((p) => <li class="pov__item">{p}</li>)}
-        </ol>
-      </div>
+    <div class="container pov__inner">
+      <h2 class="eyebrow pov__heading">How I Think</h2>
+      <ol class="pov__panels" role="list">
+        {
+          principles.map((principle) => (
+            <li class="pov__panel">
+              <span class="pov__number" aria-hidden="true">
+                {principle.number}
+              </span>
+              <h3 class="pov__title">{principle.title}</h3>
+              <p class="pov__body">{principle.body}</p>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </section>
 
@@ -519,6 +537,7 @@ const featured: {
     position: absolute;
     inset: 0;
     pointer-events: none;
+    opacity: 0.18;
   }
   .pov__field :global(.bg-graphic) {
     width: 100%;
@@ -527,36 +546,68 @@ const featured: {
   .pov__inner {
     position: relative;
   }
-  .pov__list {
+  .pov__heading {
+    margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  }
+  .pov__panels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     list-style: none;
     padding: 0;
     margin: 0;
-    counter-reset: pov;
+    border-block: 1px solid var(--on-dark-line);
   }
-  .pov__item {
-    counter-increment: pov;
-    font-family: var(--font-serif);
-    font-size: var(--fs-lg);
-    line-height: var(--lh-snug);
-    color: var(--on-dark);
-    padding-block: clamp(1.25rem, 1rem + 1vw, 1.9rem);
-    max-width: 34ch;
+  .pov__panel {
     position: relative;
-    padding-left: 2.6rem;
+    min-height: 19rem;
+    padding: clamp(2rem, 1.5rem + 2.2vw, 3rem);
+    transition: background-color var(--dur) var(--ease);
   }
-  .pov__item + .pov__item {
-    border-top: 1px solid var(--on-dark-line);
+  .pov__panel + .pov__panel {
+    border-left: 1px solid var(--on-dark-line);
   }
-  .pov__item::before {
-    content: counter(pov, decimal-leading-zero);
-    position: absolute;
-    left: 0;
-    top: clamp(1.35rem, 1.1rem + 1vw, 2rem);
-    font-family: var(--font-sans);
+  .pov__panel:hover {
+    background: var(--c-navy-soft);
+  }
+  .pov__number {
+    display: block;
     font-size: 0.8rem;
     font-weight: var(--weight-semi);
-    letter-spacing: 0.08em;
-    color: var(--accent-2);
+    letter-spacing: 0.14em;
+    color: #c9adc0;
+    margin-bottom: clamp(2rem, 1.5rem + 1vw, 2.75rem);
+  }
+  .pov__title {
+    max-width: 13ch;
+    color: var(--on-dark);
+    font-size: clamp(1.55rem, 1.25rem + 1vw, 2rem);
+    line-height: 1.14;
+  }
+  .pov__body {
+    max-width: 31ch;
+    margin-top: 1.15rem;
+    color: #c6cdd5;
+    font-size: clamp(0.98rem, 0.94rem + 0.16vw, 1.08rem);
+    line-height: 1.65;
+  }
+  @media (max-width: 52rem) {
+    .pov__panels {
+      grid-template-columns: 1fr;
+    }
+    .pov__panel {
+      min-height: 0;
+    }
+    .pov__panel + .pov__panel {
+      border-top: 1px solid var(--on-dark-line);
+      border-left: 0;
+    }
+    .pov__number {
+      margin-bottom: 1.5rem;
+    }
+    .pov__title,
+    .pov__body {
+      max-width: var(--measure-narrow);
+    }
   }
 
   /* ---------- About (home) ---------- */
