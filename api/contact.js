@@ -18,13 +18,6 @@
  * Responses are generic and reveal no infrastructure details.
  */
 
-const REASONS = new Set([
-  'Leadership inquiry',
-  'Advisory inquiry',
-  'Response to an essay or idea',
-  'Other professional inquiry',
-]);
-
 const LIMITS = { name: 100, email: 254, organization: 150, message: 5000 };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Control characters to strip. Keep \n (\x0A) and \r (\x0D) in message bodies.
@@ -119,14 +112,12 @@ export default async function handler(req, res) {
   const name = oneLine(body.name || '');
   const email = oneLine(body.email || '');
   const organization = oneLine(body.organization || '');
-  const reason = oneLine(body.reason || '');
   const message = cleanBody(body.message || '');
 
   const valid =
     name.length > 0 && name.length <= LIMITS.name &&
     email.length <= LIMITS.email && EMAIL_RE.test(email) &&
     organization.length <= LIMITS.organization &&
-    REASONS.has(reason) &&
     message.length > 0 && message.length <= LIMITS.message;
 
   if (!valid) {
@@ -142,7 +133,6 @@ export default async function handler(req, res) {
   }
 
   const text = [
-    `Reason: ${reason}`,
     `Name: ${name}`,
     `Email: ${email}`,
     organization ? `Organization: ${organization}` : null,
@@ -166,7 +156,7 @@ export default async function handler(req, res) {
         from: 'FUQUA INC. Website <contact@fuquainc.com>',
         to: [CONTACT_TO_EMAIL],
         reply_to: email,
-        subject: `Contact: ${reason}`,
+        subject: 'Website contact',
         text,
       }),
     });

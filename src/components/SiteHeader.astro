@@ -71,6 +71,12 @@ const isCurrent = (href: string) =>
     backdrop-filter: saturate(1.1) blur(8px);
     border-bottom: 1px solid var(--line);
   }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .site-header {
+      transition: background-color 300ms var(--ease), border-color 300ms var(--ease), backdrop-filter 300ms var(--ease);
+    }
+  }
   .site-header__inner {
     display: flex;
     align-items: center;
