@@ -1,7 +1,7 @@
 ---
 title: Growth rarely belongs to one department
-deck: On shared outcomes, clear decision rights, and why the org chart keeps losing.
-summary: Growth becomes more achievable when teams organize around a shared outcome instead of separate functional scorecards.
+deck: "On building growth teams: shared goals, clear decision rights, and why the org chart keeps losing."
+summary: "On building growth teams: shared goals, clear decision rights, and why the org chart keeps losing."
 publishedAt: 2026-08-09
 readingTime: 4 min read
 themes:
@@ -10,46 +10,49 @@ status: published
 featured: true
 ---
 
-Growth is often assigned to a department. The work itself rarely cooperates.
+Every company I have worked in or with has tried, at some point, to solve growth the same way. Draw a box on the org chart. Label it Growth. Hire someone talented to sit in it. Wait.
 
-A customer does not experience marketing, product, technology, operations and service as separate functions. They experience one organization. The opportunities that matter most tend to cross those boundaries too: a better first experience, a clearer value proposition, a more useful product, a smoother path from interest to loyalty.
+It rarely works. And the more I have watched it play out, the more convinced I am that the problem is not the person in the box. It is the box.
 
-That is why growth can stall even when every department appears to be doing its job. Each team improves its own scorecard, but nobody owns the connections between them.
+Growth is not a department. It is an outcome, and it gets produced or blocked at the seams between departments. A subscription business grows where marketing's promise meets the product's first-week experience. A media brand grows where editorial instinct meets audience data meets how the sales side packages it all. Nobody owns those seams. That is why the org chart keeps losing.
 
-## Start with one shared outcome
+## What happens when growth is one team's job
 
-Cross-functional work becomes difficult when the group is handed a collection of adjacent goals instead of one result it must produce together.
+I have seen the same three things happen almost every time:
 
-The distinction matters. “Increase campaign performance,” “ship the feature” and “improve conversion” may all be reasonable functional goals. They do not automatically add up to a shared mandate. A team can meet each one and still miss the larger opportunity.
+- **Everyone else hands off the responsibility.** The moment a growth team exists, growth is their problem. Every other leader goes back to protecting their own numbers.
+- **The growth team owns targets without owning levers.** They can see that retention is the issue, but retention lives in someone else's backlog. So they work the levers they do control, usually at the top of the funnel, and activity gets mistaken for progress.
+- **The most interesting problems go unclaimed.** The biggest opportunities almost always sit at intersections nobody was hired to watch.
 
-A useful mandate names the outcome in language everyone can recognize. It gives specialists a common problem to solve without pretending their disciplines are interchangeable. The aim is not to erase functional expertise. It is to organize that expertise around the same destination.
+## What works instead
 
-## Bring the right disciplines in early
+The teams I have seen grow well do not treat growth as a place. They treat it as an agreement, with two parts.
 
-Organizations often call a group cross-functional after the central decisions have already been made. One function defines the problem, another receives a brief, and several more are asked to execute downstream. The team is diverse on paper but sequential in practice.
+**A shared goal.** It has to be small and real. One or two numbers that several leaders own together, with real consequences attached. Not a dashboard of twenty where everyone can find one that flatters them. When two leaders are accountable for the same number, the conversation between them changes. They stop negotiating and start solving.
 
-Real collaboration starts earlier. The people who understand the audience, the product, the technology, the economics and the operating constraints need a voice while the problem is still being framed. Early tension is useful. It reveals assumptions before they harden into plans.
+**Clear decision rights.** This is the less glamorous half, and the more important one. Most cross-functional efforts do not die from bad ideas. They die from ambiguity about who decides. Who can change the onboarding flow? Who can approve a pricing test? Who can pull tech time against a marketing hypothesis? If the answer is "let's align," things will move at the speed of the most cautious person in the room.
 
-This does not mean every person joins every conversation. It means the people who can materially change the outcome are present when their judgment matters.
+The fix is simple, and it works: write it down. For each lever that matters to growth, agree on three things:
 
-## Make decision rights visible
+- One person who makes the call
+- Who gets consulted before it's made
+- How fast the decision happens
 
-Many stalled initiatives are described as strategy problems when they are actually clarity problems. People do not know which decision has been made, which remains open, whose input is required or who is accountable for the call.
+It feels bureaucratic for about a week. Then it feels like speed.
 
-Ambiguity creates its own bureaucracy. Meetings multiply because nobody is sure where authority sits. Teams revisit settled questions because the decision was never made visible. Work slows while each function protects its own interpretation.
+## The team you actually need
 
-Clear decision rights are not a rigid approval chart. They are a practical agreement about how the group will move: who recommends, who contributes, who decides and how the decision will be communicated.
+None of this means you should never dedicate people to growth. You often should. But their job changes. They are the connective tissue. They run the experiments, keep the shared number in front of leadership, and push the decisions that would otherwise drift.
 
-## Build accountability without adding drag
+The best growth operators I have worked with spend most of their time in other people's meetings. They are curious about every function and possessive of none.
 
-Accountability works best when progress is easy to see and problems are safe to surface. A small number of shared measures, a clear owner for each commitment and a regular operating rhythm usually reveal more than layers of status reporting.
+## Two questions before you reorganize
 
-The point is not to monitor activity. It is to help the team learn whether its choices are producing the intended result—and to adjust while adjustment is still possible.
+If your growth efforts feel stuck, resist the urge to redraw the org chart. Ask these first:
 
-That requires trust. People must be able to say that an assumption was wrong, a dependency is at risk or a customer response is different from what the team expected. When people are rewarded for protecting their corner, the organization learns too slowly.
+1. Do the leaders closest to the customer share a goal with real consequences?
+2. For the levers that matter most, can everyone in the room name the decider without hesitating?
 
-## The connective work is the work
+If the answer is no, you have an ownership problem, not a growth problem. The good news is you can fix it without touching the org chart.
 
-Growth does not become cross-functional because an org chart gains a dotted line. It becomes cross-functional when people share an outcome, understand how decisions will be made and treat coordination as part of the job rather than as overhead around it.
-
-The strongest teams are not collections of heroes. They are systems of complementary judgment. Their advantage comes from the quality of the connections: between disciplines, between decisions and evidence, and between individual accountability and a result everyone owns.
+I have seen this from a few different seats over the years, and I am still learning. I would rather hear thought out points of view than hard answers, so I will ask: where have you seen growth actually live in your organization?

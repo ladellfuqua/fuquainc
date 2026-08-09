@@ -102,6 +102,22 @@ const { title, deck, summary, publishedAt, readingTime, themes, image } =
   .article-prose :global(p + p) {
     margin-top: 1.35rem;
   }
+  .article-prose :global(ul),
+  .article-prose :global(ol) {
+    max-width: 68ch;
+    margin-top: 1.25rem;
+    padding-left: 1.4em;
+  }
+  .article-prose :global(li) {
+    padding-left: 0.35em;
+  }
+  .article-prose :global(li + li) {
+    margin-top: 0.65rem;
+  }
+  .article-prose :global(strong) {
+    color: var(--heading);
+    font-weight: var(--weight-semi);
+  }
   .article-prose :global(h2) {
     max-width: 26ch;
     margin-top: clamp(2.75rem, 2.2rem + 2vw, 3.75rem);
