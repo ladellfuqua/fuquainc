@@ -1,8 +1,7 @@
 User-agent: *
 Allow: /
 
-# Internal, non-public pages (also noindex)
+# Internal, non-public page (also noindex)
 Disallow: /mockups
-Disallow: /visual-system
 
 Sitemap: https://fuquainc.com/sitemap-index.xml
