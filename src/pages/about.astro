@@ -1,303 +1,552 @@
 ---
 /**
- * About Ladell (LAD-10). Approved content-and-design brief.
- * Warm, human, quietly confident editorial page — not a résumé template.
- * Uses the FUQUA visual system with restraint; portrait leads, graphic used
- * selectively and never over the face or copy.
+ * About page redesign (LAD-34).
+ *
+ * The header image is intentionally an abstracted source layer: an owned
+ * portrait is enlarged, heavily blurred, palette-graded, and covered by the
+ * navy treatment so no photographic detail remains legible.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import BrandGraphic from '../components/BrandGraphic.astro';
 import { Picture } from 'astro:assets';
 import portrait from '../assets/ladell-portrait.png';
 ---
 
 <BaseLayout
-  title="About"
-  description="About Ladell Fuqua — executive leadership across marketing, technology, operations and business transformation, built on curiosity and people."
+  title="About Ladell"
+  description="About Ladell Fuqua — leadership shaped by curiosity, trusted relationships, strong teams and meaningful work."
+  headerTone="dark"
 >
-  {/* ---------- Intro: portrait + opening ---------- */}
-  <section class="section section--tight about-intro">
-    <div class="container about-intro__grid">
-      <div class="about-intro__copy">
-        <p class="eyebrow">About</p>
-        <h1 class="about-intro__title">About Ladell</h1>
-        <p class="lead">
-          I&rsquo;ve spent my career in executive leadership roles helping organizations grow,
-          solve difficult problems and bring people together around shared goals.
-        </p>
-        <p class="about-intro__body">
-          My experience spans marketing, technology, operations and business transformation.
-          Across those disciplines, the work I&rsquo;ve found most meaningful has involved building
-          relationships, developing teams and helping people turn ideas into results.
-        </p>
-      </div>
-
-      <figure class="portrait">
-        <div class="portrait__frame">
-          <Picture
-            src={portrait}
-            formats={['avif', 'webp']}
-            widths={[420, 640, 900, 1023]}
-            sizes="(max-width: 52rem) 78vw, 40vw"
-            alt="Portrait of Ladell Fuqua"
-            class="portrait__img"
-            loading="eager"
-            fetchpriority="high"
-          />
-        </div>
-      </figure>
+  <section class="about-hero" aria-labelledby="about-title">
+    <div class="about-hero__backdrop" aria-hidden="true">
+      <Picture
+        src={portrait}
+        formats={['avif', 'webp']}
+        widths={[640, 900, 1023]}
+        sizes="100vw"
+        alt=""
+        class="about-hero__image"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <span class="about-hero__tint"></span>
+      <span class="about-hero__grain"></span>
     </div>
-  </section>
 
-  {/* ---------- Connecting people and ideas ---------- */}
-  <section class="section section--tight about-block">
-    <div class="container split">
-      <div class="split__label">
-        <h2 class="about-block__title">Connecting people and ideas</h2>
-      </div>
-      <div class="split__content">
-        <p>
-          I&rsquo;m naturally curious and drawn to questions that don&rsquo;t have obvious answers.
-          I enjoy working across traditional boundaries&mdash;connecting people, perspectives and
-          capabilities that might otherwise remain separate.
-        </p>
-        <p>
-          Marketing became the foundation of my career. It gave me the opportunity to learn how
-          consumers, creative ideas and business decisions come together&mdash;and how much strong
-          results depend on the people doing the work. As my experience grew, so did the scope of
-          my leadership. I moved into broader executive roles, bringing together teams and
-          disciplines to solve problems and work toward shared goals.
-        </p>
-        <p>
-          I&rsquo;ve also had opportunities to help organizations work more clearly and effectively.
-          I tend to notice unnecessary friction, unclear responsibilities and disconnected efforts.
-          Addressing those issues is not simply about efficiency; it is about helping people focus
-          their energy where it can have the greatest effect.
-        </p>
-      </div>
-    </div>
-  </section>
+    <svg class="about-hero__linework" viewBox="0 0 1440 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <line x1="760" y1="760" x2="1560" y2="-140" />
+      <line x1="980" y1="-120" x2="1300" y2="740" />
+      <circle class="about-hero__arc" cx="1140" cy="250" r="250" />
+      <circle class="about-hero__node" cx="1318" cy="98" r="5" />
+    </svg>
 
-  {/* ---------- A formative chapter (stone, with a selective motif) ---------- */}
-  <section class="section section--stone about-chapter">
-    <div class="about-chapter__art" aria-hidden="true">
-      <BrandGraphic variant="motif" />
-    </div>
-    <div class="container split about-chapter__inner">
-      <div class="split__label">
-        <h2 class="about-block__title">A formative chapter</h2>
-      </div>
-      <div class="split__content">
-        <p>
-          AOL was one of the most formative chapters of my career and has influenced how I&rsquo;ve
-          thought about work for nearly three decades.
-        </p>
-        <p>
-          I arrived after changing fields and had to learn a new industry while it was transforming
-          in real time. One of my early leaders there, Bruce Thompson, taught me a great deal about
-          navigating corporate life, building credibility and understanding how organizations really
-          work.
-        </p>
-        <p>
-          That experience established a pattern that has continued throughout my career: enter
-          complex situations, listen carefully, build trusted relationships and help teams find a
-          clearer way forward.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  {/* ---------- Relationships beyond the work ---------- */}
-  <section class="section section--tight about-block">
-    <div class="container split">
-      <div class="split__label">
-        <h2 class="about-block__title">Relationships beyond the work</h2>
-      </div>
-      <div class="split__content">
-        <p>
-          One of the things I value most about my career is the relationships that have continued
-          beyond a particular role or company.
-        </p>
-        <p>
-          Over the years, colleagues have become friends. We&rsquo;ve stayed connected through career
-          changes, weddings, growing families and new chapters in our lives. I&rsquo;ve been fortunate
-          to share in some of those moments, including officiating the wedding of a former colleague
-          and friend.
-        </p>
-        <p>
-          Those relationships have shaped how I think about leadership. Work asks a great deal of
-          people, and results matter&mdash;but so do trust, care and the experience people have while
-          pursuing them together.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  {/* ---------- Beyond work ---------- */}
-  <section class="section section--tight about-block">
-    <div class="container split">
-      <div class="split__label">
-        <h2 class="about-block__title">Beyond work</h2>
-      </div>
-      <div class="split__content">
-        <p>
-          I&rsquo;m an introvert who values genuine connection. Outside work, I enjoy cycling,
-          traveling, discovering places that shift my perspective and settling in with genuinely
-          good television.
-        </p>
-        <p>
-          Today, I remain focused on leading, building teams and helping organizations navigate
-          growth and change. I also value thoughtful relationships with people who are building
-          something meaningful, working through an interesting problem or exploring ideas about work,
-          technology, culture and opportunity.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  {/* ---------- Closing ---------- */}
-  <section class="section section--tight about-close">
-    <div class="container">
-      <p class="about-close__line">
-        I believe good work begins with curiosity and becomes meaningful through people.
+    <div class="container about-hero__inner" data-about-parallax>
+      <p class="eyebrow about-hero__eyebrow about-reveal">About Ladell</p>
+      <h1 id="about-title" class="about-hero__statement about-reveal" data-delay="1">
+        Walk into a complex situation, listen carefully, build trusted relationships, and help the team find a{' '}
+        <em>clearer way forward.</em>
+      </h1>
+      <p class="about-hero__under about-reveal" data-delay="2">
+        That pattern has repeated in nearly every role I&rsquo;ve had. My experience spans marketing, technology,
+        operations and business transformation &mdash; and across those disciplines, the work I&rsquo;ve found most
+        meaningful has involved building relationships, developing teams and helping people turn ideas into results.
       </p>
-      <div class="about-close__links">
-        <a href="/writing" class="arrow-link">
-          Read Essays &amp; Ideas <span class="arrow" aria-hidden="true">&rarr;</span>
-        </a>
-        <a href="/contact" class="arrow-link">
-          Contact <span class="arrow" aria-hidden="true">&rarr;</span>
-        </a>
+    </div>
+
+    <div class="about-hero__handoff" aria-hidden="true"></div>
+  </section>
+
+  <section class="career-spine" aria-label="Career overview">
+    <div class="container career-spine__grid">
+      <div class="career-spine__item about-reveal">
+        <p class="career-spine__label">Today</p>
+        <p class="career-spine__value"><strong>Chief Operating Officer</strong><br />PWX Solutions</p>
       </div>
+      <div class="career-spine__item about-reveal" data-delay="1">
+        <p class="career-spine__label">Career</p>
+        <p class="career-spine__value">
+          Three decades in media, including <strong>Cond&eacute; Nast</strong>, <strong>AOL</strong> and <strong>TheStreet</strong>
+        </p>
+      </div>
+      <div class="career-spine__item about-reveal" data-delay="2">
+        <p class="career-spine__label">Based</p>
+        <p class="career-spine__value">New York</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section about-section--ivory" aria-labelledby="connecting-title">
+    <div class="container about-section__inner" data-about-parallax>
+      <h2 id="connecting-title" class="about-section__title about-reveal">Connecting people and ideas</h2>
+      <div class="about-section__copy">
+        <p class="about-reveal" data-delay="1">
+          I&rsquo;m naturally curious and drawn to questions that don&rsquo;t have obvious answers. I enjoy working across
+          traditional boundaries &mdash; connecting people, perspectives and capabilities that might otherwise remain separate.
+        </p>
+        <p class="about-reveal" data-delay="1">
+          Marketing became the foundation of my career. It gave me the opportunity to learn how consumers, creative ideas
+          and business decisions come together &mdash; and how much strong results depend on the people doing the work. As my
+          experience grew, so did the scope of my leadership.
+        </p>
+        <p class="about-reveal" data-delay="2">
+          I tend to notice unnecessary friction &mdash; unclear responsibilities, disconnected efforts. Addressing that isn&rsquo;t
+          really about efficiency; it&rsquo;s about helping people spend their energy where it counts.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section about-section--stone about-chapter" aria-labelledby="aol-title">
+    <div class="about-chapter__linework" aria-hidden="true"></div>
+    <div class="container about-section__inner" data-about-parallax>
+      <p class="eyebrow about-reveal">A formative chapter</p>
+      <h2 id="aol-title" class="about-section__title about-chapter__title about-reveal">AOL</h2>
+      <div class="about-section__copy">
+        <p class="about-reveal" data-delay="1">
+          AOL was one of the most formative chapters of my career, and it has shaped how I&rsquo;ve thought about work ever since.
+        </p>
+        <p class="about-reveal" data-delay="2">
+          I arrived after changing fields and had to learn a new industry while it was transforming in real time. One of my
+          early leaders there, <strong>Bruce Thompson</strong>, taught me a great deal about navigating corporate life, building
+          credibility and understanding how organizations really work.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section about-section--ivory" aria-labelledby="relationships-title">
+    <div class="container about-section__inner" data-about-parallax>
+      <h2 id="relationships-title" class="about-section__title about-reveal">Relationships beyond the work</h2>
+      <div class="about-section__copy">
+        <p class="about-reveal" data-delay="1">
+          One of the things I value most about my career is the relationships that have continued beyond a particular role or company.
+        </p>
+        <p class="about-reveal" data-delay="2">
+          Over the years, colleagues have become friends. We&rsquo;ve stayed connected through career changes, weddings, growing
+          families and new chapters in our lives. I&rsquo;ve been fortunate to share in some of those moments, including officiating
+          the wedding of a former colleague and friend.
+        </p>
+        <blockquote class="about-pullquote about-reveal" data-delay="3">
+          <p>
+            Work asks a great deal of people, and results matter &mdash; but so do trust, care and the experience people have while
+            pursuing them together.
+          </p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section about-section--stone" aria-labelledby="beyond-title">
+    <div class="container about-section__inner" data-about-parallax>
+      <h2 id="beyond-title" class="about-section__title about-reveal">Beyond work</h2>
+      <div class="about-section__copy">
+        <p class="about-reveal" data-delay="1">
+          I&rsquo;m an introvert who values genuine connection. Outside work, I enjoy cycling, traveling, discovering places that
+          shift my perspective and settling in with genuinely good television.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-closing" aria-labelledby="about-closing-title">
+    <div class="container about-closing__inner" data-about-parallax>
+      <p class="about-closing__now about-reveal">
+        Today I remain focused on leading, building teams and helping organizations navigate growth and change.
+      </p>
+      <h2 id="about-closing-title" class="about-closing__credo about-reveal" data-delay="1">
+        Good work begins with curiosity and becomes meaningful through people.
+      </h2>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  /* ---------- Intro ---------- */
-  .about-intro__grid {
+  .about-hero {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
     align-items: center;
-    gap: clamp(2rem, 1rem + 5vw, 5rem);
-  }
-  .about-intro__title {
-    margin-top: 0.5rem;
-    font-size: var(--fs-2xl);
-    letter-spacing: var(--tracking-tight);
-    line-height: var(--lh-tight);
-  }
-  .about-intro__copy .lead {
-    margin-top: 1.5rem;
-  }
-  .about-intro__body {
-    margin-top: 1.2rem;
-    max-width: var(--measure);
+    min-height: clamp(38rem, 60svh, 48rem);
+    margin-top: -4.5rem;
+    padding-block: clamp(9rem, 17vh, 12rem) clamp(7rem, 14vh, 10rem);
+    overflow: hidden;
+    isolation: isolate;
+    color: #f2efe8;
+    background: var(--c-navy);
   }
 
-  .portrait {
-    margin: 0;
+  :global(body:has(.about-hero) .site-header--dark:not([data-scrolled='true'])) {
+    background: transparent;
+    border-bottom-color: transparent;
   }
-  .portrait__frame {
-    position: relative;
-    aspect-ratio: 4 / 5;
+
+  .about-hero__backdrop,
+  .about-hero__tint,
+  .about-hero__grain,
+  .about-hero__linework,
+  .about-hero__handoff {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .about-hero__backdrop {
+    z-index: -3;
+    inset: -12%;
     overflow: hidden;
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    background: var(--c-stone);
-    box-shadow: var(--shadow);
+    background: linear-gradient(115deg, #111d2c, #2d394b 58%, #1b2637);
   }
-  .portrait__img {
+
+  .about-hero__backdrop :global(picture) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .about-hero__backdrop :global(.about-hero__image) {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 18%;
-    display: block;
+    object-position: 50% 34%;
+    opacity: 0.48;
+    filter: blur(48px) saturate(0.34) contrast(0.82) brightness(0.72);
+    transform: scale(1.16);
   }
 
-  @media (max-width: 52rem) {
-    .about-intro__grid {
-      grid-template-columns: 1fr;
-    }
-    .portrait {
-      order: -1;
-      max-width: 22rem;
-      margin-inline: auto;
-    }
-    .portrait__frame {
-      aspect-ratio: 4 / 5;
-    }
+  .about-hero__tint {
+    z-index: 1;
+    inset: 0;
+    background:
+      linear-gradient(100deg, rgba(13, 20, 31, 0.92) 0%, rgba(13, 20, 31, 0.76) 38%, rgba(13, 20, 31, 0.4) 72%, rgba(13, 20, 31, 0.58) 100%),
+      radial-gradient(64% 72% at 80% 26%, rgba(127, 145, 165, 0.25), rgba(111, 83, 104, 0.14) 46%, transparent 78%),
+      linear-gradient(180deg, rgba(11, 17, 27, 0.58), transparent 34%, rgba(11, 17, 27, 0.28));
   }
 
-  /* ---------- Narrative blocks (editorial sideheads) ---------- */
-  .split {
-    display: grid;
-    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
-    gap: clamp(1.5rem, 1rem + 4vw, 5rem);
-  }
-  .split__label {
-    padding-top: 0.3rem;
-  }
-  @media (max-width: 48rem) {
-    .split {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-  }
-  .about-block__title {
-    font-size: var(--fs-md);
-    font-weight: var(--weight-semi);
-    color: var(--heading);
-    letter-spacing: var(--tracking-tight);
-    line-height: var(--lh-snug);
-  }
-  .about-block .split__content > * + *,
-  .about-chapter .split__content > * + * {
-    margin-top: 1.2rem;
-  }
-  .about-block .split__content p,
-  .about-chapter .split__content p {
-    max-width: var(--measure);
+  .about-hero__grain {
+    z-index: 2;
+    inset: 0;
+    opacity: 0.11;
+    mix-blend-mode: soft-light;
+    background:
+      repeating-linear-gradient(23deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(117deg, rgba(0, 0, 0, 0.08) 0 1px, transparent 1px 5px);
+    background-size: 7px 9px, 11px 13px;
   }
 
-  /* ---------- Formative chapter (stone) ---------- */
-  .about-chapter {
+  .about-hero__linework {
+    z-index: -1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .about-hero__linework line,
+  .about-hero__linework .about-hero__arc {
+    fill: none;
+    stroke: #f7f5f0;
+    stroke-width: 1.15;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .about-hero__linework line:first-child { opacity: 0.13; }
+  .about-hero__linework line:nth-child(2) { opacity: 0.07; }
+  .about-hero__linework .about-hero__arc { opacity: 0.09; }
+  .about-hero__linework .about-hero__node { fill: #c9adc1; opacity: 0.85; }
+
+  .about-hero__inner {
     position: relative;
+    z-index: 3;
+  }
+
+  .about-hero__eyebrow {
+    color: #d5b9ce;
+  }
+
+  .about-hero__statement {
+    max-width: 17em;
+    margin-top: 1.5rem;
+    color: #f7f4ee;
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 3.6vw, 3.15rem);
+    font-weight: var(--weight-normal);
+    line-height: 1.14;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .about-hero__statement em {
+    color: #d5b9ce;
+    font-weight: var(--weight-normal);
+  }
+
+  .about-hero__under {
+    max-width: 39rem;
+    margin-top: 1.75rem;
+    padding-top: 1.35rem;
+    border-top: 1px solid rgba(247, 245, 240, 0.24);
+    color: #d4dae1;
+    font-size: clamp(1rem, 0.95rem + 0.18vw, 1.08rem);
+    line-height: 1.68;
+  }
+
+  .about-hero__handoff {
+    z-index: 4;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: clamp(4.5rem, 12vh, 7rem);
+    background: linear-gradient(180deg, transparent, rgba(127, 145, 165, 0.22) 48%, rgba(227, 223, 216, 0.78) 82%, var(--c-stone));
+  }
+
+  .career-spine {
+    background: var(--c-stone);
+    padding-block: clamp(2rem, 4vw, 2.75rem);
+  }
+
+  .career-spine__grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1.65fr 0.7fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .career-spine__label {
+    color: var(--c-plum-deep);
+    font-size: 0.75rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+  }
+
+  .career-spine__value {
+    margin-top: 0.35rem;
+    color: var(--c-navy);
+    font-size: clamp(0.95rem, 0.91rem + 0.18vw, 1.05rem);
+    line-height: 1.5;
+  }
+
+  .career-spine__value strong { font-weight: var(--weight-semi); }
+
+  .about-section {
+    position: relative;
+    padding-block: clamp(4rem, 8vw, 6.25rem);
     overflow: hidden;
   }
-  .about-chapter__art {
+
+  .about-section--ivory { background: var(--c-ivory); }
+  .about-section--stone { background: var(--c-stone); }
+
+  .about-section__inner {
+    max-width: 47rem;
+  }
+
+  .about-section__title {
+    margin-bottom: 1.55rem;
+    color: var(--c-navy);
+    font-size: clamp(1.65rem, 1.4rem + 1vw, 2.1rem);
+    line-height: 1.2;
+  }
+
+  .about-section__copy > * + * { margin-top: 1.25rem; }
+  .about-section__copy p { color: var(--c-graphite); }
+
+  .about-chapter::before,
+  .about-chapter::after {
+    content: '';
     position: absolute;
-    top: clamp(-1rem, -0.5rem - 1vw, 0rem);
-    right: calc(-1 * clamp(1.5rem, 1rem + 3vw, 4rem));
-    width: clamp(140px, 20vw, 240px);
-    opacity: 0.7;
+    inset: -20% -10%;
     pointer-events: none;
+    border-left: 1px solid rgba(24, 37, 54, 0.07);
+    transform: skewX(-21deg);
   }
-  .about-chapter__inner {
+
+  .about-chapter::after {
+    inset-inline-start: 67%;
+    opacity: 0.7;
+  }
+
+  .about-chapter__title {
+    margin-top: 0.6rem;
+  }
+
+  .about-chapter strong {
+    color: var(--c-navy);
+    font-weight: var(--weight-semi);
+  }
+
+  .about-pullquote {
+    max-width: 36rem;
+    margin-top: 2.6rem;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--c-plum);
+  }
+
+  .about-pullquote p {
+    color: var(--c-navy);
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 1.05rem + 0.55vw, 1.45rem);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .about-closing {
     position: relative;
+    padding-block: clamp(4.5rem, 8vw, 6.5rem);
+    overflow: hidden;
+    color: var(--on-dark);
+    text-align: center;
+    background: var(--c-navy);
   }
+
+  .about-closing::before {
+    content: '';
+    position: absolute;
+    inset: -50% 0 auto 50%;
+    width: 42rem;
+    aspect-ratio: 1;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(111, 83, 104, 0.16), transparent 66%);
+  }
+
+  .about-closing__inner { position: relative; }
+
+  .about-closing__now {
+    margin-inline: auto;
+    color: #c3cad3;
+    font-size: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+  }
+
+  .about-closing__credo {
+    max-width: 21em;
+    margin: 1.75rem auto 0;
+    color: #f2efe8;
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 1.45rem + 1.4vw, 2.35rem);
+    font-weight: var(--weight-normal);
+    line-height: 1.35;
+    letter-spacing: -0.018em;
+  }
+
   @media (max-width: 48rem) {
-    .about-chapter__art {
-      width: 120px;
-      opacity: 0.45;
+    .about-hero {
+      min-height: auto;
+      padding-block: clamp(8rem, 24vw, 10rem) clamp(6.5rem, 19vw, 8rem);
+    }
+
+    .about-hero__backdrop :global(.about-hero__image) {
+      object-position: 58% 34%;
+      filter: blur(42px) saturate(0.3) contrast(0.8) brightness(0.68);
+    }
+
+    .about-hero__statement {
+      max-width: 15em;
+      font-size: clamp(1.9rem, 7.2vw, 2.75rem);
+    }
+
+    .career-spine__grid {
+      grid-template-columns: 1fr;
+      gap: 1.3rem;
     }
   }
 
-  /* ---------- Closing ---------- */
-  .about-close__line {
-    font-family: var(--font-serif);
-    font-size: var(--fs-xl);
-    line-height: var(--lh-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--heading);
-    max-width: 28ch;
+  @media (max-width: 30rem) {
+    .about-hero__under { line-height: 1.58; }
+    .about-section { padding-block: 3.75rem; }
+    .about-pullquote { padding-left: 1.15rem; }
   }
-  .about-close__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 2.25rem;
-    margin-top: 2rem;
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--line);
+
+  @media (max-height: 34rem) and (orientation: landscape) {
+    .about-hero {
+      min-height: auto;
+      padding-block: 7.5rem 6rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-motion='enabled']) .about-motion-ready .about-reveal {
+      opacity: 0;
+      transform: translateY(1.25rem);
+      transition: opacity 720ms var(--ease), transform 720ms var(--ease);
+      transition-delay: calc(var(--about-delay, 0) * 90ms);
+    }
+
+    :global(html[data-motion='enabled']) .about-motion-ready .about-reveal[data-delay='1'] { --about-delay: 1; }
+    :global(html[data-motion='enabled']) .about-motion-ready .about-reveal[data-delay='2'] { --about-delay: 2; }
+    :global(html[data-motion='enabled']) .about-motion-ready .about-reveal[data-delay='3'] { --about-delay: 3; }
+
+    :global(html[data-motion='enabled']) .about-motion-ready .about-reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    :global(html[data-motion='enabled']) .about-hero__backdrop {
+      animation: about-ambient-drift 50s var(--ease) infinite alternate;
+    }
+
+    :global(html[data-motion='enabled']) [data-about-parallax] {
+      transform: translate3d(0, var(--about-parallax, 0), 0);
+    }
+  }
+
+  @keyframes about-ambient-drift {
+    from { transform: scale(1.01) translate3d(0, 0, 0); }
+    to { transform: scale(1.065) translate3d(-1%, -0.55%, 0); }
   }
 </style>
+
+<script>
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: no-preference)');
+  const root = document.documentElement;
+  const page = document.querySelector<HTMLElement>('main');
+  const revealItems = Array.from(document.querySelectorAll<HTMLElement>('.about-reveal'));
+  const parallaxItems = Array.from(document.querySelectorAll<HTMLElement>('[data-about-parallax]'));
+  let revealObserver: IntersectionObserver | undefined;
+  let frame = 0;
+
+  function disableAboutMotion() {
+    page?.classList.remove('about-motion-ready');
+    revealObserver?.disconnect();
+    revealObserver = undefined;
+    revealItems.forEach((item) => item.classList.remove('is-visible'));
+    parallaxItems.forEach((item) => item.style.removeProperty('--about-parallax'));
+  }
+
+  function prepareAboutMotion() {
+    if (root.dataset.motion !== 'enabled' || !motionQuery.matches || !('IntersectionObserver' in window)) {
+      disableAboutMotion();
+      return;
+    }
+
+    page?.classList.add('about-motion-ready');
+    revealObserver?.disconnect();
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).classList.add('is-visible');
+          revealObserver?.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -5% 0px' }
+    );
+    revealItems.forEach((item) => revealObserver?.observe(item));
+    requestParallaxUpdate();
+  }
+
+  function updateParallax() {
+    frame = 0;
+    if (root.dataset.motion !== 'enabled' || !motionQuery.matches) return;
+    const viewport = Math.max(window.innerHeight, 1);
+    parallaxItems.forEach((item) => {
+      const rect = item.getBoundingClientRect();
+      const centerOffset = (rect.top + rect.height / 2 - viewport / 2) / viewport;
+      const shift = Math.max(-18, Math.min(18, centerOffset * -18));
+      item.style.setProperty('--about-parallax', `${shift.toFixed(2)}px`);
+    });
+  }
+
+  function requestParallaxUpdate() {
+    if (!frame) frame = window.requestAnimationFrame(updateParallax);
+  }
+
+  window.addEventListener('scroll', requestParallaxUpdate, { passive: true });
+  window.addEventListener('resize', requestParallaxUpdate, { passive: true });
+  motionQuery.addEventListener?.('change', prepareAboutMotion);
+  prepareAboutMotion();
+</script>
