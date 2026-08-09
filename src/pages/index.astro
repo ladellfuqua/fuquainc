@@ -453,19 +453,19 @@ const [featured] = await getPublishedArticles();
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    :global(html[data-motion='enabled']) .home-motion-ready .home-reveal {
+    :global(html[data-motion='enabled'] main.home-motion-ready) .home-reveal {
       opacity: 0;
       transform: translateY(2rem);
       transition: opacity 880ms var(--ease), transform 880ms var(--ease);
       transition-delay: calc(var(--home-delay, 0) * 120ms);
     }
 
-    :global(html[data-motion='enabled']) .home-motion-ready .home-reveal.is-visible {
+    :global(html[data-motion='enabled'] main.home-motion-ready) .home-reveal.is-visible {
       opacity: 1;
       transform: none;
     }
 
-    :global(html[data-motion='enabled']) .home-motion-ready .home-section-motion::after {
+    :global(html[data-motion='enabled'] main.home-motion-ready) .home-section-motion::after {
       content: '';
       position: absolute;
       z-index: 5;
@@ -481,21 +481,21 @@ const [featured] = await getPublishedArticles();
       transition: opacity 900ms var(--ease), transform 1100ms var(--ease);
     }
 
-    :global(html[data-motion='enabled']) .home-motion-ready .home-section-motion.is-section-visible::after {
+    :global(html[data-motion='enabled'] main.home-motion-ready) .home-section-motion.is-section-visible::after {
       opacity: 0.48;
       transform: scaleX(1);
     }
 
-    :global(html[data-motion='enabled']) .home-motion-ready [data-home-parallax] {
+    :global(html[data-motion='enabled'] main.home-motion-ready) [data-home-parallax] {
       transform: translate3d(0, var(--home-parallax, 0), 0);
     }
 
-    :global(html[data-motion='enabled']) .home-motion-ready .pov__field {
+    :global(html[data-motion='enabled'] main.home-motion-ready) .pov__field {
       transform: scale(1.035);
       transition: transform 1600ms var(--ease), opacity 1200ms var(--ease);
     }
 
-    :global(html[data-motion='enabled']) .home-motion-ready .pov.is-section-visible .pov__field {
+    :global(html[data-motion='enabled'] main.home-motion-ready) .pov.is-section-visible .pov__field {
       transform: scale(1);
       opacity: 0.24;
     }

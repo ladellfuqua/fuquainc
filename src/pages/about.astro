@@ -462,7 +462,7 @@ import portrait from '../assets/ladell-portrait.png';
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    :global(html[data-motion='enabled']) .about-motion-ready [data-about-section]::after {
+    :global(html[data-motion='enabled'] main.about-motion-ready) [data-about-section]::after {
       content: '';
       position: absolute;
       z-index: 5;
@@ -478,23 +478,23 @@ import portrait from '../assets/ladell-portrait.png';
       transition: opacity 900ms var(--ease), transform 1100ms var(--ease);
     }
 
-    :global(html[data-motion='enabled']) .about-motion-ready [data-about-section].is-section-visible::after {
+    :global(html[data-motion='enabled'] main.about-motion-ready) [data-about-section].is-section-visible::after {
       opacity: 0.48;
       transform: scaleX(1);
     }
 
-    :global(html[data-motion='enabled']) .about-motion-ready .about-reveal {
+    :global(html[data-motion='enabled'] main.about-motion-ready) .about-reveal {
       opacity: 0;
       transform: translateY(2rem);
       transition: opacity 880ms var(--ease), transform 880ms var(--ease);
       transition-delay: calc(var(--about-delay, 0) * 120ms);
     }
 
-    :global(html[data-motion='enabled']) .about-motion-ready .about-reveal[data-delay='1'] { --about-delay: 1; }
-    :global(html[data-motion='enabled']) .about-motion-ready .about-reveal[data-delay='2'] { --about-delay: 2; }
-    :global(html[data-motion='enabled']) .about-motion-ready .about-reveal[data-delay='3'] { --about-delay: 3; }
+    :global(html[data-motion='enabled'] main.about-motion-ready) .about-reveal[data-delay='1'] { --about-delay: 1; }
+    :global(html[data-motion='enabled'] main.about-motion-ready) .about-reveal[data-delay='2'] { --about-delay: 2; }
+    :global(html[data-motion='enabled'] main.about-motion-ready) .about-reveal[data-delay='3'] { --about-delay: 3; }
 
-    :global(html[data-motion='enabled']) .about-motion-ready .about-reveal.is-visible {
+    :global(html[data-motion='enabled'] main.about-motion-ready) .about-reveal.is-visible {
       opacity: 1;
       transform: none;
     }
