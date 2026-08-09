@@ -55,7 +55,7 @@ import portrait from '../assets/ladell-portrait.png';
     <div class="about-hero__handoff" aria-hidden="true"></div>
   </section>
 
-  <section class="career-spine" aria-label="Career overview">
+  <section class="career-spine" aria-label="Career overview" data-about-section>
     <div class="container career-spine__grid">
       <div class="career-spine__item about-reveal">
         <p class="career-spine__label">Today</p>
@@ -74,7 +74,7 @@ import portrait from '../assets/ladell-portrait.png';
     </div>
   </section>
 
-  <section class="about-section about-section--ivory" aria-labelledby="connecting-title">
+  <section class="about-section about-section--ivory" aria-labelledby="connecting-title" data-about-section>
     <div class="container about-section__inner" data-about-parallax>
       <h2 id="connecting-title" class="about-section__title about-reveal">Connecting people and ideas</h2>
       <div class="about-section__copy">
@@ -95,7 +95,7 @@ import portrait from '../assets/ladell-portrait.png';
     </div>
   </section>
 
-  <section class="about-section about-section--stone about-chapter" aria-labelledby="aol-title">
+  <section class="about-section about-section--stone about-chapter" aria-labelledby="aol-title" data-about-section>
     <div class="about-chapter__linework" aria-hidden="true"></div>
     <div class="container about-section__inner" data-about-parallax>
       <p class="eyebrow about-reveal">A formative chapter</p>
@@ -113,7 +113,7 @@ import portrait from '../assets/ladell-portrait.png';
     </div>
   </section>
 
-  <section class="about-section about-section--ivory" aria-labelledby="relationships-title">
+  <section class="about-section about-section--ivory" aria-labelledby="relationships-title" data-about-section>
     <div class="container about-section__inner" data-about-parallax>
       <h2 id="relationships-title" class="about-section__title about-reveal">Relationships beyond the work</h2>
       <div class="about-section__copy">
@@ -135,7 +135,7 @@ import portrait from '../assets/ladell-portrait.png';
     </div>
   </section>
 
-  <section class="about-section about-section--stone" aria-labelledby="beyond-title">
+  <section class="about-section about-section--stone" aria-labelledby="beyond-title" data-about-section>
     <div class="container about-section__inner" data-about-parallax>
       <h2 id="beyond-title" class="about-section__title about-reveal">Beyond work</h2>
       <div class="about-section__copy">
@@ -147,7 +147,7 @@ import portrait from '../assets/ladell-portrait.png';
     </div>
   </section>
 
-  <section class="about-closing" aria-labelledby="about-closing-title">
+  <section class="about-closing" aria-labelledby="about-closing-title" data-about-section>
     <div class="container about-closing__inner" data-about-parallax>
       <p class="about-closing__now about-reveal">
         Today I remain focused on leading, building teams and helping organizations navigate growth and change.
@@ -296,6 +296,8 @@ import portrait from '../assets/ladell-portrait.png';
   }
 
   .career-spine {
+    position: relative;
+    overflow: hidden;
     background: var(--c-stone);
     padding-block: clamp(2rem, 4vw, 2.75rem);
   }
@@ -460,11 +462,32 @@ import portrait from '../assets/ladell-portrait.png';
   }
 
   @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-motion='enabled']) .about-motion-ready [data-about-section]::after {
+      content: '';
+      position: absolute;
+      z-index: 5;
+      top: 0;
+      right: var(--gutter);
+      left: var(--gutter);
+      height: 1px;
+      pointer-events: none;
+      opacity: 0;
+      transform: scaleX(0.18);
+      transform-origin: left;
+      background: color-mix(in srgb, var(--c-plum) 42%, transparent);
+      transition: opacity 900ms var(--ease), transform 1100ms var(--ease);
+    }
+
+    :global(html[data-motion='enabled']) .about-motion-ready [data-about-section].is-section-visible::after {
+      opacity: 0.48;
+      transform: scaleX(1);
+    }
+
     :global(html[data-motion='enabled']) .about-motion-ready .about-reveal {
       opacity: 0;
-      transform: translateY(1.25rem);
-      transition: opacity 720ms var(--ease), transform 720ms var(--ease);
-      transition-delay: calc(var(--about-delay, 0) * 90ms);
+      transform: translateY(2rem);
+      transition: opacity 880ms var(--ease), transform 880ms var(--ease);
+      transition-delay: calc(var(--about-delay, 0) * 120ms);
     }
 
     :global(html[data-motion='enabled']) .about-motion-ready .about-reveal[data-delay='1'] { --about-delay: 1; }
@@ -497,14 +520,19 @@ import portrait from '../assets/ladell-portrait.png';
   const page = document.querySelector<HTMLElement>('main');
   const revealItems = Array.from(document.querySelectorAll<HTMLElement>('.about-reveal'));
   const parallaxItems = Array.from(document.querySelectorAll<HTMLElement>('[data-about-parallax]'));
+  const motionSections = Array.from(document.querySelectorAll<HTMLElement>('[data-about-section]'));
   let revealObserver: IntersectionObserver | undefined;
+  let sectionObserver: IntersectionObserver | undefined;
   let frame = 0;
 
   function disableAboutMotion() {
     page?.classList.remove('about-motion-ready');
     revealObserver?.disconnect();
     revealObserver = undefined;
+    sectionObserver?.disconnect();
+    sectionObserver = undefined;
     revealItems.forEach((item) => item.classList.remove('is-visible'));
+    motionSections.forEach((section) => section.classList.remove('is-section-visible'));
     parallaxItems.forEach((item) => item.style.removeProperty('--about-parallax'));
   }
 
@@ -527,6 +555,19 @@ import portrait from '../assets/ladell-portrait.png';
       { threshold: 0.12, rootMargin: '0px 0px -5% 0px' }
     );
     revealItems.forEach((item) => revealObserver?.observe(item));
+
+    sectionObserver?.disconnect();
+    sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).classList.add('is-section-visible');
+          sectionObserver?.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -8% 0px' }
+    );
+    motionSections.forEach((section) => sectionObserver?.observe(section));
     requestParallaxUpdate();
   }
 
@@ -537,7 +578,7 @@ import portrait from '../assets/ladell-portrait.png';
     parallaxItems.forEach((item) => {
       const rect = item.getBoundingClientRect();
       const centerOffset = (rect.top + rect.height / 2 - viewport / 2) / viewport;
-      const shift = Math.max(-18, Math.min(18, centerOffset * -18));
+      const shift = Math.max(-26, Math.min(26, centerOffset * -26));
       item.style.setProperty('--about-parallax', `${shift.toFixed(2)}px`);
     });
   }
