@@ -27,13 +27,25 @@ const year = 2026; // launch year per §21
   <div class="container site-footer__meta">
     <p>&copy; {year} Fuqua Inc.</p>
   </div>
+
+  <div class="site-footer__wordmark-frame" aria-hidden="true">
+    <span class="site-footer__wordmark">FUQUA</span>
+  </div>
 </footer>
 
 <style>
   .site-footer {
-    background: var(--c-navy);
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background: #182536;
     color: var(--on-dark-muted);
     padding-block: clamp(3rem, 2.4rem + 3vw, 4.5rem) 2rem;
+  }
+  .site-footer__inner,
+  .site-footer__meta {
+    position: relative;
+    z-index: 1;
   }
   .site-footer__inner {
     display: flex;
@@ -71,6 +83,30 @@ const year = 2026; // launch year per §21
     margin-top: var(--space-md);
     font-size: var(--fs-sm);
     color: var(--on-dark-muted);
+  }
+  .site-footer__wordmark-frame {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: clip;
+    pointer-events: none;
+    user-select: none;
+  }
+  .site-footer__wordmark {
+    display: block;
+    max-inline-size: 100%;
+    color: #26374d;
+    font-family: var(--font-sans);
+    font-size: clamp(110px, 17vw, 220px);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    line-height: 0.72;
+    text-align: center;
+    white-space: nowrap;
+    transform: translateY(18%);
   }
   @media (max-width: 40rem) {
     .site-footer__nav {
