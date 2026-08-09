@@ -21,50 +21,6 @@ const heroPortraitSrcset = heroPortraitAvif
   .map((image, index) => `${image.src} ${heroPortraitWidths[index]}w`)
   .join(', ');
 
-// Areas of Focus (§17-19) — six areas; Operational Strategy removed, woven in elsewhere.
-const focus = [
-  {
-    title: 'Growth Strategy',
-    body: 'Identifying opportunities for sustainable audience, customer and revenue growth.',
-  },
-  {
-    title: 'Audience & Customer Growth',
-    body: 'Understanding behavior and building stronger relationships across the customer lifecycle.',
-  },
-  {
-    title: 'Marketing & Media',
-    body: 'Connecting brand, performance, content, audience and channel strategy.',
-  },
-  {
-    title: 'Digital, Technology & AI',
-    body: 'Exploring how technology can improve experiences, capabilities and business performance.',
-  },
-  {
-    title: 'Building Growth Teams',
-    body: 'Bringing together people, capabilities and disciplines around shared growth objectives.',
-  },
-  {
-    title: 'Business Transformation',
-    body: 'Helping organizations adapt their capabilities, structures and ways of working as the business changes.',
-  },
-];
-
-// Growth-team principles (§21) — restrained typography, not cards.
-const teamPrinciples = [
-  {
-    title: 'Clear Mandate',
-    body: 'A team needs one outcome it is collectively responsible for — not a stack of functional targets that quietly compete with one another.',
-  },
-  {
-    title: 'Cross-Functional by Design',
-    body: 'Growth problems do not respect the org chart. The team is assembled around the problem, with the people who can actually move it in the room from the start.',
-  },
-  {
-    title: 'Accountability Without Bureaucracy',
-    body: 'Structure should make ownership and progress obvious — who decides, and what "done" means — without adding process that slows the work it was meant to support.',
-  },
-];
-
 // How I Think (LAD-28) — one typographic block; no icons or illustrations.
 const principles = [
   {
@@ -153,79 +109,15 @@ const [featured] = await getPublishedArticles();
     </div>
   </section>
 
-  {/* ---------- Areas of Focus (§17-19) ---------- */}
-  <section class="section section--stone focus">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Areas of Focus</p>
-      </div>
-      <ul class="focus__grid" role="list">
-        {
-          focus.map((area) => (
-            <li class="focus__item">
-              <h2 class="focus__title">{area.title}</h2>
-              <p class="focus__body">{area.body}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  {/* ---------- Building Growth Teams (§20-22) ---------- */}
-  <section class="section teams">
-    <div class="teams__art" aria-hidden="true">
-      <BrandGraphic variant="motif" />
-    </div>
-    <div class="container teams__inner">
-      <div class="teams__lead">
-        <p class="eyebrow">Building Growth Teams</p>
-        <p class="lead">
-          Growth is rarely one team's job. It happens when marketing, product,
-          technology and commercial leadership pull in the same direction — and
-          stalls when each optimizes for its own scorecard instead of a shared
-          one.
-        </p>
-        <p>
-          Much of my work sits in that connective space: giving a group of
-          talented, specialized people a single objective they can organize
-          around, then removing the ambiguity — about ownership, priorities and
-          how decisions get made — that quietly slows most growth efforts down.
-        </p>
-        <p>
-          In my experience, the hard part is rarely the strategy itself. It is
-          building the conditions in which a cross-functional team can move
-          quickly without losing coordination: shared goals, clear decision
-          rights, and enough trust that people surface problems early rather
-          than protect their corner.
-        </p>
-      </div>
-
-      <p class="teams__pull">
-        The best strategy in the world does not matter if nobody can figure out
-        how to make it happen.
-      </p>
-
-      <ol class="teams__principles" role="list">
-        {
-          teamPrinciples.map((p) => (
-            <li class="teams__principle">
-              <h3 class="teams__principle-title">{p.title}</h3>
-              <p class="teams__principle-body">{p.body}</p>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
-  </section>
-
-  {/* ---------- How I Think (§23) ---------- */}
+  {/* ---------- How I Think (section 02) ---------- */}
   <section class="section section--navy pov">
     <div class="pov__field" aria-hidden="true">
       <BrandGraphic variant="field" />
     </div>
     <div class="container pov__inner">
-      <h2 class="eyebrow pov__heading">How I Think</h2>
+      <h2 class="eyebrow pov__heading">
+        <span class="pov__index" aria-hidden="true">02</span> How I Think
+      </h2>
       <ol class="pov__panels" role="list">
         {
           principles.map((principle) => (
@@ -242,30 +134,28 @@ const [featured] = await getPublishedArticles();
     </div>
   </section>
 
-  {/* ---------- Connect / LinkedIn (§28) ---------- */}
-  <section class="section--tight connect">
+  {/* ---------- Stay in touch (LAD-31) ---------- */}
+  <section class="section--tight connect" aria-labelledby="connect-heading">
     <div class="container connect__inner">
-      <p class="connect__text">
-        I also share ideas and join conversations on LinkedIn.
-      </p>
-      <a
-        href="https://www.linkedin.com/in/ladellfuqua/"
-        class="arrow-link"
-        target="_blank"
-        rel="me noopener"
-      >
-        Connect on LinkedIn <span class="arrow" aria-hidden="true">&rarr;</span>
-      </a>
+      <h2 id="connect-heading" class="eyebrow">Stay in touch</h2>
+      <div class="connect__links">
+        <a
+          href="https://www.linkedin.com/in/ladellfuqua/"
+          class="arrow-link"
+          target="_blank"
+          rel="me noopener"
+        >
+          Connect on LinkedIn <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="/contact" class="arrow-link">
+          Contact <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  /* ---------- Section head ---------- */
-  .section-head {
-    margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
-  }
-
   /* ---------- Writing ---------- */
   .writing {
     padding-block: clamp(2.5rem, 2rem + 2vw, 3.75rem);
@@ -382,118 +272,6 @@ const [featured] = await getPublishedArticles();
     }
   }
 
-  /* ---------- Areas of Focus grid ---------- */
-  .focus__grid {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0 clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
-  }
-  .focus__item {
-    padding-block: clamp(1.4rem, 1rem + 1.4vw, 2rem);
-    border-top: 1px solid var(--line);
-  }
-  .focus__title {
-    font-size: var(--fs-lg);
-    font-weight: var(--weight-semi);
-    color: var(--heading);
-    letter-spacing: var(--tracking-tight);
-  }
-  .focus__body {
-    margin-top: 0.7rem;
-    color: var(--text);
-    font-size: var(--fs-base);
-    max-width: 34ch;
-  }
-  @media (max-width: 60rem) {
-    .focus__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (max-width: 40rem) {
-    .focus__grid {
-      grid-template-columns: 1fr;
-    }
-    .focus__body {
-      max-width: var(--measure);
-    }
-  }
-
-  /* ---------- Building Growth Teams ---------- */
-  .teams {
-    position: relative;
-    overflow: hidden;
-  }
-  .teams__art {
-    position: absolute;
-    top: clamp(-2rem, -1rem - 2vw, 0rem);
-    right: calc(-1 * clamp(2rem, 1rem + 4vw, 6rem));
-    width: clamp(180px, 26vw, 340px);
-    opacity: 0.9;
-    pointer-events: none;
-  }
-  .teams__inner {
-    position: relative;
-  }
-  .teams__lead {
-    max-width: 52ch;
-  }
-  .teams__lead > * + * {
-    margin-top: 1.2rem;
-  }
-  .teams__pull {
-    font-family: var(--font-serif);
-    font-size: var(--fs-xl);
-    line-height: var(--lh-snug);
-    color: var(--heading);
-    letter-spacing: var(--tracking-tight);
-    max-width: 24ch;
-    margin-block: clamp(2.5rem, 2rem + 3vw, 4rem);
-  }
-  .teams__principles {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(1.25rem, 1rem + 2vw, 2.75rem);
-    counter-reset: tp;
-  }
-  .teams__principle {
-    counter-increment: tp;
-    padding-top: 1.1rem;
-    border-top: 2px solid var(--accent);
-  }
-  .teams__principle-title {
-    font-size: var(--fs-md);
-    font-weight: var(--weight-semi);
-    color: var(--heading);
-  }
-  .teams__principle-body {
-    margin-top: 0.6rem;
-    color: var(--text);
-    font-size: var(--fs-base);
-  }
-  @media (max-width: 48rem) {
-    .teams__principles {
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
-    .teams__principle {
-      padding-block: 1.1rem;
-    }
-    .teams__principle + .teams__principle {
-      border-top-width: 1px;
-    }
-    .teams__art {
-      width: 150px;
-      right: calc(-1 * var(--gutter));
-      opacity: 0.5;
-    }
-  }
-
   /* ---------- How I Think ---------- */
   .pov {
     position: relative;
@@ -514,6 +292,9 @@ const [featured] = await getPublishedArticles();
   }
   .pov__heading {
     margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  }
+  .pov__index {
+    margin-right: 0.55rem;
   }
   .pov__panels {
     display: grid;
@@ -656,17 +437,18 @@ const [featured] = await getPublishedArticles();
     border-top: 1px solid var(--line);
   }
   .connect__inner {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    gap: 1.25rem;
+    text-align: center;
+  }
+  .connect__links {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
-    gap: 0.75rem 2rem;
-  }
-  .connect__text {
-    color: var(--text);
-    font-size: var(--fs-md);
-    max-width: none;
-    margin: 0;
+    gap: 0.9rem clamp(1.5rem, 1rem + 2vw, 2.5rem);
   }
 </style>
 
