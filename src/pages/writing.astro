@@ -10,8 +10,6 @@ import {
 } from '../lib/articles';
 
 const ENABLE_THEME_FILTERS = import.meta.env.PUBLIC_ENABLE_WRITING_THEMES === 'true';
-// Owner decision (9 Aug 2026): keep read times in article data, but do not display them.
-const SHOW_READ_TIMES = false;
 const PAGE_SIZE = 6;
 
 const themes = [
@@ -52,14 +50,12 @@ const articleData = articles.map((article) => ({
   deck: article.data.deck,
   publishedAt: article.data.publishedAt.toISOString(),
   date: formatArticleDate(article.data.publishedAt),
-  readingTime: article.data.readingTime,
   themes: article.data.themes,
 }));
 const articleJson = JSON.stringify({
   articles: articleData,
   themes,
   pageSize: PAGE_SIZE,
-  showReadTimes: SHOW_READ_TIMES,
 }).replace(/</g, '\\u003c');
 const collectionSchema = {
   '@context': 'https://schema.org',
@@ -130,7 +126,6 @@ const collectionSchema = {
                 <time datetime={featured.data.publishedAt.toISOString()}>{formatArticleDate(featured.data.publishedAt)}</time>
                 <span aria-hidden="true">&middot;</span>
                 <span>{featured.data.themes[0]}</span>
-                {SHOW_READ_TIMES && <><span aria-hidden="true">&middot;</span><span>{featured.data.readingTime}</span></>}
               </p>
             </article>
           ) : (
@@ -442,7 +437,6 @@ const collectionSchema = {
         deck: string;
         publishedAt: string;
         date: string;
-        readingTime: string;
         themes: string[];
       };
 
@@ -450,7 +444,6 @@ const collectionSchema = {
         articles: WritingArticle[];
         themes: Array<{ name: string; note: string }>;
         pageSize: number;
-        showReadTimes: boolean;
       };
 
       const writingDataElement = document.getElementById('writing-data');
@@ -508,7 +501,6 @@ const collectionSchema = {
         time.textContent = article.date;
         meta.append(time);
         addMetaPart(meta, article.themes[0] || '', true);
-        if (writingData?.showReadTimes) addMetaPart(meta, article.readingTime);
 
         wrapper.append(kicker, heading, deck, meta);
         return wrapper;
