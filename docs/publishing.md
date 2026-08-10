@@ -18,7 +18,8 @@ Set `status: draft`, run `npm run dev`, and review the prose locally before publ
 1. Confirm the title, deck, summary, publication date, and theme labels.
 2. Set `status: published`.
 3. Run `npm run build` and inspect the homepage, `/writing`, and the generated article route.
-4. Publish through the normal pull-request and Vercel workflow.
+4. Inspect the generated social card at `/social/{article-slug}.png`. It is built automatically from the title and first theme using the FUQUA social artwork system; no on-site cover image is created.
+5. Publish through the normal pull-request and Vercel workflow.
 
 ## Update or archive
 
