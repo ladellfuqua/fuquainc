@@ -1,55 +1,72 @@
-// One-off generator for public/og-default.png (LAD-6).
-// Renders an on-brand 1200x630 social card with sharp. Re-run with:
-//   node scripts/make-og-image.mjs
+// Generates the homepage social-preview card from the approved hero assets.
+// Re-run with: node scripts/make-og-image.mjs
 import sharp from 'sharp';
 import { fileURLToPath } from 'node:url';
 
 const W = 1200;
 const H = 630;
+const root = new URL('../', import.meta.url);
+const backdropPath = fileURLToPath(new URL('public/images/hero/hero-backdrop-1600.jpg', root));
+const portraitPath = fileURLToPath(new URL('public/images/hero/portrait-560.png', root));
+const outputPath = fileURLToPath(new URL('public/og-home-2026.png', root));
 
-// Brand palette (mirrors src/styles/tokens.css)
-const IVORY = '#f7f5f0';
-const STONE = '#e3dfd8';
-const NAVY = '#182536';
-const GRAPHITE = '#4b5056';
-const PLUM = '#6f5368';
-const SLATE = '#7f91a5';
-const LINE = '#d6d1c7';
+const backdrop = await sharp(backdropPath)
+  .resize(W, H, { fit: 'cover', position: 'centre' })
+  .png()
+  .toBuffer();
 
-// Abstract graphic language: thin architectural lines, overlapping planes,
-// a few deliberate nodes, generous negative space. Not a diagram.
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <rect width="${W}" height="${H}" fill="${IVORY}"/>
+const portrait = await sharp(portraitPath)
+  .resize({ width: 344 })
+  .png()
+  .toBuffer();
 
-  <!-- Right-hand brand composition, cropped by the canvas -->
-  <g transform="translate(760, 40)" stroke-linecap="round">
-    <circle cx="330" cy="150" r="262" fill="none" stroke="${NAVY}" stroke-width="1.2" opacity="0.5"/>
-    <rect x="150" y="30" width="252" height="300" fill="${STONE}" opacity="0.62"/>
-    <rect x="18" y="120" width="152" height="152" fill="none" stroke="${SLATE}" stroke-width="1.2" opacity="0.6" transform="rotate(-8 94 196)"/>
-    <rect x="80" y="214" width="204" height="212" fill="${PLUM}" opacity="0.17"/>
-    <line x1="-74" y1="510" x2="444" y2="56" stroke="${NAVY}" stroke-width="1.2" opacity="0.72"/>
-    <line x1="50" y1="-40" x2="370" y2="582" stroke="${GRAPHITE}" stroke-width="1.1" opacity="0.42"/>
-    <path d="M366 -2 H448 V80" fill="none" stroke="${PLUM}" stroke-width="1.3" opacity="0.7"/>
-    <circle cx="200" cy="270" r="6" fill="${PLUM}"/>
-    <circle cx="150" cy="120" r="6.5" fill="${IVORY}" stroke="${NAVY}" stroke-width="1.4"/>
-    <circle cx="284" cy="336" r="4" fill="${SLATE}"/>
-  </g>
+const treatment = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+  <defs>
+    <linearGradient id="scrim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0f1927" stop-opacity=".96"/>
+      <stop offset=".54" stop-color="#182536" stop-opacity=".84"/>
+      <stop offset="1" stop-color="#111b2a" stop-opacity=".58"/>
+    </linearGradient>
+    <linearGradient id="bottom" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b121c" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0b121c" stop-opacity=".72"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="76%" cy="43%" r="46%">
+      <stop offset="0" stop-color="#9f8c9b" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#9f8c9b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="${W}" height="${H}" fill="url(#scrim)"/>
+  <rect width="${W}" height="${H}" fill="url(#glow)"/>
+  <rect y="300" width="${W}" height="330" fill="url(#bottom)"/>
+  <path d="M655 -40 L1035 670" stroke="#f7f5f0" stroke-opacity=".08"/>
+  <path d="M865 -40 L1205 580" stroke="#c9adc1" stroke-opacity=".08"/>
+</svg>`);
 
-  <!-- Wordmark -->
-  <text x="80" y="150" font-family="Inter, system-ui, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="1" fill="${NAVY}">FUQUA <tspan fill="${GRAPHITE}">INC.</tspan></text>
-
-  <!-- Headline -->
-  <text font-family="Inter, system-ui, Arial, sans-serif" font-weight="600" fill="${NAVY}" font-size="58" letter-spacing="-1">
-    <tspan x="80" y="330">Building growth by</tspan>
-    <tspan x="80" y="398">connecting ideas,</tspan>
-    <tspan x="80" y="466">people, technology</tspan>
-    <tspan x="80" y="534">and opportunity.</tspan>
+const copy = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+  <text x="72" y="80" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="1.2" fill="#f2efe8">FUQUA <tspan fill="#c7cbd0">INC.</tspan></text>
+  <text font-family="Inter, Arial, sans-serif" font-size="52" font-weight="650" letter-spacing="-1.5" fill="#f2efe8">
+    <tspan x="72" y="230">Building growth by</tspan>
+    <tspan x="72" y="288">connecting ideas,</tspan>
+    <tspan x="72" y="346">people, technology</tspan>
+    <tspan x="72" y="404">and opportunity.</tspan>
   </text>
+  <text font-family="Inter, Arial, sans-serif" font-size="18" font-weight="400" fill="#d4d8de">
+    <tspan x="74" y="465">Connecting disciplines and teams to solve problems</tspan>
+    <tspan x="74" y="493">that don’t fit neatly within one function.</tspan>
+  </text>
+  <rect x="74" y="532" width="54" height="3" fill="#c9adc1"/>
+  <text x="992" y="546" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="650" letter-spacing="2" fill="#e1e3e6">LADELL FUQUA</text>
+  <text x="992" y="570" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="450" fill="#bdc4cc">New York</text>
+</svg>`);
 
-  <!-- Accent rule -->
-  <rect x="82" y="560" width="54" height="3" fill="${PLUM}"/>
-</svg>`;
+await sharp(backdrop)
+  .composite([
+    { input: treatment, left: 0, top: 0 },
+    { input: portrait, left: 820, top: 100 },
+    { input: copy, left: 0, top: 0 },
+  ])
+  .png({ compressionLevel: 9 })
+  .toFile(outputPath);
 
-const out = fileURLToPath(new URL('../public/og-default.png', import.meta.url));
-await sharp(Buffer.from(svg)).png().toFile(out);
-console.log('Wrote', out);
+console.log('Wrote', outputPath);
