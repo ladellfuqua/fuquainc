@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
+import {
+  ARTICLE_SOCIAL_CARD_HEIGHT,
+  ARTICLE_SOCIAL_CARD_WIDTH,
+  renderArticleSocialCard,
+} from '../src/lib/article-social-card.mjs';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
@@ -86,4 +91,55 @@ test('bootstrap and analytics load from same-origin assets', () => {
   const html = read('dist/index.html');
   assert.match(html, /<script[^>]+src="\/scripts\/site-bootstrap\.js"/);
   assert.match(html, /<script[^>]+src="\/scripts\/analytics\.js"[^>]+data-ga-id="G-K7TBK1TGXX"/);
+});
+
+test('published articles receive a generated 1200 by 630 social card', () => {
+  const imagePath = new URL(
+    '../dist/social/growth-rarely-belongs-to-one-department.png',
+    import.meta.url
+  );
+  assert.equal(existsSync(imagePath), true);
+
+  const image = readFileSync(imagePath);
+  assert.equal(image.subarray(1, 4).toString('ascii'), 'PNG');
+  assert.equal(image.readUInt32BE(16), 1200);
+  assert.equal(image.readUInt32BE(20), 630);
+
+  const article = read(
+    'dist/writing/growth-rarely-belongs-to-one-department/index.html'
+  );
+  assert.match(
+    article,
+    /property="og:image" content="https:\/\/fuquainc\.com\/social\/growth-rarely-belongs-to-one-department\.png"/
+  );
+  assert.match(
+    article,
+    /name="twitter:image" content="https:\/\/fuquainc\.com\/social\/growth-rarely-belongs-to-one-department\.png"/
+  );
+  assert.match(article, /property="og:image:type" content="image\/png"/);
+  assert.match(
+    article,
+    /property="og:image:alt" content="Growth rarely belongs to one department — Work and Leadership"/
+  );
+});
+
+test('the social-card system renders every editorial theme', async () => {
+  const themes = [
+    'Work and Leadership',
+    'Identity and Belonging',
+    'Technology and Change',
+    'Culture and Opportunity',
+    'Personal Reflections',
+  ];
+
+  for (const theme of themes) {
+    const image = await renderArticleSocialCard({
+      title: `A considered perspective on ${theme.toLowerCase()}`,
+      theme,
+    });
+
+    assert.equal(image.subarray(1, 4).toString('ascii'), 'PNG');
+    assert.equal(image.readUInt32BE(16), ARTICLE_SOCIAL_CARD_WIDTH);
+    assert.equal(image.readUInt32BE(20), ARTICLE_SOCIAL_CARD_HEIGHT);
+  }
 });

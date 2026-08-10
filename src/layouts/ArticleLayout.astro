@@ -15,6 +15,8 @@ interface Props {
 const { article } = Astro.props;
 const { title, deck, summary, publishedAt, themes, image } = article.data;
 const theme = themes[0];
+const socialImage = image ?? `/social/${article.id}.png`;
+const socialImageUrl = new URL(socialImage, Astro.site).href;
 const publishedArticles = await getPublishedArticles();
 const relatedArticles = selectRelatedArticles(article, publishedArticles);
 const canonicalUrl = new URL(articleHref(article), Astro.site).href;
@@ -30,6 +32,7 @@ const articleSchema = {
   '@type': 'Article',
   headline: title,
   description: summary,
+  image: socialImageUrl,
   datePublished: publishedAt.toISOString(),
   mainEntityOfPage: canonicalUrl,
   author: {
@@ -43,7 +46,8 @@ const articleSchema = {
 <BaseLayout
   title={title}
   description={summary}
-  image={image}
+  image={socialImage}
+  imageAlt={`${title} — ${theme}`}
   type="article"
   headerTone="dark"
   manageHeaderScroll={false}
