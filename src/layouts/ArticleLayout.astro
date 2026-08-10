@@ -135,18 +135,6 @@ const articleSchema = {
               </svg>
               Copy link
             </button>
-            <a
-              class="article-pill narrow-only"
-              href={linkedInShareUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Share on LinkedIn (opens in a new window)"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.05c.53-.95 1.83-1.95 3.77-1.95C21 9.15 22 11.3 22 14.3V21h-4v-6c0-1.45-.03-3.3-2.05-3.3-2.05 0-2.37 1.57-2.37 3.2V21h-4z"></path>
-              </svg>
-              LinkedIn
-            </a>
           </div>
         </div>
       </header>
@@ -370,7 +358,6 @@ const articleSchema = {
   .article-pill svg { width: 13px; height: 13px; flex: none; }
   .article-pill:hover { border-color: var(--c-plum); color: var(--c-plum); text-decoration: none; }
   .article-pill--back:hover { gap: 0.75rem; }
-  .narrow-only { display: inline-flex; }
 
   .article-body {
     counter-reset: article-section;
@@ -617,7 +604,6 @@ const articleSchema = {
 
   @media (min-width: 77.5rem) {
     .article-rail { display: block; }
-    .narrow-only { display: none; }
   }
   @media (max-width: 62.5rem) {
     .article-stage { margin-top: -4.5rem; }
