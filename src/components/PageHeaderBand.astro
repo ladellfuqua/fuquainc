@@ -6,7 +6,7 @@ interface Props {
   eyebrow: string;
   title: string;
   intro: string;
-  variant: 'contact' | 'writing';
+  variant: 'contact' | 'writing' | 'privacy';
   linkHref?: string;
   linkLabel?: string;
 }
@@ -35,7 +35,7 @@ const { eyebrow, title, intro, variant, linkHref, linkLabel } = Astro.props;
             fetchpriority="high"
           />
         </picture>
-      ) : (
+      ) : variant === 'writing' ? (
         <Picture
           src={portrait}
           formats={['avif', 'webp']}
@@ -46,7 +46,7 @@ const { eyebrow, title, intro, variant, linkHref, linkLabel } = Astro.props;
           loading="eager"
           fetchpriority="high"
         />
-      )
+      ) : null
     }
   </div>
   <span class="page-band__scrim" aria-hidden="true"></span>
@@ -153,6 +153,17 @@ const { eyebrow, title, intro, variant, linkHref, linkLabel } = Astro.props;
 
   .page-band--contact .page-band__scrim {
     background: linear-gradient(95deg, rgba(12, 19, 29, 0.88) 0%, rgba(12, 19, 29, 0.68) 48%, rgba(12, 19, 29, 0.16) 100%);
+  }
+
+  .page-band--privacy .page-band__backdrop {
+    background:
+      radial-gradient(ellipse at 76% 30%, rgba(127, 145, 165, 0.24), transparent 34%),
+      radial-gradient(ellipse at 58% 82%, rgba(111, 83, 104, 0.18), transparent 36%),
+      linear-gradient(112deg, #101b2a 0%, #24344a 62%, #172334 100%);
+  }
+
+  .page-band--privacy .page-band__scrim {
+    background: linear-gradient(100deg, rgba(12, 19, 29, 0.9) 0%, rgba(12, 19, 29, 0.65) 52%, rgba(12, 19, 29, 0.28) 100%);
   }
 
   .page-band__grain {
