@@ -3,7 +3,6 @@ title: Growth rarely belongs to one department
 deck: "On building growth teams: shared goals, clear decision rights, and why the org chart keeps losing."
 summary: "On building growth teams: shared goals, clear decision rights, and why the org chart keeps losing."
 publishedAt: 2026-08-07
-readingTime: 4 min read
 themes:
   - Work and Leadership
 status: published
