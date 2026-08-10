@@ -3,12 +3,17 @@
   "type": "module",
   "version": "0.0.1",
   "engines": {
-    "node": ">=22.12.0"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
+    "lint": "node scripts/lint.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "audit:prod": "npm audit --omit=dev --audit-level=moderate",
+    "quality": "npm run check && npm run lint && npm test && npm run audit:prod",
     "astro": "astro"
   },
   "dependencies": {
@@ -21,6 +26,8 @@
     "astro": "^7.2.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3",
     "vercel": "^58.9.0"
   }
 }
