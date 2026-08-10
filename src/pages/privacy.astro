@@ -1,112 +1,338 @@
 ---
 /**
- * Privacy page (§ footer). Plain-language baseline that reflects the site's
- * analytics use (LAD-6). Draft for review — not legal advice.
+ * Plain-language privacy statement. The editorial layout keeps the legal page
+ * within the current FUQUA system without borrowing the article-only white
+ * reading surface.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeaderBand from '../components/PageHeaderBand.astro';
+import PageMotion from '../components/PageMotion.astro';
 
 const updated = 'August 9, 2026';
+
+const policySections = [
+  { id: 'collected', label: 'What is collected' },
+  { id: 'not-done', label: 'What is not done' },
+  { id: 'choices', label: 'Cookies and choices' },
+  { id: 'services', label: 'Services used' },
+  { id: 'contact', label: 'Contact' },
+];
 ---
 
 <BaseLayout
   title="Privacy"
   description="How Fuqua Inc. handles information and analytics on fuquainc.com."
+  headerTone="dark"
 >
-  <section class="section section--tight">
-    <div class="container container--narrow legal">
-      <p class="eyebrow">Privacy</p>
-      <h1 class="legal__title">Privacy Policy</h1>
-      <p class="legal__updated">Last updated: {updated}</p>
+  <PageHeaderBand
+    eyebrow="Privacy"
+    title="Privacy, plainly."
+    intro="A clear account of what this site collects, what it does not, and how information is handled."
+    variant="privacy"
+  />
 
-      <p class="lead">
-        This site, <strong>fuquainc.com</strong>, is the personal platform of Ladell Fuqua
-        (Fuqua Inc.). This page explains what limited information the site collects and how it
-        is used. It is written to be clear rather than legalistic.
-      </p>
+  <section class="privacy-page" aria-label="Privacy policy details" data-page-section>
+    <div class="container privacy-layout">
+      <aside class="policy-meta page-reveal" aria-label="Policy details">
+        <div class="policy-meta__date">
+          <span>Last updated</span>
+          <time datetime="2026-08-09">{updated}</time>
+        </div>
 
-      <h2>What is collected</h2>
-      <p>
-        <strong>Analytics.</strong> The site uses Google Analytics 4 to understand how visitors
-        use it — for example which pages are viewed, roughly where visits come from (country or
-        region), and general device and browser information. This is collected in aggregate to
-        improve the site. Google Analytics sets cookies to do this.
-      </p>
-      <p>
-        <strong>Messages you send.</strong> If you contact Ladell through the site or by the
-        links provided, the information you choose to share (such as your name, email address
-        and message) is used only to read and respond to your message.
-      </p>
+        <nav class="policy-index" aria-label="Privacy policy sections">
+          <p>On this page</p>
+          <ol>
+            {
+              policySections.map((section, index) => (
+                <li>
+                  <a href={`#${section.id}`}>
+                    <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                    {section.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+      </aside>
 
-      <h2>What is not done</h2>
-      <p>
-        Your information is not sold, rented, or shared for advertising. The site does not create
-        marketing profiles about you, and there are no third-party advertising trackers.
-      </p>
+      <article class="policy">
+        <p class="policy__lead page-reveal" data-page-parallax data-parallax-factor="0.018">
+          This site, <strong>fuquainc.com</strong>, is the personal platform of Ladell Fuqua
+          (Fuqua Inc.). This page explains what limited information the site collects and how it
+          is used. It is written to be clear rather than legalistic.
+        </p>
 
-      <h2>Cookies and analytics choices</h2>
-      <p>
-        You can control or block cookies through your browser settings. You can also opt out of
-        Google Analytics across all websites using Google's <a
-          href="https://tools.google.com/dlpage/gaoptout"
-          target="_blank"
-          rel="noopener">opt-out browser add-on</a>. Blocking analytics cookies does not affect
-        your ability to read the site.
-      </p>
+        <section class="policy-section page-reveal" id="collected" data-delay="1">
+          <header class="policy-section__header">
+            <span aria-hidden="true">01</span>
+            <h2>What is collected</h2>
+          </header>
+          <div class="policy-section__body">
+            <p>
+              <strong>Analytics.</strong> The site uses Google Analytics 4 to understand how visitors
+              use it — for example which pages are viewed, roughly where visits come from (country or
+              region), and general device and browser information. This is collected in aggregate to
+              improve the site. Google Analytics sets cookies to do this.
+            </p>
+            <p>
+              <strong>Messages you send.</strong> If you contact Ladell through the site or by the
+              links provided, the information you choose to share (such as your name, email address
+              and message) is used only to read and respond to your message.
+            </p>
+          </div>
+        </section>
 
-      <h2>Services used</h2>
-      <p>
-        The site is hosted on Vercel and uses Google Analytics for the measurement described
-        above. Contact-form submissions are processed by Vercel and sent through Resend, a
-        transactional email service, to Fuqua Inc.'s private inbox. For delivery, Resend receives
-        the name, email address, optional organization, and message you submit.
-        Vercel and Google Analytics may also process technical data (such as your IP address) as
-        part of delivering and measuring the site.
-      </p>
+        <section class="policy-section page-reveal" id="not-done" data-delay="2">
+          <header class="policy-section__header">
+            <span aria-hidden="true">02</span>
+            <h2>What is not done</h2>
+          </header>
+          <div class="policy-section__body">
+            <p>
+              Your information is not sold, rented, or shared for advertising. The site does not create
+              marketing profiles about you, and there are no third-party advertising trackers.
+            </p>
+          </div>
+        </section>
 
-      <h2>Contact</h2>
-      <p>
-        Questions about this policy or your information can be sent through the <a
-          href="/contact">contact page</a> or via <a
-          href="https://www.linkedin.com/in/ladellfuqua/"
-          target="_blank"
-          rel="me noopener">LinkedIn</a>.
-      </p>
+        <section class="policy-section page-reveal" id="choices" data-delay="1">
+          <header class="policy-section__header">
+            <span aria-hidden="true">03</span>
+            <h2>Cookies and analytics choices</h2>
+          </header>
+          <div class="policy-section__body">
+            <p>
+              You can control or block cookies through your browser settings. You can also opt out of
+              Google Analytics across all websites using Google's <a
+                href="https://tools.google.com/dlpage/gaoptout"
+                target="_blank"
+                rel="noopener noreferrer">opt-out browser add-on</a>. Blocking analytics cookies does not affect
+              your ability to read the site.
+            </p>
+          </div>
+        </section>
 
-      <p class="legal__note">
-        This is a general privacy statement provided for transparency and is not legal advice.
-        It may be updated as the site evolves; the date above reflects the latest revision.
-      </p>
+        <section class="policy-section page-reveal" id="services" data-delay="2">
+          <header class="policy-section__header">
+            <span aria-hidden="true">04</span>
+            <h2>Services used</h2>
+          </header>
+          <div class="policy-section__body">
+            <p>
+              The site is hosted on Vercel and uses Google Analytics for the measurement described
+              above. Contact-form submissions are processed by Vercel and sent through Resend, a
+              transactional email service, to Fuqua Inc.'s private inbox. For delivery, Resend receives
+              the name, email address, optional organization, and message you submit.
+              Vercel and Google Analytics may also process technical data (such as your IP address) as
+              part of delivering and measuring the site.
+            </p>
+          </div>
+        </section>
+
+        <section class="policy-section page-reveal" id="contact" data-delay="1">
+          <header class="policy-section__header">
+            <span aria-hidden="true">05</span>
+            <h2>Contact</h2>
+          </header>
+          <div class="policy-section__body">
+            <p>
+              Questions about this policy or your information can be sent through the <a
+                href="/contact">contact page</a> or via <a
+                href="https://www.linkedin.com/in/ladellfuqua/"
+                target="_blank"
+                rel="me noopener noreferrer">LinkedIn</a>.
+            </p>
+          </div>
+        </section>
+
+        <aside class="policy-note page-reveal" data-delay="2">
+          <p class="eyebrow">A note on scope</p>
+          <p>
+            This is a general privacy statement provided for transparency and is not legal advice.
+            It may be updated as the site evolves; the date above reflects the latest revision.
+          </p>
+        </aside>
+      </article>
     </div>
   </section>
+
+  <PageMotion />
 </BaseLayout>
 
 <style>
-  .legal__title {
-    margin-top: 0.6rem;
-    font-size: var(--fs-xl);
-    letter-spacing: var(--tracking-tight);
+  .privacy-page {
+    position: relative;
+    padding-block: clamp(4rem, 7vw, 6.75rem);
+    overflow: clip;
+    background: var(--c-ivory);
   }
-  .legal__updated {
-    margin-top: 0.5rem;
-    color: var(--text-muted);
+
+  .privacy-layout {
+    display: grid;
+    grid-template-columns: minmax(11rem, 0.58fr) minmax(0, 1.75fr);
+    gap: clamp(3.5rem, 7vw, 7.5rem);
+    align-items: start;
+  }
+
+  .policy-meta {
+    position: sticky;
+    top: 7.5rem;
+    border-top: 2px solid var(--c-plum);
+  }
+
+  .policy-meta__date {
+    display: grid;
+    gap: 0.35rem;
+    padding-block: 1rem 1.35rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .policy-meta__date span,
+  .policy-index > p {
+    color: var(--c-plum-deep);
+    font-size: var(--fs-eyebrow);
+    font-weight: var(--weight-semi);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+  }
+
+  .policy-meta__date time {
+    color: var(--heading);
     font-size: var(--fs-sm);
+    font-weight: var(--weight-medium);
   }
-  .legal .lead {
-    margin-top: 1.75rem;
+
+  .policy-index { padding-top: 1.4rem; }
+  .policy-index ol { margin: 0.85rem 0 0; padding: 0; list-style: none; }
+  .policy-index li { border-top: 1px solid var(--line); }
+  .policy-index li:last-child { border-bottom: 1px solid var(--line); }
+
+  .policy-index a {
+    display: grid;
+    grid-template-columns: 1.7rem 1fr;
+    gap: 0.5rem;
+    padding-block: 0.7rem;
+    color: var(--text);
+    font-size: 0.82rem;
+    line-height: 1.35;
+    text-decoration: none;
   }
-  .legal h2 {
-    margin-top: 2.25rem;
-    font-size: var(--fs-lg);
+
+  .policy-index a span {
+    color: var(--c-plum);
+    font-size: 0.7rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
   }
-  .legal p {
-    margin-top: 0.9rem;
-    max-width: var(--measure);
+
+  .policy-index a:hover { color: var(--heading); }
+
+  .policy { min-width: 0; max-width: 49rem; }
+
+  .policy__lead {
+    max-width: 41rem;
+    margin: 0 0 clamp(3.75rem, 6vw, 5.5rem);
+    color: var(--heading);
+    font-family: var(--font-serif);
+    font-size: clamp(1.45rem, 1.2rem + 0.75vw, 1.9rem);
+    font-weight: var(--weight-normal);
+    line-height: 1.45;
+    letter-spacing: -0.014em;
   }
-  .legal__note {
-    margin-top: 2.5rem;
-    padding-top: 1.25rem;
+
+  .policy__lead strong { font-weight: var(--weight-semi); }
+
+  .policy-section {
+    padding-block: clamp(2rem, 3.5vw, 2.8rem);
     border-top: 1px solid var(--line);
-    color: var(--text-muted);
+    scroll-margin-top: 7rem;
+  }
+
+  .policy-section__header {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: baseline;
+  }
+
+  .policy-section__header > span {
+    color: var(--c-plum);
+    font-size: var(--fs-xs);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--weight-semi);
+    letter-spacing: 0.13em;
+  }
+
+  .policy-section h2 {
+    margin: 0;
+    color: var(--heading);
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 1.45rem + 0.8vw, 2.25rem);
+    font-weight: var(--weight-normal);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+  }
+
+  .policy-section__body {
+    max-width: 40rem;
+    margin: 1.35rem 0 0 5.25rem;
+  }
+
+  .policy-section__body p {
+    color: var(--text);
+    font-size: clamp(1rem, 0.96rem + 0.14vw, 1.06rem);
+    line-height: 1.75;
+  }
+
+  .policy-section__body p + p { margin-top: 1.1rem; }
+  .policy-section__body strong { color: var(--heading); font-weight: var(--weight-semi); }
+
+  .policy-section__body a {
+    color: var(--c-plum-deep);
+    font-weight: var(--weight-medium);
+    text-decoration-color: color-mix(in srgb, var(--c-plum) 48%, transparent);
+    text-underline-offset: 0.18em;
+  }
+
+  .policy-section__body a:hover { color: var(--heading); text-decoration-color: currentColor; }
+
+  .policy-note {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    padding: clamp(1.5rem, 3vw, 2rem);
+    border-left: 2px solid var(--c-plum);
+    background: var(--c-stone);
+  }
+
+  .policy-note .eyebrow { color: var(--c-plum-deep); }
+
+  .policy-note p:last-child {
+    max-width: 37rem;
+    margin-top: 0.75rem;
+    color: var(--text);
     font-size: var(--fs-sm);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 52rem) {
+    .privacy-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .policy-meta { position: static; display: grid; grid-template-columns: 1fr 1.7fr; gap: 2rem; }
+    .policy-meta__date { align-self: start; }
+    .policy-index { padding-top: 1rem; border-top: 1px solid var(--line); }
+  }
+
+  @media (max-width: 36rem) {
+    .privacy-page { padding-block: 3.5rem 4.5rem; }
+    .policy-meta { display: block; }
+    .policy-index { margin-top: 1.5rem; }
+    .policy__lead { margin-bottom: 3rem; }
+    .policy-section__header { grid-template-columns: 2.25rem minmax(0, 1fr); gap: 0.65rem; }
+    .policy-section__body { margin-left: 2.9rem; }
+    .policy-note { margin-left: 2.9rem; }
+  }
+
+  @media (max-width: 26rem) {
+    .policy-section__body,
+    .policy-note { margin-left: 0; }
   }
 </style>
