@@ -55,19 +55,6 @@ const linkedin = 'https://www.linkedin.com/in/ladellfuqua/';
 // the localhost preview build and cannot pollute production reporting.
 const GA_ID = 'G-K7TBK1TGXX';
 const enableAnalytics = import.meta.env.PROD;
-// Inline GA4 loader. Runs only on the live domain (guards localhost/preview so
-// they never pollute reporting). Emitted via set:html so the JS executes as-is.
-const gaScript = `if (location.hostname === 'fuquainc.com' || location.hostname === 'www.fuquainc.com') {
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
-  window.gtag = gtag;
-  gtag('js', new Date());
-  gtag('config', '${GA_ID}');
-  var s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_ID}';
-  document.head.appendChild(s);
-}`;
 
 // Person + Organization schema, shared site-wide (§25)
 const personSchema = {
@@ -141,6 +128,7 @@ const websiteSchema = {
 
     <link rel="sitemap" href="/sitemap-index.xml" />
 
+    <script is:inline src="/scripts/site-bootstrap.js"></script>
     <script is:inline src="/scripts/motion-readiness.js"></script>
 
     <script
@@ -153,12 +141,11 @@ const websiteSchema = {
       set:html={JSON.stringify(websiteSchema)}
     />
 
-    {enableAnalytics && <script is:inline set:html={gaScript} />}
+    {enableAnalytics && <script is:inline src="/scripts/analytics.js" data-ga-id={GA_ID}></script>}
 
     <slot name="head" />
   </head>
   <body class={bodyClass} data-header-tone={headerTone}>
-    <script is:inline>document.documentElement.classList.add('js');</script>
     <SiteHeader tone={headerTone} manageScroll={manageHeaderScroll} />
     <main id="main">
       <slot />

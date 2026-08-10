@@ -1,43 +1,55 @@
-# Astro Starter Kit: Minimal
+# Fuqua Inc. website
+
+The production website for [fuquainc.com](https://fuquainc.com), built with Astro and deployed through Vercel.
+
+## Requirements
+
+- Node.js 24.x (see `.nvmrc`)
+- npm
+
+With nvm installed, run `nvm use` before installing dependencies.
+
+## Local setup
 
 ```sh
-npm create astro@latest -- --template minimal
+npm ci
+cp .env.example .env.local
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The contact form uses these environment-variable names:
 
-## 🚀 Project Structure
+- `RESEND_API_KEY`
+- `CONTACT_TO_EMAIL`
+- `CONTACT_RESEND_TIMEOUT_MS` (optional)
 
-Inside of your Astro project, you'll see the following folders and files:
+Store real values in Vercel and in an ignored local environment file. Never commit secrets. Google Analytics uses a non-secret measurement ID configured in source and runs only on `fuquainc.com` and `www.fuquainc.com`.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Commands
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Astro development server |
+| `npm run build` | Create the production build in `dist/` |
+| `npm run preview` | Preview the production build locally |
+| `npm run check` | Run Astro and TypeScript diagnostics |
+| `npm run lint` | Check JavaScript syntax, JSON, and tracked environment-file policy |
+| `npm test` | Build and run route, sitemap, structured-data, and CSP smoke tests |
+| `npm run audit:prod` | Fail on moderate-or-higher production dependency advisories |
+| `npm run quality` | Run the complete CI quality gate |
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Article publishing
 
-Any static assets, like images, can be placed in the `public/` directory.
+Articles live in `src/content/articles/`. See [docs/publishing.md](docs/publishing.md) for the author, preview, publish, update, and archive workflow.
 
-## 🧞 Commands
+## Deployment
 
-All commands are run from the root of the project, from a terminal:
+Pull requests receive Vercel preview deployments. Merges to `main` deploy automatically to production. GitHub Actions runs `npm ci` and `npm run quality` for pull requests and pushes to `main`.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Production and preview environment variables are managed in Vercel project settings. The local `.vercel/` directory is intentionally ignored.
 
-## 👀 Want to learn more?
+## Security and dependency policy
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+The production Content Security Policy is configured in `vercel.json`. Executable JavaScript must be served from an allowed external or same-origin asset; CI rejects executable inline scripts and rejects `'unsafe-inline'` in `script-src`. Inline styles remain allowed because Astro emits component styles inline; style hardening is outside LAD-23.
+
+CI runs `npm audit --omit=dev --audit-level=moderate`. As of August 9, 2026, npm reports one accepted low-severity transitive `esbuild` advisory ([GHSA-g7r4-m6w7-qqqr](https://github.com/advisories/GHSA-g7r4-m6w7-qqqr)) involving the Windows development server. The production site is built and hosted on Vercel, the affected development server is not exposed, and the advisory does not meet the moderate-severity failure threshold. Recheck it with routine dependency updates and remove this exception when the upstream `tsx` dependency adopts the patched `esbuild` release.
