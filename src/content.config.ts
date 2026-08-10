@@ -12,7 +12,6 @@ const articles = defineCollection({
     deck: z.string().min(1),
     summary: z.string().min(1),
     publishedAt: z.coerce.date(),
-    readingTime: z.string().min(1),
     themes: z.array(z.string().min(1)).min(1),
     status: z.enum(['draft', 'published']),
     featured: z.boolean().default(false),

@@ -5,7 +5,7 @@ Articles live in `src/content/articles/` as Markdown or MDX. Their frontmatter i
 ## Author
 
 1. Copy an existing article file and give it a short, lowercase, hyphenated filename. The filename becomes the URL slug.
-2. Complete every required frontmatter field: `title`, `deck`, `summary`, `publishedAt`, `readingTime`, `themes`, `status`, and `featured`.
+2. Complete every required frontmatter field: `title`, `deck`, `summary`, `publishedAt`, `themes`, `status`, and `featured`. Read time is intentionally not collected or displayed.
 3. Use one or more of the approved themes: Work and Leadership, Identity and Belonging, Technology and Change, Culture and Opportunity, or Personal Reflections.
 4. Write the article body in Markdown. Keep one H1—the template supplies it—and begin body sections with H2 headings.
 
@@ -15,7 +15,7 @@ Set `status: draft`, run `npm run dev`, and review the prose locally before publ
 
 ## Publish
 
-1. Confirm the title, summary, publication date, reading time, and theme labels.
+1. Confirm the title, deck, summary, publication date, and theme labels.
 2. Set `status: published`.
 3. Run `npm run build` and inspect the homepage, `/writing`, and the generated article route.
 4. Publish through the normal pull-request and Vercel workflow.
