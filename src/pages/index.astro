@@ -33,7 +33,7 @@ const principles = [
   },
 ];
 
-const [featured] = await getPublishedArticles();
+const latestArticles = (await getPublishedArticles()).slice(0, 3);
 ---
 
 <BaseLayout
@@ -156,18 +156,18 @@ const [featured] = await getPublishedArticles();
       <p class="writing__dek home-reveal" style="--home-delay: 1">Occasional short articles on work, technology, culture and belonging.</p>
 
       {
-        featured ? (
-          <a href={articleHref(featured)} class="writing-entry home-reveal" style="--home-delay: 2">
-            <time class="writing-entry__date" datetime={featured.data.publishedAt.toISOString()}>
-              {formatArticleMonth(featured.data.publishedAt)}
+        latestArticles.length > 0 ? latestArticles.map((article, index) => (
+          <a href={articleHref(article)} class="writing-entry home-reveal" style={`--home-delay: ${index + 2}`}>
+            <time class="writing-entry__date" datetime={article.data.publishedAt.toISOString()}>
+              {formatArticleMonth(article.data.publishedAt)}
             </time>
             <div class="writing-entry__body">
-              <h3 class="writing-entry__title"><span>{featured.data.title}</span></h3>
-              <p class="writing-entry__deck">{featured.data.deck}</p>
-              <span class="writing-entry__theme">{featured.data.themes[0]}</span>
+              <h3 class="writing-entry__title"><span>{article.data.title}</span></h3>
+              <p class="writing-entry__deck">{article.data.deck}</p>
+              <span class="writing-entry__theme">{article.data.themes[0]}</span>
             </div>
           </a>
-        ) : (
+        )) : (
           <p class="writing__empty">No articles are published right now.</p>
         )
       }

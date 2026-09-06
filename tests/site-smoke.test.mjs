@@ -150,8 +150,10 @@ test('merged home preserves the latest production article and redirects About', 
   const writing = read('dist/writing/index.html');
   const latest = 'what-we-carry-through-the-door';
   const older = 'growth-rarely-belongs-to-one-department';
-  assert.match(home, /What We Carry Through the Door/);
-  assert.equal((home.match(/class="writing-entry /g) || []).length, 1);
+  const published = JSON.parse(writing.match(/<script[^>]*id="writing-data"[^>]*>([\s\S]*?)<\/script>/)[1]).articles;
+  const homeLinks = Array.from(home.matchAll(/<a href="([^"]+)" class="writing-entry /g), match => match[1]);
+  const expected = [...published].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt)).slice(0, 3).map(article => article.href);
+  assert.deepEqual(homeLinks, expected);
   assert.ok(writing.indexOf('/writing/' + latest) < writing.indexOf('/writing/' + older));
   assert.ok(writing.includes('/writing/' + latest) && writing.includes('/writing/' + older));
   assert.doesNotMatch(home, /noindex|Preview · Merged Home/);
