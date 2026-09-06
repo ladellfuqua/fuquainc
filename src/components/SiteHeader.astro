@@ -1,6 +1,6 @@
 ---
 /**
- * Site header (§8). Nav: About / Writing / Contact. Logo returns home.
+ * Site header (§8). Nav: Home / Writing / Contact. Logo returns home.
  * LinkedIn visible but not occupying primary nav weight.
  * Mobile: extremely simple disclosure menu.
  */
@@ -15,7 +15,7 @@ interface Props {
 const { tone = 'light', manageScroll = true } = Astro.props;
 
 const nav = [
-  { label: 'About', href: '/about' },
+  { label: 'Home', href: '/' },
   { label: 'Writing', href: '/writing' },
   { label: 'Contact', href: '/contact' },
 ];

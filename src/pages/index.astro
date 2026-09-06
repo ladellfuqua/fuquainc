@@ -1,12 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BrandGraphic from '../components/BrandGraphic.astro';
-import HomepageHero from '../components/HomepageHero.astro';
 import {
   articleHref,
   formatArticleMonth,
   getPublishedArticles,
 } from '../lib/articles';
+import { Picture } from 'astro:assets';
+import anchorImg from '../assets/ladell-portrait.png';
+
+// About-me personal-beat candid — single cycling shot (kitchen benched; Sitges dropped).
+const candids = [
+  { src: '/images/about-preview/cycling-skyline.webp', alt: 'Ladell cycling by the NYC waterfront', label: 'Cycling · NYC' },
+];
 
 // How I Think (LAD-28) — one typographic block; no icons or illustrations.
 const principles = [
@@ -27,7 +33,7 @@ const principles = [
   },
 ];
 
-const latestArticles = (await getPublishedArticles()).slice(0, 3);
+const [featured] = await getPublishedArticles();
 ---
 
 <BaseLayout
@@ -57,26 +63,88 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
     fetchpriority="high"
   />
 
-  <HomepageHero />
-
-  {/* ---------- About / bio (LAD-29) ---------- */}
-  <section class="section bio home-section-motion" aria-labelledby="bio-heading" data-home-section>
-    <div class="container bio__inner" data-home-parallax>
-      <h2 id="bio-heading" class="eyebrow bio__heading home-reveal">About</h2>
-      <p class="bio__copy" data-bio-reveal>
-        <strong>Ladell Fuqua</strong> brings three decades of leadership across
-        Cond&eacute; Nast, AOL, TheStreet and, today, <strong>PWX Solutions</strong>.
-        Known for creating clarity, building accountability and developing teams
-        that deliver results.
-      </p>
-      <blockquote class="bio__quote" data-bio-quote>
-        <span class="bio__quote-line"><span>Good strategy sets the direction;{' '}</span></span>
-        <span class="bio__quote-line"><span>disciplined execution creates the outcome.</span></span>
-      </blockquote>
+  {/* ---------- Opening (dark, current backdrop) ---------- */}
+  <section class="open">
+    <div class="open__backdrop" aria-hidden="true">
+      <img
+        class="open__backdrop-img"
+        src="/images/hero/hero-backdrop-1600.webp"
+        srcset="/images/hero/hero-backdrop-1000.webp 1000w, /images/hero/hero-backdrop-1600.webp 1600w, /images/hero/hero-backdrop-2400.webp 2400w"
+        sizes="100vw" alt="" width="1600" height="900" fetchpriority="high"
+      />
+      <span class="open__scrim"></span>
+    </div>
+    <div class="container open__copy">
+      <p class="eyebrow open__eyebrow">Ladell Fuqua</p>
+      <h1 class="open__title">Curious about people, and the ideas that bring us together.</h1>
     </div>
   </section>
 
-  {/* ---------- Writing (LAD-30) ---------- */}
+  {/* ---------- About me (merged home) ---------- */}
+  <section class="section am" aria-labelledby="am-heading">
+    <div class="container">
+      {/* Movement 1 — professional */}
+      <div class="am__grid">
+        <div class="am__lede">
+          <h2 id="am-heading" class="visually-hidden">About Ladell Fuqua</h2>
+          <p class="am__intro">
+            Throughout my career, I&rsquo;ve been drawn to complex situations where listening carefully,
+            connecting different perspectives and helping people find a clearer way forward can make a
+            difference.
+          </p>
+          <p class="am__body">
+            Most of my career has been in media &mdash; at AOL, Cond&eacute; Nast and TheStreet &mdash; in
+            leadership roles across marketing, technology and operations. What I&rsquo;ve enjoyed most is
+            helping teams turn ideas into results, and watching people grow in confidence along the way.
+          </p>
+        </div>
+        <figure class="am__anchor">
+          <div class="am__anchor-frame">
+            <Picture
+              src={anchorImg}
+              formats={['avif', 'webp']}
+              widths={[280, 440]}
+              sizes="(max-width: 48rem) 40vw, 14rem"
+              alt="Portrait of Ladell Fuqua"
+              class="am__anchor-img"
+            />
+          </div>
+          <figcaption class="am__anchor-cap">
+            Chief Operating Officer &amp; Head&nbsp;of&nbsp;Growth<br /><span>PWX Solutions · New York</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <hr class="am__rule" />
+
+      {/* Movement 2 — personal */}
+      <div class="am__grid am__grid--rev">
+        <div class="am__lede">
+          <p class="am__body">
+            I&rsquo;ve had the opportunity to work with many great people over the years. Many of those
+            relationships continue today, well beyond the roles and companies where they began. Colleagues
+            have become close friends, and I&rsquo;ve learned a great deal from them about work, life and myself.
+          </p>
+          <p class="am__body">
+            New York is home, and I live in Harlem. My immediate family resides in Nashville, TN. Outside
+            work, I enjoy cycling, traveling and art, and I&rsquo;m a member of both the Whitney Museum and the
+            Studio Museum in Harlem. Music is a constant, especially jazz, with plenty of old school and house
+            in the mix. I&rsquo;m an introvert who appreciates a quiet night in, but I also enjoy catching up
+            with friends over a good bourbon. I write here about work, technology and culture, and how they
+            shape our everyday lives.
+          </p>
+        </div>
+        <figure class="am__candid">
+          <div class="am__candid-frame">
+            <img id="pv-candid" src={candids[0].src} alt={candids[0].alt} width="760" height="950" loading="lazy" />
+          </div>
+          <figcaption class="am__candid-cap"><span id="pv-candid-label">{candids[0].label}</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- Writing (section 01) ---------- */}
   <section class="writing home-section-motion" aria-labelledby="writing-heading" data-home-section>
     <div class="container" data-home-parallax>
       <div class="writing__head home-reveal">
@@ -88,18 +156,18 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
       <p class="writing__dek home-reveal" style="--home-delay: 1">Occasional short articles on work, technology, culture and belonging.</p>
 
       {
-        latestArticles.length > 0 ? latestArticles.map((article, index) => (
-          <a href={articleHref(article)} class="writing-entry home-reveal" style={`--home-delay: ${index + 2}`}>
-            <time class="writing-entry__date" datetime={article.data.publishedAt.toISOString()}>
-              {formatArticleMonth(article.data.publishedAt)}
+        featured ? (
+          <a href={articleHref(featured)} class="writing-entry home-reveal" style="--home-delay: 2">
+            <time class="writing-entry__date" datetime={featured.data.publishedAt.toISOString()}>
+              {formatArticleMonth(featured.data.publishedAt)}
             </time>
             <div class="writing-entry__body">
-              <h3 class="writing-entry__title"><span>{article.data.title}</span></h3>
-              <p class="writing-entry__deck">{article.data.deck}</p>
-              <span class="writing-entry__theme">{article.data.themes[0]}</span>
+              <h3 class="writing-entry__title"><span>{featured.data.title}</span></h3>
+              <p class="writing-entry__deck">{featured.data.deck}</p>
+              <span class="writing-entry__theme">{featured.data.themes[0]}</span>
             </div>
           </a>
-        )) : (
+        ) : (
           <p class="writing__empty">No articles are published right now.</p>
         )
       }
@@ -150,6 +218,7 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
       </div>
     </div>
   </section>
+
 </BaseLayout>
 
 <style>
@@ -499,6 +568,90 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
       transform: scale(1);
       opacity: 0.24;
     }
+  }
+
+  /* ---------- Opening (always dark, current-site backdrop) ---------- */
+  .open {
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(12rem, 27vh, 16rem);
+    display: grid;
+    align-items: center;
+    padding-block: clamp(1.75rem, 1rem + 2vw, 3rem);
+  }
+  .open__backdrop { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .open__backdrop-img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; display: block; }
+  .open__scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(100deg, rgba(13,20,31,0.95) 0%, rgba(13,20,31,0.82) 42%, rgba(13,20,31,0.52) 78%, rgba(13,20,31,0.68) 100%),
+      linear-gradient(180deg, rgba(11,17,27,0.55), transparent 34%, rgba(11,17,27,0.42));
+  }
+  .open__copy { position: relative; z-index: 1; }
+  .open__eyebrow { color: #d5b9ce; }
+  .open__title {
+    margin-top: 0.7rem;
+    max-width: none;
+    color: #f6f3ec;
+    font-family: var(--font-serif);
+    font-weight: var(--weight-normal, 400);
+    font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.4rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+  .open__cred { margin-top: 1.5rem; color: #e6e8eb; font-size: 0.82rem; font-weight: 600; }
+  .open__cred span { font-weight: 400; opacity: 0.72; }
+
+  /* ---------- About me (merged home) ---------- */
+  .am { background: var(--bg, #f7f5f0); }
+  .am__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 14rem;
+    gap: clamp(1.75rem, 1rem + 4vw, 4rem);
+    align-items: start;
+  }
+  .am__grid--rev { grid-template-columns: minmax(0, 1fr) 12.5rem; }
+  .am__eyebrow { margin-bottom: 0; }
+  .am__intro {
+    margin-top: 1.1rem;
+    max-width: 46ch;
+    color: var(--c-navy);
+    font-family: var(--font-serif);
+    font-size: clamp(1.12rem, 1rem + 0.5vw, 1.35rem);
+    line-height: 1.5;
+  }
+  .am__body {
+    margin-top: 1.25rem;
+    max-width: 60ch;
+    color: var(--c-graphite);
+    font-size: var(--fs-base);
+    line-height: 1.72;
+  }
+  .am__grid--rev .am__body:first-child { margin-top: 0; }
+  .am__rule {
+    margin-block: clamp(2rem, 1.4rem + 2vw, 3rem);
+    border: 0;
+    border-top: 1px solid var(--line, #d6d1c7);
+  }
+  .am__anchor, .am__candid { margin: 0; }
+  .am__anchor-frame, .am__candid-frame {
+    overflow: hidden;
+    border-radius: var(--radius, 5px);
+    aspect-ratio: 4 / 5;
+    background: var(--c-stone);
+  }
+  .am__anchor-frame { border: 1px solid var(--line, #d6d1c7); }
+  .am__anchor-img, .am__candid-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .am__anchor-img { object-position: 50% 22%; }
+  .am__anchor-cap { margin-top: 0.7rem; color: var(--c-navy); font-size: 0.82rem; font-weight: 600; line-height: 1.35; }
+  .am__anchor-cap span { color: var(--text-muted, #6b7178); font-weight: 400; }
+  .am__candid-cap { margin-top: 0.55rem; font-size: 0.74rem; color: var(--text-muted, #6b7178); letter-spacing: 0.06em; text-transform: uppercase; }
+  @media (max-width: 48rem) {
+    .am__grid, .am__grid--rev { grid-template-columns: 1fr; }
+    .am__anchor { max-width: 12rem; }
+    .am__candid { max-width: 11rem; }
   }
 </style>
 

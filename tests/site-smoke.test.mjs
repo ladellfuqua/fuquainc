@@ -11,10 +11,10 @@ const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf
 
 const publicRoutes = [
   'dist/index.html',
-  'dist/about/index.html',
   'dist/contact/index.html',
   'dist/privacy/index.html',
   'dist/writing/index.html',
+  'dist/writing/what-we-carry-through-the-door/index.html',
   'dist/writing/growth-rarely-belongs-to-one-department/index.html',
 ];
 
@@ -142,4 +142,20 @@ test('the social-card system renders every editorial theme', async () => {
     assert.equal(image.readUInt32BE(16), ARTICLE_SOCIAL_CARD_WIDTH);
     assert.equal(image.readUInt32BE(20), ARTICLE_SOCIAL_CARD_HEIGHT);
   }
+});
+
+
+test('merged home preserves the latest production article and redirects About', () => {
+  const home = read('dist/index.html');
+  const writing = read('dist/writing/index.html');
+  const latest = 'what-we-carry-through-the-door';
+  const older = 'growth-rarely-belongs-to-one-department';
+  assert.match(home, /What We Carry Through the Door/);
+  assert.equal((home.match(/class="writing-entry /g) || []).length, 1);
+  assert.ok(writing.indexOf('/writing/' + latest) < writing.indexOf('/writing/' + older));
+  assert.ok(writing.includes('/writing/' + latest) && writing.includes('/writing/' + older));
+  assert.doesNotMatch(home, /noindex|Preview · Merged Home/);
+  assert.deepEqual(JSON.parse(read('vercel.json')).redirects.find(r => r.source === '/about'),
+    { source: '/about', destination: '/', statusCode: 301 });
+  assert.doesNotMatch(read('dist/sitemap-0.xml'), /\/about|home-full-preview|home-open-preview|home-preview/);
 });

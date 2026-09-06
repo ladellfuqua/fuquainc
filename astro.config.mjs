@@ -7,6 +7,7 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   site: 'https://fuquainc.com',
   trailingSlash: 'never',
+  redirects: { '/about': { destination: '/', status: 301 } },
   // Keep executable scripts in generated assets so the production CSP can
   // reject all inline JavaScript without disabling Astro component behavior.
   vite: {
@@ -17,7 +18,7 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      filter: (page) => !page.includes('/mockups'),
+      filter: (page) => !page.includes('/mockups') && !page.includes('/about'),
     }),
   ],
   devToolbar: { enabled: false },
