@@ -16,6 +16,8 @@ const articles = defineCollection({
     status: z.enum(['draft', 'published']),
     featured: z.boolean().default(false),
     image: z.string().optional(),
+    imageWidth: z.number().positive().optional(),
+    imageHeight: z.number().positive().optional(),
   }),
 });
 
