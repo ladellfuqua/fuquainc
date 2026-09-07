@@ -48,4 +48,4 @@ We don’t choose every experience that shapes us. But we can choose to carry em
 **What will you bring into the room, and how will it help others move forward?**
 
 ---
-*These reflections and experiences are my own. AI was used to help refine this article.*
+<p style="font-size: 0.85em;"><em>This content is my own. AI was used to help edit this article.</em></p>
