@@ -15,9 +15,6 @@ imageHeight: 909
 
 <img src="/images/writing/what-we-carry-through-the-door.png" alt="An open office doorway in warm autumn light, with the words What We Carry Through the Door and How we show up matters." width="1731" height="909" fetchpriority="high" style="width:100%;height:auto" />
 
-[Ladell Fuqua](https://www.linkedin.com/in/ladellfuqua/)  
-COO & Head of Growth | Business Strategy • Growth • Executive Leadership
-
 September is here. As we move into fall and think about how we want to finish the year, it’s worth considering what we’re carrying with us.
 
 A lot can happen in a year. Successes build our confidence, disappointments test us, and changes ask us to find our footing again. Some of us enter this season energized. Others feel stretched thin. Many of us feel both.

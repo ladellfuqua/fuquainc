@@ -9,11 +9,6 @@ import {
 import { Picture } from 'astro:assets';
 import anchorImg from '../assets/ladell-portrait.png';
 
-// About-me personal-beat candid — single cycling shot (kitchen benched; Sitges dropped).
-const candids = [
-  { src: '/images/about-preview/cycling-skyline.webp', alt: 'Ladell cycling by the NYC waterfront', label: 'Cycling · NYC' },
-];
-
 // How I Think (LAD-28) — one typographic block; no icons or illustrations.
 const principles = [
   {
@@ -134,12 +129,16 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
             shape our everyday lives.
           </p>
         </div>
-        <figure class="am__candid">
-          <div class="am__candid-frame">
-            <img id="pv-candid" src={candids[0].src} alt={candids[0].alt} width="760" height="950" loading="lazy" />
-          </div>
-          <figcaption class="am__candid-cap"><span id="pv-candid-label">{candids[0].label}</span></figcaption>
-        </figure>
+        <div class="photo-pair">
+          <figure>
+            <img src="/images/about-preview/kitchen.webp" alt="Ladell at home in the kitchen" width="760" height="950" loading="lazy" />
+            <figcaption>At home</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/about-preview/cycling-skyline.webp" alt="Ladell cycling by the NYC waterfront" width="760" height="950" loading="lazy" />
+            <figcaption>Cycling · NYC</figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </section>
@@ -612,7 +611,13 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
     gap: clamp(1.75rem, 1rem + 4vw, 4rem);
     align-items: start;
   }
-  .am__grid--rev { grid-template-columns: minmax(0, 1fr) 12.5rem; }
+  .am__grid--rev { grid-template-columns: minmax(0, 1fr) minmax(0, 28.25rem); gap: 2rem; }
+  .photo-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 452px; width: 100%; }
+  .photo-pair figure { margin: 0; min-width: 0; }
+  .photo-pair img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; display: block; border-radius: 5px; }
+  .photo-pair figcaption { margin-top: 8px; font-size: 11px; color: #686b70; letter-spacing: 0.06em; text-transform: uppercase; }
+  @media (max-width: 64rem) { .am__grid--rev { grid-template-columns: 1fr; gap: 1.5rem; } }
+  @media (max-width: 30rem) { .photo-pair { gap: 10px; } }
   .am__eyebrow { margin-bottom: 0; }
   .am__intro {
     margin-top: 1.1rem;
