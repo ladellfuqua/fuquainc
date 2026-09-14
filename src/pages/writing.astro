@@ -36,7 +36,6 @@ const themes = [
 ];
 
 const articles = await getPublishedArticles();
-const [featured, ...remaining] = articles;
 const themeCounts = Object.fromEntries(
   themes.map((theme) => [
     theme.name,
@@ -112,57 +111,28 @@ const collectionSchema = {
   }
 
   <div class="writing-content" data-writing-content>
-    <section class="featured-section" aria-labelledby="featured-heading" data-page-section>
-      <div class="container featured-section__inner" data-page-parallax data-parallax-factor="0.032">
-        {
-          featured ? (
-            <article class="featured page-reveal" data-featured>
-              <p class="featured__kicker">Latest</p>
-              <h2 id="featured-heading" class="featured__title">
-                <a href={articleHref(featured)}><span>{featured.data.title}</span></a>
-              </h2>
-              <p class="featured__deck">{featured.data.deck}</p>
-              <p class="featured__meta">
-                <time datetime={featured.data.publishedAt.toISOString()}>{formatArticleDate(featured.data.publishedAt)}</time>
-                <span aria-hidden="true">&middot;</span>
-                <span>{featured.data.themes[0]}</span>
-              </p>
-            </article>
-          ) : (
-            <div class="writing-empty page-reveal" data-featured>
-              <h2 id="featured-heading" class="visually-hidden">Writing</h2>
-              <p>New writing appears here as it&rsquo;s published.</p>
-            </div>
-          )
-        }
+    <section class="article-index" aria-label="Articles" data-page-section>
+      <div class="container">
+        <ul class="article-list" role="list" data-article-list>
+          {articles.map((article, index) => (
+            <li>
+              <a href={articleHref(article)} class="article-row">
+                <span class="article-row__meta">
+                  <time datetime={article.data.publishedAt.toISOString()}>{formatArticleDate(article.data.publishedAt)}</time>
+                </span>
+                <span class="article-row__body">
+                  <span class="article-row__heading"><span class="article-row__title"><span>{article.data.title}</span></span>{index === 0 && <span class="article-row__latest">Latest</span>}</span>
+                  <span class="article-row__deck">{article.data.deck}</span>
+                  <span class="article-row__theme">{article.data.themes[0]}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="writing-empty" data-writing-empty hidden={articles.length > 0}>New writing appears here as it’s published.</p>
+        <button class="load-more" type="button" data-load-more hidden>Load more</button>
       </div>
     </section>
-
-    {
-      remaining.length > 0 && (
-        <section class="article-index" aria-label="More writing" data-page-section>
-          <div class="container" data-page-parallax data-parallax-factor="0.03">
-            <ul class="article-list" role="list" data-article-list>
-              {remaining.map((article, index) => (
-                <li class="page-reveal" data-delay={String(Math.min(index % 4, 3))}>
-                  <a href={articleHref(article)} class="article-row">
-                    <time datetime={article.data.publishedAt.toISOString()}>
-                      {formatArticleDate(article.data.publishedAt)}
-                    </time>
-                    <span class="article-row__body">
-                      <span class="article-row__title"><span>{article.data.title}</span></span>
-                      <span class="article-row__deck">{article.data.deck}</span>
-                      <span class="article-row__theme">{article.data.themes[0]}</span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <button class="load-more" type="button" data-load-more hidden>Load more</button>
-          </div>
-        </section>
-      )
-    }
   </div>
 
   <script id="writing-data" type="application/json" set:html={articleJson} />
@@ -232,45 +202,6 @@ const collectionSchema = {
 
   .writing-content.is-filtering { opacity: 0; }
 
-  .featured-section {
-    position: relative;
-    overflow: hidden;
-    padding-block: clamp(3.5rem, 6vw, 5.25rem);
-    background: var(--c-ivory);
-  }
-
-  .featured-section__inner { position: relative; }
-
-  .featured {
-    max-width: 56rem;
-    padding-top: 1.15rem;
-    border-top: 2px solid var(--c-navy);
-  }
-
-  .featured__kicker {
-    color: var(--c-plum-deep);
-    font-size: var(--fs-eyebrow);
-    font-weight: var(--weight-semi);
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-  }
-
-  .featured__title {
-    max-width: 20ch;
-    margin-top: 1rem;
-    font-family: var(--font-serif);
-    font-size: clamp(2.2rem, 1.7rem + 2.1vw, 3.5rem);
-    font-weight: var(--weight-normal);
-    line-height: 1.08;
-  }
-
-  .featured__title a {
-    color: var(--c-navy);
-  }
-
-  .featured__title a:hover { text-decoration: none; }
-
-  .featured__title span,
   .article-row__title span {
     background-image: linear-gradient(var(--c-plum), var(--c-plum));
     background-position: 0 100%;
@@ -278,38 +209,15 @@ const collectionSchema = {
     background-size: 0 1.5px;
   }
 
-  .featured__title a:hover span,
-  .featured__title a:focus-visible span,
   .article-row:hover .article-row__title span,
   .article-row:focus-visible .article-row__title span {
     background-size: 100% 1.5px;
   }
 
-  .featured__deck {
-    max-width: 48rem;
-    margin-top: 1rem;
-    color: var(--c-graphite);
-    font-family: var(--font-serif);
-    font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
-    font-style: italic;
-    line-height: 1.55;
-  }
-
-  .featured__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.55rem;
-    margin-top: 1.25rem;
-    color: var(--text-muted);
-    font-size: var(--fs-sm);
-  }
-
-  .featured__meta span:not([aria-hidden]) { color: var(--c-plum-deep); }
-
   .article-index {
     position: relative;
     overflow: hidden;
-    padding-block: 0 clamp(3.75rem, 6vw, 5.5rem);
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(3.75rem, 6vw, 5.5rem);
     background: var(--c-ivory);
   }
 
@@ -331,6 +239,23 @@ const collectionSchema = {
   }
 
   .article-row:hover { text-decoration: none; }
+  .article-row:focus-visible { outline: 2px solid var(--c-plum); outline-offset: 4px; }
+  .article-row__meta { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+  .article-row__heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.45rem 0.75rem; }
+  .article-row__latest {
+    display: inline-block;
+    flex-shrink: 0;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    color: var(--c-plum-deep);
+    background: #e9e1e8;
+    font-size: 0.65rem;
+    font-weight: var(--weight-semi);
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .load-more[hidden], .writing-empty[hidden], .article-list > li[hidden] { display: none; }
 
   .article-row time {
     padding-top: 0.2rem;
@@ -405,7 +330,6 @@ const collectionSchema = {
       transition: opacity 180ms var(--ease);
     }
 
-    .featured__title span,
     .article-row__title span {
       transition: background-size var(--dur) var(--ease);
     }
@@ -421,7 +345,7 @@ const collectionSchema = {
   }
 
   @media (max-width: 36rem) {
-    .featured-section { padding-block: 3.25rem; }
+    .article-row__meta { flex-direction: row; align-items: baseline; gap: 0.75rem; }
     .article-row {
       grid-template-columns: 1fr;
       gap: 0.55rem;
@@ -458,57 +382,9 @@ const collectionSchema = {
       let selectedWritingTheme = 'All';
       let visibleWritingRows = writingData?.pageSize || 6;
 
-      function addMetaPart(parent: HTMLElement, value: string, accent = false) {
-        if (parent.childElementCount) {
-          const separator = document.createElement('span');
-          separator.setAttribute('aria-hidden', 'true');
-          separator.textContent = '·';
-          parent.append(separator);
-        }
-        const part = document.createElement('span');
-        part.textContent = value;
-        if (accent) part.dataset.accent = 'true';
-        parent.append(part);
-      }
-
-      function createFeaturedArticle(article: WritingArticle) {
-        const wrapper = document.createElement('article');
-        wrapper.className = 'featured page-reveal is-visible';
-        wrapper.dataset.featured = '';
-
-        const kicker = document.createElement('p');
-        kicker.className = 'featured__kicker';
-        kicker.textContent = 'Latest';
-
-        const heading = document.createElement('h2');
-        heading.id = 'featured-heading';
-        heading.className = 'featured__title';
-        const link = document.createElement('a');
-        link.href = article.href;
-        const title = document.createElement('span');
-        title.textContent = article.title;
-        link.append(title);
-        heading.append(link);
-
-        const deck = document.createElement('p');
-        deck.className = 'featured__deck';
-        deck.textContent = article.deck;
-
-        const meta = document.createElement('p');
-        meta.className = 'featured__meta';
-        const time = document.createElement('time');
-        time.dateTime = article.publishedAt;
-        time.textContent = article.date;
-        meta.append(time);
-        addMetaPart(meta, article.themes[0] || '', true);
-
-        wrapper.append(kicker, heading, deck, meta);
-        return wrapper;
-      }
-
       function createArticleRow(article: WritingArticle, index: number) {
         const item = document.createElement('li');
-        item.className = 'page-reveal is-visible';
+        item.className = '';
         item.dataset.delay = String(Math.min(index % 4, 3));
         const link = document.createElement('a');
         link.className = 'article-row';
@@ -529,8 +405,20 @@ const collectionSchema = {
         const theme = document.createElement('span');
         theme.className = 'article-row__theme';
         theme.textContent = article.themes[0] || '';
-        body.append(heading, deck, theme);
-        link.append(time, body);
+        const headingGroup = document.createElement('span');
+        headingGroup.className = 'article-row__heading';
+        headingGroup.append(heading);
+        body.append(headingGroup, deck, theme);
+        const meta = document.createElement('span');
+        meta.className = 'article-row__meta';
+        meta.append(time);
+        if (index === 0) {
+          const latest = document.createElement('span');
+          latest.className = 'article-row__latest';
+          latest.textContent = 'Latest';
+          headingGroup.append(latest);
+        }
+        link.append(meta, body);
         item.append(link);
         return item;
       }
@@ -551,31 +439,11 @@ const collectionSchema = {
 
       function renderWritingSelection() {
         if (!writingData) return;
-        const writingFeature = document.querySelector<HTMLElement>('[data-featured]');
-        if (!writingFeature) return;
         const selected = writingSelection();
-        const featureParent = writingFeature.parentElement;
-        if (!featureParent) return;
-
-        if (selected.length) {
-          const nextFeature = createFeaturedArticle(selected[0]);
-          featureParent.replaceChildren(nextFeature);
-        } else {
-          const empty = document.createElement('div');
-          empty.className = 'writing-empty page-reveal is-visible';
-          empty.dataset.featured = '';
-          const heading = document.createElement('h2');
-          heading.id = 'featured-heading';
-          heading.className = 'visually-hidden';
-          heading.textContent = 'Writing';
-          const message = document.createElement('p');
-          message.textContent = "New writing appears here as it's published.";
-          empty.append(heading, message);
-          featureParent.replaceChildren(empty);
-        }
-
+        const empty = document.querySelector<HTMLElement>('[data-writing-empty]');
+        if (empty) empty.hidden = selected.length > 0;
         if (writingList) {
-          const rows = selected.slice(1).map(createArticleRow);
+          const rows = selected.map(createArticleRow);
           writingList.replaceChildren(...rows);
           syncLoadMore(rows);
         }
