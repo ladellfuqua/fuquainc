@@ -1,0 +1,62 @@
+name: Notify search engines
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+  deployments: read
+
+concurrency:
+  group: indexnow-production
+  cancel-in-progress: false
+
+jobs:
+  indexnow:
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the deployed revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
+          fetch-depth: 0
+
+      - name: Find the preceding successful production deployment
+        id: baseline
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const current = context.payload.deployment;
+            for await (const response of github.paginate.iterator(github.rest.repos.listDeployments, {
+              ...context.repo, environment: 'Production', per_page: 100,
+            })) {
+              for (const deployment of response.data) {
+                if (deployment.id >= current.id) continue;
+                const statuses = await github.paginate(github.rest.repos.listDeploymentStatuses, {
+                  ...context.repo, deployment_id: deployment.id, per_page: 100,
+                });
+                if (statuses.some(status => status.state === 'success')) {
+                  core.setOutput('sha', deployment.sha);
+                  return;
+                }
+              }
+            }
+            core.setFailed('No successful production baseline found; no URLs will be submitted.');
+
+      - name: Use Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Submit only changed published URLs
+        env:
+          BEFORE_SHA: ${{ steps.baseline.outputs.sha }}
+          AFTER_SHA: ${{ github.event.deployment.sha }}
+        run: npm run indexnow -- --before "$BEFORE_SHA" --after "$AFTER_SHA"
