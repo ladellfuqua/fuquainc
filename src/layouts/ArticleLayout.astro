@@ -599,8 +599,6 @@ const articleSchema = {
   .article-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 
   @media (prefers-reduced-motion: no-preference) {
-    html.js.article-motion .article-paper { opacity: 0; transform: translateY(20px); transition: opacity 820ms var(--ease), transform 820ms var(--ease); }
-    html.js.article-motion .article-paper.is-ready { opacity: 1; transform: none; }
     html.js.article-reveals .article-reveal { opacity: 0; transform: translateY(20px); transition: opacity 700ms var(--ease) var(--reveal-delay, 0ms), transform 700ms var(--ease) var(--reveal-delay, 0ms); }
     html.js.article-reveals .article-reveal.is-visible { opacity: 1; transform: none; }
     html.js.article-reveals .article-body > h2.article-reveal::after { transform: scaleX(0); transition: transform 820ms var(--ease) 90ms; }
@@ -704,7 +702,6 @@ const articleSchema = {
   if (canReveal) setupQuoteMasks();
 
   const revealTargets = Array.from(document.querySelectorAll<HTMLElement>('.article-reveal'));
-  if (motionPreference.matches) root.classList.add('article-motion');
 
   if (canReveal) {
     root.classList.add('article-reveals');
@@ -718,10 +715,6 @@ const articleSchema = {
     revealTargets.forEach((element) => observer.observe(element));
   } else {
     revealTargets.forEach((element) => element.classList.add('is-visible'));
-  }
-
-  if (article) {
-    requestAnimationFrame(() => requestAnimationFrame(() => article.classList.add('is-ready')));
   }
 
   function updateArticleScroll() {

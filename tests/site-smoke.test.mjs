@@ -110,8 +110,9 @@ test('analytics runs only on live domains with advertising features disabled', (
     const scripts = [];
     const context = {
       location: { hostname },
-      window: {},
+      window: { requestIdleCallback: (callback) => callback() },
       document: {
+        readyState: 'complete',
         currentScript: { dataset: { gaId: 'G-K7TBK1TGXX' } },
         createElement: () => ({}),
         head: { appendChild: (script) => scripts.push(script) },
@@ -135,6 +136,43 @@ test('analytics runs only on live domains with advertising features disabled', (
   assert.match(connections, /https:\/\/analytics\.google\.com\/g\/collect/);
   assert.match(connections, /https:\/\/www\.google\.com\/g\/collect/);
   assert.doesNotMatch(connections, /doubleclick|googlesyndication|\*/);
+});
+
+test('analytics waits for page assets and idle time, with a fallback when idle callbacks are unavailable', () => {
+  for (const supportsIdle of [true, false]) {
+    const scheduled = [];
+    const listeners = new Map();
+    const scripts = [];
+    const context = {
+      location: { hostname: 'fuquainc.com' },
+      window: {
+        addEventListener: (event, callback, options) => {
+          assert.equal(options.once, true);
+          listeners.set(event, callback);
+        },
+        setTimeout: (callback) => scheduled.push(callback),
+        ...(supportsIdle ? { requestIdleCallback: (callback, options) => {
+          assert.equal(options.timeout, 2000);
+          scheduled.push(callback);
+        } } : {}),
+      },
+      document: {
+        readyState: 'interactive',
+        currentScript: { dataset: { gaId: 'G-K7TBK1TGXX' } },
+        createElement: () => ({}),
+        head: { appendChild: (script) => scripts.push(script) },
+      },
+    };
+    runInNewContext(read('public/scripts/analytics.js'), context);
+    assert.equal(context.window.dataLayer.length, 2, 'page view configuration is queued immediately');
+    assert.equal(scripts.length, 0);
+    assert.equal(scheduled.length, 0);
+    listeners.get('load')();
+    assert.equal(scripts.length, 0, 'load waits for the idle callback or fallback task');
+    assert.equal(scheduled.length, 1);
+    scheduled[0]();
+    assert.equal(scripts.length, 1);
+  }
 });
 
 test('published articles receive a generated 1200 by 630 social card', () => {
