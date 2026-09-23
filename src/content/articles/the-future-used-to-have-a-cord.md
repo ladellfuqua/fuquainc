@@ -8,7 +8,12 @@ themes:
   - Personal Reflections
 status: published
 featured: true
+image: /images/writing/the-future-used-to-have-a-cord.png
+imageWidth: 1670
+imageHeight: 941
 ---
+
+<img src="/images/writing/the-future-used-to-have-a-cord.png" alt="A rotary telephone, an unspooled cassette, and a pencil on a wooden table beside a record player. Caption: This happens… after you waited all afternoon to record that song. And the DJ finally didn’t talk over the intro." width="1670" height="941" fetchpriority="high" style="width:100%;height:auto" />
 
 There was a time when a pencil was an essential piece of music equipment.
 

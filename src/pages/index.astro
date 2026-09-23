@@ -150,7 +150,6 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
         <h2 id="writing-heading" class="eyebrow">
           <span class="writing__index" aria-hidden="true">01</span> Writing
         </h2>
-        <a href="/writing" class="writing__all">All articles <span aria-hidden="true">&rarr;</span></a>
       </div>
       <p class="writing__dek home-reveal" style="--home-delay: 1">Occasional short articles on work, technology, culture and belonging.</p>
 
@@ -170,6 +169,7 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
           <p class="writing__empty">No articles are published right now.</p>
         )
       }
+      <a href="/writing" class="writing__all">All articles <span aria-hidden="true">&rarr;</span></a>
     </div>
   </section>
 
@@ -240,6 +240,8 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
     color: var(--accent);
   }
   .writing__all {
+    display: inline-block;
+    margin-top: 1.5rem;
     color: var(--heading);
     font-size: var(--fs-sm);
     font-weight: var(--weight-medium);
