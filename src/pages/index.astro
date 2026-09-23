@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BrandGraphic from '../components/BrandGraphic.astro';
 import {
   articleHref,
-  formatArticleMonth,
+  formatArticleDate,
   getPublishedArticles,
 } from '../lib/articles';
 import { Picture } from 'astro:assets';
@@ -157,7 +157,7 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
         latestArticles.length > 0 ? latestArticles.map((article, index) => (
           <a href={articleHref(article)} class="writing-entry home-reveal" style={`--home-delay: ${index + 2}`}>
             <time class="writing-entry__date" datetime={article.data.publishedAt.toISOString()}>
-              {formatArticleMonth(article.data.publishedAt)}
+              {formatArticleDate(article.data.publishedAt)}
             </time>
             <div class="writing-entry__body">
               <h3 class="writing-entry__title"><span>{article.data.title}</span></h3>
