@@ -4,7 +4,7 @@ deck: "On nostalgia, convenience, and what we might forget along the way."
 summary: "From cassette tapes and rotary phones to AI, a reflection on the convenience technology brings—and the skills we may lose along the way."
 publishedAt: 2026-09-23
 themes:
-  - Technology and Change
+  - Culture and Technology
   - Personal Reflections
 status: published
 featured: true

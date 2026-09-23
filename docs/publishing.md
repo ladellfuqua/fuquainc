@@ -6,7 +6,7 @@ Articles live in `src/content/articles/` as Markdown or MDX. Their frontmatter i
 
 1. Copy an existing article file and give it a short, lowercase, hyphenated filename. The filename becomes the URL slug.
 2. Complete every required frontmatter field: `title`, `deck`, `summary`, `publishedAt`, `themes`, `status`, and `featured`. Read time is intentionally not collected or displayed.
-3. Use one or more of the approved themes: Work and Leadership, Identity and Belonging, Technology and Change, Culture and Opportunity, or Personal Reflections.
+3. Use one or more of the approved themes: Work and Leadership, Identity and Belonging, Culture and Technology, Culture and Opportunity, or Personal Reflections.
 4. Write the article body in Markdown. Keep one H1—the template supplies it—and begin body sections with H2 headings.
 
 ## Preview
