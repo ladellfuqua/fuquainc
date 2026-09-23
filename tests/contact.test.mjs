@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import handler from './contact.js';
+import handler from '../api/contact.js';
 
 const validBody = {
   name: 'Test Person',
@@ -64,6 +64,40 @@ test('responses are explicitly non-cacheable', async () => {
   assert.equal(res.statusCode, 405);
   assert.equal(res.headers.get('cache-control'), 'no-store, max-age=0');
   assert.equal(res.headers.get('pragma'), 'no-cache');
+});
+
+test('missing delivery settings fail without calling Resend or leaking form data', async () => {
+  await withDeliveryEnv(async () => {
+    const previousFetch = globalThis.fetch;
+    const previousError = console.error;
+    const logs = [];
+    let calls = 0;
+    globalThis.fetch = async () => { calls += 1; throw new Error('Must not send'); };
+    console.error = (line) => logs.push(String(line));
+    try {
+      for (const name of ['RESEND_API_KEY', 'CONTACT_TO_EMAIL']) {
+        const value = process.env[name];
+        delete process.env[name];
+        const res = mockResponse();
+        await handler(mockRequest(), res);
+        assert.equal(res.statusCode, 500);
+        assert.deepEqual(res.payload, { ok: false });
+        process.env[name] = value;
+      }
+      assert.equal(calls, 0);
+      assert.equal(logs.length, 2);
+      for (const line of logs) {
+        assert.deepEqual(JSON.parse(line), {
+          event: 'contact_api_failure',
+          code: 'configuration_missing',
+          requestId: 'iad1::contact-test',
+        });
+      }
+    } finally {
+      globalThis.fetch = previousFetch;
+      console.error = previousError;
+    }
+  });
 });
 
 test('passes an abort signal to Resend', async () => {

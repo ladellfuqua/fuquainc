@@ -34,7 +34,7 @@ Store real values in Vercel and in an ignored local environment file. Never comm
 | `npm run preview` | Preview the production build locally |
 | `npm run check` | Run Astro and TypeScript diagnostics |
 | `npm run lint` | Check JavaScript syntax, JSON, and tracked environment-file policy |
-| `npm test` | Build and run route, sitemap, structured-data, and CSP smoke tests |
+| `npm test` | Build and run site, publishing, and contact-delivery tests |
 | `npm run audit:prod` | Fail on moderate-or-higher production dependency advisories |
 | `npm run quality` | Run the complete CI quality gate |
 
@@ -47,6 +47,8 @@ Articles live in `src/content/articles/`. See [docs/publishing.md](docs/publishi
 Pull requests receive Vercel preview deployments. Merges to `main` deploy automatically to production. GitHub Actions runs `npm ci` and `npm run quality` for pull requests and pushes to `main`.
 
 Production and preview environment variables are managed in Vercel project settings. The local `.vercel/` directory is intentionally ignored.
+
+Production builds stop if `RESEND_API_KEY` or `CONTACT_TO_EMAIL` is missing or blank. Local, CI and preview builds do not require these secrets; a preview needs its own delivery settings to send mail. This check verifies configuration presence, not provider validity or inbox receipt. After changing the settings, redeploy to apply them to the contact function. See [docs/contact-delivery.md](docs/contact-delivery.md) for verification and recovery.
 
 ## Security and dependency policy
 
