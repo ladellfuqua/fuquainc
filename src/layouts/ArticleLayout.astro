@@ -13,7 +13,7 @@ interface Props {
 }
 
 const { article } = Astro.props;
-const { title, deck, summary, publishedAt, themes, image } = article.data;
+const { title, deck, summary, publishedAt, modifiedAt, themes, image } = article.data;
 const theme = themes[0];
 const socialImage = image ?? `/social/${article.id}.png`;
 const socialImageUrl = new URL(socialImage, Astro.site).href;
@@ -30,13 +30,19 @@ const publishedDate = new Intl.DateTimeFormat('en-US', {
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
+  '@id': `${canonicalUrl}#article`,
   headline: title,
   description: summary,
   image: socialImageUrl,
   datePublished: publishedAt.toISOString(),
+  ...(modifiedAt && { dateModified: modifiedAt.toISOString() }),
+  inLanguage: 'en',
+  articleSection: themes,
+  publisher: { '@id': new URL('/#organization', Astro.site).href },
   mainEntityOfPage: canonicalUrl,
   author: {
     '@type': 'Person',
+    '@id': new URL('/#person', Astro.site).href,
     name: 'Ladell Fuqua',
     url: 'https://fuquainc.com/',
   },
@@ -125,6 +131,7 @@ const articleSchema = {
             <span>
               <span class="article-byline__name">Ladell Fuqua</span>
               <time datetime={publishedAt.toISOString()}>{publishedDate}</time>
+              {modifiedAt && <time datetime={modifiedAt.toISOString()}>Updated {formatArticleDate(modifiedAt)}</time>}
             </span>
           </div>
           <div class="article-byline__actions">

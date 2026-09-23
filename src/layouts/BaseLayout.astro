@@ -54,6 +54,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href.replace(
   ''
 );
 const ogImage = new URL(image, Astro.site).href;
+const imageExtension = new URL(ogImage).pathname.split('.').pop()?.toLowerCase();
+const ogImageType = ({ png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp', avif: 'image/avif' } as Record<string, string>)[imageExtension ?? ''];
 const ogImageAlt = imageAlt;
 const linkedin = 'https://www.linkedin.com/in/ladellfuqua/';
 
@@ -67,12 +69,14 @@ const enableAnalytics = import.meta.env.PROD;
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
+  '@id': new URL('/#person', Astro.site).href,
   name: 'Ladell Fuqua',
   url: Astro.site?.href,
   sameAs: [linkedin],
   jobTitle: 'Growth and Operating Executive',
   worksFor: {
     '@type': 'Organization',
+    '@id': new URL('/#organization', Astro.site).href,
     name: 'Fuqua Inc.',
     url: Astro.site?.href,
   },
@@ -80,15 +84,17 @@ const personSchema = {
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': new URL('/#organization', Astro.site).href,
   name: 'Fuqua Inc.',
   url: Astro.site?.href,
-  sameAs: [linkedin],
 };
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': new URL('/#website', Astro.site).href,
   name: siteName,
   url: Astro.site?.href,
+  publisher: { '@id': new URL('/#organization', Astro.site).href },
 };
 ---
 
@@ -122,7 +128,7 @@ const websiteSchema = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:type" content="image/png" />
+    {ogImageType && <meta property="og:image:type" content={ogImageType} />}
     <meta property="og:image:width" content={String(imageWidth)} />
     <meta property="og:image:height" content={String(imageHeight)} />
     <meta property="og:image:alt" content={ogImageAlt} />

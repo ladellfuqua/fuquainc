@@ -23,4 +23,6 @@ Set `status: draft`, run `npm run dev`, and review the prose locally before publ
 
 ## Update or archive
 
+For a substantive editorial update, set `modifiedAt` to the actual update date (on or after `publishedAt`). This displays an Updated date and adds `dateModified` to Article metadata. Do not add or advance this date for builds, formatting, image compression, or other technical-only changes.
+
 Edit the Markdown file and publish through a pull request. To remove an article from public routes and lists without deleting its source, change `status` to `draft`. Preserve the filename when updating a published article so its URL does not change.

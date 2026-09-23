@@ -12,12 +12,16 @@ const articles = defineCollection({
     deck: z.string().min(1),
     summary: z.string().min(1),
     publishedAt: z.coerce.date(),
+    modifiedAt: z.coerce.date().optional(),
     themes: z.array(z.string().min(1)).min(1),
     status: z.enum(['draft', 'published']),
     featured: z.boolean().default(false),
     image: z.string().optional(),
     imageWidth: z.number().positive().optional(),
     imageHeight: z.number().positive().optional(),
+  }).refine((article) => !article.modifiedAt || article.modifiedAt >= article.publishedAt, {
+    message: 'modifiedAt must be on or after publishedAt',
+    path: ['modifiedAt'],
   }),
 });
 
