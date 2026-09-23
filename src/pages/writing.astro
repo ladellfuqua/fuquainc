@@ -3,6 +3,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeaderBand from '../components/PageHeaderBand.astro';
 import PageMotion from '../components/PageMotion.astro';
+import { articleThemes as themes, writingIntro } from '../data/article-themes';
 import {
   articleHref,
   articleDateValue,
@@ -12,29 +13,6 @@ import {
 
 const ENABLE_THEME_FILTERS = import.meta.env.PUBLIC_ENABLE_WRITING_THEMES === 'true';
 const PAGE_SIZE = 6;
-
-const themes = [
-  {
-    name: 'Work and Leadership',
-    note: 'How people lead, build teams and find meaning in the work itself.',
-  },
-  {
-    name: 'Identity and Belonging',
-    note: 'Being seen and included — race, access, power, and who gets to belong.',
-  },
-  {
-    name: 'Culture and Technology',
-    note: 'How technology reshapes what we do, and what it asks of us.',
-  },
-  {
-    name: 'Culture and Opportunity',
-    note: 'The forces that widen or narrow the paths available to people.',
-  },
-  {
-    name: 'Personal Reflections',
-    note: 'Shorter, more personal notes and observations from along the way.',
-  },
-];
 
 const articles = await getPublishedArticles();
 const themeCounts = Object.fromEntries(
@@ -61,7 +39,7 @@ const collectionSchema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   name: 'Writing',
-  description: 'Short articles by Ladell Fuqua on work and leadership, identity and belonging, technology and change, culture and opportunity.',
+  description: writingIntro,
   url: new URL('/writing', Astro.site).href,
   mainEntity: {
     '@type': 'ItemList',
@@ -77,7 +55,7 @@ const collectionSchema = {
 
 <BaseLayout
   title="Writing"
-  description="Short articles by Ladell Fuqua on work and leadership, identity and belonging, technology and change, culture and opportunity."
+  description={writingIntro}
   headerTone="dark"
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
@@ -85,7 +63,7 @@ const collectionSchema = {
   <PageHeaderBand
     eyebrow="Writing"
     title="Short articles."
-    intro="On work and leadership, identity and belonging, technology and change, culture and opportunity — and the experiences that connect them."
+    intro={writingIntro}
     variant="writing"
   />
 

@@ -4,8 +4,8 @@
  *
  * A durable, public reference for the brand's graphic language: principles,
  * color, type, the reusable composition types, anatomy, spacing, motion, and
- * do/don't guidance. Standalone (no site chrome), crawlable and included in the
- * sitemap. The governing *rules* live in docs/visual-system.md; this page is
+ * do/don't guidance. Standalone (no site chrome), crawlable but noindex and
+ * excluded from the sitemap. The governing *rules* live in docs/visual-system.md; this page is
  * the illustrated companion.
  */
 import '../styles/global.css';
@@ -77,6 +77,7 @@ const donts = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
     <meta name="description" content="The public FUQUA INC. visual-system reference for color, typography, composition, spacing and motion." />
     <link rel="canonical" href="https://fuquainc.com/visual-system" />
     <title>FUQUA INC. — Visual System</title>

@@ -14,7 +14,7 @@ a dashboard, flowchart or marketing template.
 
 > **Illustrated companion:** a live, viewable reference (swatches, type samples, the graphic
 > variants, anatomy, do/don't) is rendered publicly at **`/visual-system`**
-> (`src/pages/visual-system.astro`). It is crawlable and included in the sitemap. Use it to
+> (`src/pages/visual-system.astro`). It remains crawlable so search engines can read its `noindex` directive, and is excluded from the sitemap (LAD-47). Use it to
 > *see* the system; use this file for the authoritative rules.
 
 ---

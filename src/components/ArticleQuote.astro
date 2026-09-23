@@ -1,0 +1,15 @@
+---
+interface Props {
+  author: string;
+  year: number;
+  source?: string;
+}
+
+const { author, year, source } = Astro.props;
+const attribution = `${author}, ${year}`;
+---
+
+<blockquote class="article-quote--compact">
+  <p><slot /></p>
+  <footer class="article-quote__attribution">— {source ? <a href={source}>{attribution}</a> : attribution}</footer>
+</blockquote>
