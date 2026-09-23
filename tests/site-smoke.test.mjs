@@ -14,6 +14,8 @@ const publicRoutes = [
   'dist/contact/index.html',
   'dist/privacy/index.html',
   'dist/writing/index.html',
+  'dist/writing/the-future-used-to-have-a-cord/index.html',
+  'dist/writing/the-only-one-in-the-room/index.html',
   'dist/writing/what-we-carry-through-the-door/index.html',
   'dist/writing/growth-rarely-belongs-to-one-department/index.html',
 ];
@@ -142,6 +144,35 @@ test('the social-card system renders every editorial theme', async () => {
     assert.equal(image.readUInt32BE(16), ARTICLE_SOCIAL_CARD_WIDTH);
     assert.equal(image.readUInt32BE(20), ARTICLE_SOCIAL_CARD_HEIGHT);
   }
+});
+
+test('article metadata links consistent identities and declares the actual image type', () => {
+  for (const route of publicRoutes.filter((path) => path.startsWith('dist/writing/') && path !== 'dist/writing/index.html')) {
+    const html = read(route);
+    const blocks = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((match) => JSON.parse(match[1]));
+    const article = blocks.find((block) => block['@type'] === 'Article');
+    const person = blocks.find((block) => block['@type'] === 'Person');
+    const organization = blocks.find((block) => block['@type'] === 'Organization');
+    assert.ok(person['@id']);
+    assert.ok(organization['@id']);
+    assert.equal(article.author['@id'], person['@id']);
+    assert.equal(article.publisher['@id'], organization['@id']);
+    assert.equal(article.dateModified, undefined, 'technical changes must not invent editorial update dates');
+    const type = html.match(/property="og:image:type" content="([^"]+)"/)[1];
+    assert.equal(type, article.image.endsWith('.webp') ? 'image/webp' : 'image/png');
+  }
+});
+
+test('latest article serves smaller responsive images and a linked quote source', () => {
+  const html = read('dist/writing/the-future-used-to-have-a-cord/index.html');
+  assert.match(html, /<img[^>]*srcset="[^"]+640w,[^"]+960w,[^"]+1280w,[^"]+1670w"/);
+  assert.match(html, /<img[^>]*sizes="[^"]+"/);
+  for (const width of [640, 960, 1280, 1670]) {
+    const image = readFileSync(new URL(`../dist/images/writing/the-future-used-to-have-a-cord-${width}.webp`, import.meta.url));
+    assert.equal(image.subarray(8, 12).toString('ascii'), 'WEBP');
+    assert.ok(image.length < 160000, `${width}px image should remain under 160 KB`);
+  }
+  assert.match(html, /href="https:\/\/www\.aarp\.org\/events-history\/katherine-johnson-q-and-a-2018\/"/);
 });
 
 

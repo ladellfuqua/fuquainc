@@ -8,12 +8,12 @@ themes:
   - Personal Reflections
 status: published
 featured: true
-image: /images/writing/the-future-used-to-have-a-cord.png
+image: /images/writing/the-future-used-to-have-a-cord-1670.webp
 imageWidth: 1670
 imageHeight: 941
 ---
 
-<img src="/images/writing/the-future-used-to-have-a-cord.png" alt="A rotary telephone, an unspooled cassette, and a pencil on a wooden table beside a record player. Caption: This happens… after you waited all afternoon to record that song. And the DJ finally didn’t talk over the intro." width="1670" height="941" fetchpriority="high" style="width:100%;height:auto" />
+<img src="/images/writing/the-future-used-to-have-a-cord-1670.webp" srcset="/images/writing/the-future-used-to-have-a-cord-640.webp 640w, /images/writing/the-future-used-to-have-a-cord-960.webp 960w, /images/writing/the-future-used-to-have-a-cord-1280.webp 1280w, /images/writing/the-future-used-to-have-a-cord-1670.webp 1670w" sizes="(max-width: 684px) calc(100vw - 52px), (max-width: 820px) 633px, 642px" alt="A rotary telephone, an unspooled cassette, and a pencil on a wooden table beside a record player. Caption: This happens… after you waited all afternoon to record that song. And the DJ finally didn’t talk over the intro." width="1670" height="941" fetchpriority="high" style="width:100%;height:auto" />
 
 There was a time when a pencil was an essential piece of music equipment.
 
@@ -55,7 +55,7 @@ There are changes that seem easy enough to accept. Memorizing fewer phone number
 
 <blockquote class="article-quote--compact">
   <p>“I’ve told my grandchildren, ‘First you learn how to work the problem, and then you can go use the computer.’”</p>
-  <footer class="article-quote__attribution">— Katherine Johnson, 2018</footer>
+  <footer class="article-quote__attribution">— <a href="https://www.aarp.org/events-history/katherine-johnson-q-and-a-2018/">Katherine Johnson, 2018</a></footer>
 </blockquote>
 
 For younger generations entering the workforce, these tools are already becoming part of everyday life. They’ll bring different strengths and expectations, just as earlier generations did. Still, it raises questions about which skills remain essential and how they develop when technology can do so much of the work. It’s hard to know where reasonable adaptation ends and losing something valuable begins.
