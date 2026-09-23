@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { writingIntro } from '../data/article-themes';
 import BrandGraphic from '../components/BrandGraphic.astro';
 import {
   articleHref,
@@ -123,12 +124,11 @@ const profileSchema = {
             have become close friends, and I&rsquo;ve learned a great deal from them about work, life and myself.
           </p>
           <p class="am__body">
-            New York is home, and I live in Harlem. My immediate family resides in Nashville, TN. Outside
+            New York is home, and I live in Harlem. Nashville, where my family is, was home for a while too. Outside
             work, I enjoy cycling, traveling and art, and I&rsquo;m a member of both the Whitney Museum and the
             Studio Museum in Harlem. Music is a constant, especially jazz, with plenty of old school and house
             in the mix. I&rsquo;m an introvert who appreciates a quiet night in, but I also enjoy catching up
-            with friends over a good bourbon. I write here about work, technology and culture, and how they
-            shape our everyday lives.
+            with friends over a good bourbon.
           </p>
         </div>
         <div class="photo-pair">
@@ -163,7 +163,7 @@ const profileSchema = {
           <span class="writing__index" aria-hidden="true">01</span> Writing
         </h2>
       </div>
-      <p class="writing__dek home-reveal" style="--home-delay: 1">Occasional short articles on work, technology, culture and belonging.</p>
+      <p class="writing__dek home-reveal" style="--home-delay: 1">{writingIntro}</p>
 
       {
         latestArticles.length > 0 ? latestArticles.map((article, index) => (

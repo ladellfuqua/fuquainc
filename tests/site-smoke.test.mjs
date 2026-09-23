@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { parse } from 'parse5';
+import sharp from 'sharp';
+import { articleThemeNames } from '../src/data/article-themes.ts';
 import {
   ARTICLE_SOCIAL_CARD_HEIGHT,
   ARTICLE_SOCIAL_CARD_WIDTH,
@@ -11,6 +14,7 @@ import {
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
 const publicRoutes = [
+  'dist/404.html',
   'dist/index.html',
   'dist/contact/index.html',
   'dist/privacy/index.html',
@@ -37,6 +41,11 @@ test('robots and sitemap retain the intended indexing controls', () => {
   assert.match(robots, /Sitemap: https:\/\/fuquainc\.com\/sitemap-index\.xml/);
   assert.match(sitemap, /https:\/\/fuquainc\.com\/writing\/growth-rarely-belongs-to-one-department/);
   assert.doesNotMatch(sitemap, /\/mockups/);
+  assert.doesNotMatch(sitemap, /\/visual-system|\/404/);
+  assert.doesNotMatch(robots, /Disallow: \/visual-system/);
+  for (const page of ['dist/visual-system/index.html', 'dist/404.html']) {
+    assert.match(read(page), /<meta name="robots" content="noindex, nofollow"/);
+  }
 });
 
 test('production CSP blocks executable inline scripts without broad sources', () => {
@@ -207,15 +216,7 @@ test('published articles receive a generated 1200 by 630 social card', () => {
 });
 
 test('the social-card system renders every editorial theme', async () => {
-  const themes = [
-    'Work and Leadership',
-    'Identity and Belonging',
-    'Culture and Technology',
-    'Culture and Opportunity',
-    'Personal Reflections',
-  ];
-
-  for (const theme of themes) {
+  for (const theme of articleThemeNames) {
     const image = await renderArticleSocialCard({
       title: `A considered perspective on ${theme.toLowerCase()}`,
       theme,
@@ -249,16 +250,58 @@ test('article metadata links consistent identities and declares the actual image
   }
 });
 
-test('latest article serves smaller responsive images and a linked quote source', () => {
-  const html = read('dist/writing/the-future-used-to-have-a-cord/index.html');
-  assert.match(html, /<img[^>]*srcset="[^"]+400w,[^"]+640w,[^"]+960w,[^"]+1280w,[^"]+1670w"/);
-  assert.match(html, /<img[^>]*sizes="[^"]+"/);
-  for (const width of [400, 640, 960, 1280, 1670]) {
-    const image = readFileSync(new URL(`../dist/images/writing/the-future-used-to-have-a-cord-${width}.webp`, import.meta.url));
-    assert.equal(image.subarray(8, 12).toString('ascii'), 'WEBP');
-    assert.ok(image.length < 160000, `${width}px image should remain under 160 KB`);
+test('article headers use build-generated responsive images, with no placeholder for text-only articles', async () => {
+  const headers = [
+    ['the-future-used-to-have-a-cord', 1670],
+    ['the-only-one-in-the-room', 1672],
+    ['what-we-carry-through-the-door', 1731],
+  ];
+  for (const [slug, originalWidth] of headers) {
+    const html = read(`dist/writing/${slug}/index.html`);
+    const nodes = [];
+    const visit = (node) => { nodes.push(node); for (const child of node.childNodes ?? []) visit(child); };
+    visit(parse(html));
+    const images = nodes.filter(node => node.tagName === 'img');
+    assert.equal(images.length, 1, `${slug}: header must not also appear in the Markdown body`);
+    const attrs = Object.fromEntries(images[0].attrs.map(({name, value}) => [name, value]));
+    assert.ok(attrs.alt);
+    assert.equal(attrs.fetchpriority, 'high');
+    assert.equal(attrs.loading, 'eager');
+    assert.ok(attrs.sizes);
+    const variants = attrs.srcset.split(',').map(part => part.trim().split(/\s+/));
+    assert.deepEqual(variants.map(([,width]) => Number(width.slice(0, -1))), [400, 640, 960, 1280, originalWidth]);
+    for (const [src, width] of variants) {
+      assert.match(src, /^\/_astro\/.+\.webp$/, 'responsive assets come from the build pipeline');
+      const file = readFileSync(new URL(`../dist${src}`, import.meta.url));
+      const metadata = await sharp(file).metadata();
+      assert.equal(metadata.format, 'webp');
+      assert.equal(metadata.width, Number(width.slice(0, -1)));
+      assert.ok(Math.abs(metadata.width / metadata.height - Number(attrs.width) / Number(attrs.height)) < 0.01);
+      assert.ok(file.length < 180000, `${slug}: ${width} remains lightweight`);
+      if (width === '400w') assert.ok(file.length < 25000, `${slug}: mobile image under 25 KB`);
+    }
   }
+  const textOnly = read('dist/writing/growth-rarely-belongs-to-one-department/index.html');
+  assert.doesNotMatch(textOnly, /<img\b/);
+});
+
+test('attributed quotes retain their words and use the shared compact presentation', () => {
+  const html = read('dist/writing/the-future-used-to-have-a-cord/index.html');
   assert.match(html, /href="https:\/\/www\.aarp\.org\/events-history\/katherine-johnson-q-and-a-2018\/"/);
+  assert.match(html, /<blockquote class="article-quote--compact">/);
+  const baldwin = read('dist/writing/what-we-carry-through-the-door/index.html');
+  assert.match(baldwin, /<blockquote class="article-quote--compact"><p>“Not everything that is faced can be changed, but nothing can be changed until it is faced.”<\/p><footer class="article-quote__attribution">— James Baldwin, 1962<\/footer>/);
+});
+
+test('AI editing disclosure appears once at the end of each opted-in launch article', () => {
+  for (const route of publicRoutes.filter(path => /dist\/writing\/.+\/index.html/.test(path))) {
+    const html = read(route);
+    const note = 'Written by Ladell Fuqua. AI tools assisted with editing.';
+    assert.equal(html.split(note).length - 1, 1, route);
+    assert.ok(html.indexOf(note) < html.indexOf('class="article-backlink"'), route);
+    assert.doesNotMatch(html, /This content is my own\. AI was used to help edit this article\./);
+  }
+  assert.match(read('dist/writing/the-future-used-to-have-a-cord/index.html'), /and it even helped edit this article/);
 });
 
 

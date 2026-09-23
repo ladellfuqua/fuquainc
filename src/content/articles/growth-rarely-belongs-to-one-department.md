@@ -6,7 +6,7 @@ publishedAt: 2026-08-07
 themes:
   - Work and Leadership
 status: published
-featured: true
+aiAssisted: true
 ---
 
 Every company I have worked in or with has tried, at some point, to solve growth the same way. Draw a box on the org chart. Label it Growth. Hire someone talented to sit in it. Wait.

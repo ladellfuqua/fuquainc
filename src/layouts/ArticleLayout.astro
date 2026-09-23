@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import { Image, getImage } from 'astro:assets';
 import {
   articleHref,
   articleDateValue,
@@ -14,10 +15,20 @@ interface Props {
 }
 
 const { article } = Astro.props;
-const { title, deck, summary, publishedAt, modifiedAt, themes, image } = article.data;
+const { title, deck, summary, publishedAt, modifiedAt, themes, image, imageAlt, aiAssisted } = article.data;
 const theme = themes[0];
-const socialImage = image ?? `/social/${article.id}.png`;
-const socialImageUrl = new URL(socialImage, Astro.site).href;
+const optimizedSocialImage = image && !article.data.socialImage
+  ? await getImage({ src: image, width: Math.min(image.width, 1670), format: 'webp', quality: 80 })
+  : undefined;
+const socialImage = article.data.socialImage ?? (optimizedSocialImage ? {
+  url: optimizedSocialImage.src,
+  width: Number(optimizedSocialImage.attributes.width),
+  height: Number(optimizedSocialImage.attributes.height),
+} : { url: `/social/${article.id}.png`, width: 1200, height: 630 });
+const socialImageUrl = new URL(socialImage.url, Astro.site).href;
+const imageWidths = image
+  ? [...new Set([400, 640, 960, 1280, Math.min(image.width, 1920)])].filter((width) => width <= image.width).sort((a, b) => a - b)
+  : [];
 const publishedArticles = await getPublishedArticles();
 const relatedArticles = selectRelatedArticles(article, publishedArticles);
 const canonicalUrl = new URL(articleHref(article), Astro.site).href;
@@ -54,9 +65,9 @@ const articleSchema = {
 <BaseLayout
   title={title}
   description={summary}
-  image={socialImage}
-  imageWidth={article.data.imageWidth}
-  imageHeight={article.data.imageHeight}
+  image={socialImage.url}
+  imageWidth={socialImage.width}
+  imageHeight={socialImage.height}
   imageAlt={`${title} — ${theme}`}
   type="article"
   headerTone="dark"
@@ -155,8 +166,20 @@ const articleSchema = {
       </header>
 
       <div class="article-column article-body" data-article-body>
+        {image && <Image
+          src={image}
+          alt={imageAlt!}
+          widths={imageWidths}
+          sizes="(max-width: 684px) calc(100vw - 52px), (max-width: 820px) 633px, 642px"
+          format="webp"
+          quality={80}
+          loading="eager"
+          fetchpriority="high"
+          class="article-header-image"
+        />}
         <slot />
 
+        {aiAssisted && <p class="article-ai-note"><em>Written by Ladell Fuqua. AI tools assisted with editing.</em></p>}
         <div class="article-end article-reveal" aria-hidden="true"></div>
       </div>
 
@@ -198,6 +221,14 @@ const articleSchema = {
 </BaseLayout>
 
 <style is:global>
+  .article-header-image { width: 100%; height: auto; }
+  .article-body .article-ai-note {
+    margin-top: 2rem;
+    color: var(--c-graphite);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
   .article-progress {
     position: fixed;
     z-index: 200;

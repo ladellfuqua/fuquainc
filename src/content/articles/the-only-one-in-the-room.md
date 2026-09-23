@@ -4,16 +4,17 @@ deck: "When you’re seen before you’re heard."
 summary: "A reflection on the pressure of feeling different, holding back, and giving people room to contribute."
 publishedAt: 2026-09-14
 themes:
-  - Personal Reflections
+  - Identity and Belonging
   - Work and Leadership
 status: published
-featured: true
-image: /images/writing/the-only-one-in-the-room.webp
-imageWidth: 1672
-imageHeight: 941
+aiAssisted: true
+image: ../../assets/articles/the-only-one-in-the-room.webp
+imageAlt: "One mustard-yellow chair among dark gray chairs around a round wooden conference table."
+socialImage:
+  url: /images/writing/the-only-one-in-the-room.webp
+  width: 1672
+  height: 941
 ---
-
-<img src="/images/writing/the-only-one-in-the-room.webp" alt="One mustard-yellow chair among dark gray chairs around a round wooden conference table." width="1672" height="941" fetchpriority="high" style="width:100%;height:auto" />
 
 Have you ever been in a room where your background, identity, or experience set you apart from everyone else? Did that make you more conscious of how you might be perceived?
 

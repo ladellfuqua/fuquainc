@@ -30,7 +30,7 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      filter: (page) => !page.includes('/mockups') && !page.includes('/about'),
+      filter: (page) => !['/mockups', '/about', '/visual-system', '/404'].includes(new URL(page).pathname.replace(/\/$/, '')),
       serialize: (item) => {
         const lastmod = lastModified.get(item.url.replace(/\/$/, ''));
         return lastmod ? { ...item, lastmod } : item;
