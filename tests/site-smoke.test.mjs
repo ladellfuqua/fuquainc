@@ -238,6 +238,11 @@ test('article metadata links consistent identities and declares the actual image
     assert.ok(organization['@id']);
     assert.equal(article.author['@id'], person['@id']);
     assert.equal(article.publisher['@id'], organization['@id']);
+    assert.equal(article.isPartOf['@id'], 'https://fuquainc.com/#website');
+    assert.match(article.datePublished, /^\d{4}-\d{2}-\d{2}$/);
+    for (const [, date] of html.matchAll(/<time\b[^>]*datetime="([^"]+)"/g)) {
+      assert.match(date, /^\d{4}-\d{2}-\d{2}$/, 'article dates have no invented time');
+    }
     assert.equal(article.dateModified, undefined, 'technical changes must not invent editorial update dates');
     const type = html.match(/property="og:image:type" content="([^"]+)"/)[1];
     assert.equal(type, article.image.endsWith('.webp') ? 'image/webp' : 'image/png');

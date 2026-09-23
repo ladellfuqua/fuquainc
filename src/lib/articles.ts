@@ -17,6 +17,11 @@ export function articleHref(article: ArticleEntry): string {
   return `/writing/${article.id}`;
 }
 
+/** Editorial calendar dates have no publication time or scheduling behavior. */
+export function articleDateValue(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
 export function selectRelatedArticles(
   current: ArticleEntry,
   articles: ArticleEntry[],

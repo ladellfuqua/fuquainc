@@ -5,6 +5,7 @@ import PageHeaderBand from '../components/PageHeaderBand.astro';
 import PageMotion from '../components/PageMotion.astro';
 import {
   articleHref,
+  articleDateValue,
   formatArticleDate,
   getPublishedArticles,
 } from '../lib/articles';
@@ -47,7 +48,7 @@ const articleData = articles.map((article) => ({
   href: articleHref(article),
   title: article.data.title,
   deck: article.data.deck,
-  publishedAt: article.data.publishedAt.toISOString(),
+  publishedAt: articleDateValue(article.data.publishedAt),
   date: formatArticleDate(article.data.publishedAt),
   themes: article.data.themes,
 }));
@@ -118,7 +119,7 @@ const collectionSchema = {
             <li>
               <a href={articleHref(article)} class="article-row">
                 <span class="article-row__meta">
-                  <time datetime={article.data.publishedAt.toISOString()}>{formatArticleDate(article.data.publishedAt)}</time>
+                  <time datetime={articleDateValue(article.data.publishedAt)}>{formatArticleDate(article.data.publishedAt)}</time>
                 </span>
                 <span class="article-row__body">
                   <span class="article-row__heading"><span class="article-row__title"><span>{article.data.title}</span></span>{index === 0 && <span class="article-row__latest">Latest</span>}</span>

@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import {
   articleHref,
+  articleDateValue,
   formatArticleDate,
   getPublishedArticles,
   selectRelatedArticles,
@@ -34,8 +35,9 @@ const articleSchema = {
   headline: title,
   description: summary,
   image: socialImageUrl,
-  datePublished: publishedAt.toISOString(),
-  ...(modifiedAt && { dateModified: modifiedAt.toISOString() }),
+  datePublished: articleDateValue(publishedAt),
+  ...(modifiedAt && { dateModified: articleDateValue(modifiedAt) }),
+  isPartOf: { '@id': new URL('/#website', Astro.site).href },
   inLanguage: 'en',
   articleSection: themes,
   publisher: { '@id': new URL('/#organization', Astro.site).href },
@@ -84,7 +86,7 @@ const articleSchema = {
         <span aria-hidden="true">/</span>
         <span>{theme}</span>
       </p>
-      <time datetime={publishedAt.toISOString()}>{publishedDate}</time>
+      <time datetime={articleDateValue(publishedAt)}>{publishedDate}</time>
     </div>
   </section>
 
@@ -130,8 +132,8 @@ const articleSchema = {
             <span class="article-avatar article-avatar--small" aria-hidden="true">LF</span>
             <span>
               <span class="article-byline__name">Ladell Fuqua</span>
-              <time datetime={publishedAt.toISOString()}>{publishedDate}</time>
-              {modifiedAt && <time datetime={modifiedAt.toISOString()}>Updated {formatArticleDate(modifiedAt)}</time>}
+              <time datetime={articleDateValue(publishedAt)}>{publishedDate}</time>
+              {modifiedAt && <time datetime={articleDateValue(modifiedAt)}>Updated {formatArticleDate(modifiedAt)}</time>}
             </span>
           </div>
           <div class="article-byline__actions">
@@ -183,7 +185,7 @@ const articleSchema = {
                 <p>{related.data.themes[0]}</p>
                 <h3><a href={articleHref(related)}>{related.data.title}</a></h3>
                 <p>{related.data.deck}</p>
-                <time datetime={related.data.publishedAt.toISOString()}>{formatArticleDate(related.data.publishedAt)}</time>
+                <time datetime={articleDateValue(related.data.publishedAt)}>{formatArticleDate(related.data.publishedAt)}</time>
               </article>
             ))}
           </div>

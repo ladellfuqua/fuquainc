@@ -6,6 +6,8 @@ import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteMotion from '../components/SiteMotion.astro';
+import { getImage } from 'astro:assets';
+import portrait from '../assets/ladell-portrait.png';
 
 interface Props {
   title: string;
@@ -58,6 +60,8 @@ const imageExtension = new URL(ogImage).pathname.split('.').pop()?.toLowerCase()
 const ogImageType = ({ png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp', avif: 'image/avif' } as Record<string, string>)[imageExtension ?? ''];
 const ogImageAlt = imageAlt;
 const linkedin = 'https://www.linkedin.com/in/ladellfuqua/';
+const authorPortrait = await getImage({ src: portrait, width: 440, format: 'webp' });
+const buildRevision = process.env.VERCEL_GIT_COMMIT_SHA;
 
 // Google Analytics 4 — production only. The tag is additionally guarded at
 // runtime to the live domain (see head), so it never runs in local dev or on
@@ -73,12 +77,18 @@ const personSchema = {
   name: 'Ladell Fuqua',
   url: Astro.site?.href,
   sameAs: [linkedin],
-  jobTitle: 'Growth and Operating Executive',
+  jobTitle: 'Chief Operating Officer & Head of Growth',
+  description: 'Ladell Fuqua is Chief Operating Officer and Head of Growth at PWX Solutions in New York. He has held media leadership roles at AOL, Condé Nast and TheStreet, and writes about work, technology and culture.',
+  image: new URL(authorPortrait.src, Astro.site).href,
+  knowsAbout: ['Growth strategy', 'Operations', 'Media', 'Marketing', 'Technology', 'Leadership', 'Team development'],
+  homeLocation: {
+    '@type': 'Place',
+    name: 'New York, NY',
+  },
   worksFor: {
     '@type': 'Organization',
-    '@id': new URL('/#organization', Astro.site).href,
-    name: 'Fuqua Inc.',
-    url: Astro.site?.href,
+    name: 'PWX Solutions',
+    url: 'https://pwxsolutions.com/',
   },
 };
 const orgSchema = {
@@ -120,6 +130,7 @@ const websiteSchema = {
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="author" content="Ladell Fuqua" />
+    {buildRevision && <meta name="build-revision" content={buildRevision} />}
 
     <!-- Open Graph -->
     <meta property="og:type" content={type} />
@@ -141,6 +152,7 @@ const websiteSchema = {
     <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Fuqua Inc. — Writing" href="/rss.xml" />
 
     <!-- Preserve initialization order without blocking HTML parsing or paint. -->
     <script is:inline defer src="/scripts/site-bootstrap.js"></script>

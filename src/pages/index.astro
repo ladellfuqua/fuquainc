@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BrandGraphic from '../components/BrandGraphic.astro';
 import {
   articleHref,
+  articleDateValue,
   formatArticleDate,
   getPublishedArticles,
 } from '../lib/articles';
@@ -29,15 +30,25 @@ const principles = [
 ];
 
 const latestArticles = (await getPublishedArticles()).slice(0, 3);
+const profileSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  '@id': new URL('/#profile', Astro.site).href,
+  url: Astro.site?.href,
+  name: 'Ladell Fuqua — Fuqua Inc.',
+  mainEntity: { '@id': new URL('/#person', Astro.site).href },
+  isPartOf: { '@id': new URL('/#website', Astro.site).href },
+};
 ---
 
 <BaseLayout
-  title="Fuqua Inc."
-  description="Fuqua Inc. is the platform of Ladell Fuqua: ideas and work on building growth by connecting ideas, people, technology and opportunity."
+  title="Ladell Fuqua — Fuqua Inc."
+  description="Ladell Fuqua writes about work, technology and culture — and how they shape our everyday lives. Based in New York."
   bareTitle={true}
   headerTone="dark"
 >
   <meta slot="head" name="msvalidate.01" content="99454714F442A57D1E7BD4F78CEDBA29" />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(profileSchema)} />
   <link
     slot="head"
     rel="preload"
@@ -157,7 +168,7 @@ const latestArticles = (await getPublishedArticles()).slice(0, 3);
       {
         latestArticles.length > 0 ? latestArticles.map((article, index) => (
           <a href={articleHref(article)} class="writing-entry home-reveal" style={`--home-delay: ${index + 2}`}>
-            <time class="writing-entry__date" datetime={article.data.publishedAt.toISOString()}>
+            <time class="writing-entry__date" datetime={articleDateValue(article.data.publishedAt)}>
               {formatArticleDate(article.data.publishedAt)}
             </time>
             <div class="writing-entry__body">
