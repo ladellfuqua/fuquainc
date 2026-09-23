@@ -96,8 +96,9 @@ test('bootstrap and analytics load from same-origin assets', () => {
   assert.match(html, /<script[^>]+src="\/scripts\/analytics\.js"[^>]+data-ga-id="G-K7TBK1TGXX"/);
 });
 
-test('public pages do not block rendering on executable scripts', () => {
+test('public pages do not block rendering on script or stylesheet requests', () => {
   for (const route of publicRoutes) {
+    assert.doesNotMatch(read(route), /<link\b[^>]*rel="stylesheet"/, route);
     for (const [, attributes] of read(route).matchAll(/<script\b([^>]*\bsrc="[^"]+"[^>]*)>/g)) {
       assert.match(attributes, /\b(?:defer|async)\b|type="module"/, route);
     }
@@ -245,9 +246,9 @@ test('article metadata links consistent identities and declares the actual image
 
 test('latest article serves smaller responsive images and a linked quote source', () => {
   const html = read('dist/writing/the-future-used-to-have-a-cord/index.html');
-  assert.match(html, /<img[^>]*srcset="[^"]+640w,[^"]+960w,[^"]+1280w,[^"]+1670w"/);
+  assert.match(html, /<img[^>]*srcset="[^"]+400w,[^"]+640w,[^"]+960w,[^"]+1280w,[^"]+1670w"/);
   assert.match(html, /<img[^>]*sizes="[^"]+"/);
-  for (const width of [640, 960, 1280, 1670]) {
+  for (const width of [400, 640, 960, 1280, 1670]) {
     const image = readFileSync(new URL(`../dist/images/writing/the-future-used-to-have-a-cord-${width}.webp`, import.meta.url));
     assert.equal(image.subarray(8, 12).toString('ascii'), 'WEBP');
     assert.ok(image.length < 160000, `${width}px image should remain under 160 KB`);

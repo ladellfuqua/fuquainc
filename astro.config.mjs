@@ -8,6 +8,10 @@ export default defineConfig({
   site: 'https://fuquainc.com',
   trailingSlash: 'never',
   redirects: { '/about': { destination: '/', status: 301 } },
+  // These small static pages can paint with their first HTML response instead
+  // of waiting for multiple stylesheets. The existing CSP permits inline CSS;
+  // executable JavaScript remains in external assets below.
+  build: { inlineStylesheets: 'always' },
   // Keep executable scripts in generated assets so the production CSP can
   // reject all inline JavaScript without disabling Astro component behavior.
   vite: {
