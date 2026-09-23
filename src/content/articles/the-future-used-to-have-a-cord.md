@@ -53,9 +53,10 @@ Is this making me stupid? What happens to our command of grammar, mathematics, a
 
 There are changes that seem easy enough to accept. Memorizing fewer phone numbers doesn’t particularly bother me. Being less able to work through a problem, explain the reasoning, or recognize when an answer doesn’t make sense feels different. The time saved is valuable. So is knowing how to get to an answer and understanding why it’s right.
 
-> “I’ve told my grandchildren, ‘First you learn how to work the problem, and then you can go use the computer.’”
->
-> — Katherine Johnson, 2018
+<blockquote class="article-quote--compact">
+  <p>“I’ve told my grandchildren, ‘First you learn how to work the problem, and then you can go use the computer.’”</p>
+  <footer class="article-quote__attribution">— Katherine Johnson, 2018</footer>
+</blockquote>
 
 For younger generations entering the workforce, these tools are already becoming part of everyday life. They’ll bring different strengths and expectations, just as earlier generations did. Still, it raises questions about which skills remain essential and how they develop when technology can do so much of the work. It’s hard to know where reasonable adaptation ends and losing something valuable begins.
 
