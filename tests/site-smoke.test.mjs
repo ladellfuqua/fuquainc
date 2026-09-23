@@ -127,7 +127,7 @@ test('the social-card system renders every editorial theme', async () => {
   const themes = [
     'Work and Leadership',
     'Identity and Belonging',
-    'Technology and Change',
+    'Culture and Technology',
     'Culture and Opportunity',
     'Personal Reflections',
   ];
