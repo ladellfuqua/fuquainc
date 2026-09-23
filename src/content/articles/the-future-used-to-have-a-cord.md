@@ -13,7 +13,7 @@ imageWidth: 1670
 imageHeight: 941
 ---
 
-<img src="/images/writing/the-future-used-to-have-a-cord-1670.webp" srcset="/images/writing/the-future-used-to-have-a-cord-640.webp 640w, /images/writing/the-future-used-to-have-a-cord-960.webp 960w, /images/writing/the-future-used-to-have-a-cord-1280.webp 1280w, /images/writing/the-future-used-to-have-a-cord-1670.webp 1670w" sizes="(max-width: 684px) calc(100vw - 52px), (max-width: 820px) 633px, 642px" alt="A rotary telephone, an unspooled cassette, and a pencil on a wooden table beside a record player. Caption: This happens… after you waited all afternoon to record that song. And the DJ finally didn’t talk over the intro." width="1670" height="941" fetchpriority="high" style="width:100%;height:auto" />
+<img src="/images/writing/the-future-used-to-have-a-cord-1670.webp" srcset="/images/writing/the-future-used-to-have-a-cord-400.webp 400w, /images/writing/the-future-used-to-have-a-cord-640.webp 640w, /images/writing/the-future-used-to-have-a-cord-960.webp 960w, /images/writing/the-future-used-to-have-a-cord-1280.webp 1280w, /images/writing/the-future-used-to-have-a-cord-1670.webp 1670w" sizes="(max-width: 684px) calc(100vw - 52px), (max-width: 820px) 633px, 642px" alt="A rotary telephone, an unspooled cassette, and a pencil on a wooden table beside a record player. Caption: This happens… after you waited all afternoon to record that song. And the DJ finally didn’t talk over the intro." width="1670" height="941" fetchpriority="high" style="width:100%;height:auto" />
 
 There was a time when a pencil was an essential piece of music equipment.
 
