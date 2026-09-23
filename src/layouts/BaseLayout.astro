@@ -142,8 +142,9 @@ const websiteSchema = {
 
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <script is:inline src="/scripts/site-bootstrap.js"></script>
-    <script is:inline src="/scripts/motion-readiness.js"></script>
+    <!-- Preserve initialization order without blocking HTML parsing or paint. -->
+    <script is:inline defer src="/scripts/site-bootstrap.js"></script>
+    <script is:inline defer src="/scripts/motion-readiness.js"></script>
 
     <script
       type="application/ld+json"
@@ -155,7 +156,7 @@ const websiteSchema = {
       set:html={JSON.stringify(websiteSchema)}
     />
 
-    {enableAnalytics && <script is:inline src="/scripts/analytics.js" data-ga-id={GA_ID}></script>}
+    {enableAnalytics && <script is:inline defer src="/scripts/analytics.js" data-ga-id={GA_ID}></script>}
 
     <slot name="head" />
   </head>

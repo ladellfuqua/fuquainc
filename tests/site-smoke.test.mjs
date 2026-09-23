@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
+import { runInNewContext } from 'node:vm';
 import {
   ARTICLE_SOCIAL_CARD_HEIGHT,
   ARTICLE_SOCIAL_CARD_WIDTH,
@@ -93,6 +94,47 @@ test('bootstrap and analytics load from same-origin assets', () => {
   const html = read('dist/index.html');
   assert.match(html, /<script[^>]+src="\/scripts\/site-bootstrap\.js"/);
   assert.match(html, /<script[^>]+src="\/scripts\/analytics\.js"[^>]+data-ga-id="G-K7TBK1TGXX"/);
+});
+
+test('public pages do not block rendering on executable scripts', () => {
+  for (const route of publicRoutes) {
+    for (const [, attributes] of read(route).matchAll(/<script\b([^>]*\bsrc="[^"]+"[^>]*)>/g)) {
+      assert.match(attributes, /\b(?:defer|async)\b|type="module"/, route);
+    }
+  }
+});
+
+test('analytics runs only on live domains with advertising features disabled', () => {
+  const source = read('public/scripts/analytics.js');
+  for (const hostname of ['fuquainc.com', 'www.fuquainc.com', 'localhost', 'fuquainc-preview.vercel.app']) {
+    const scripts = [];
+    const context = {
+      location: { hostname },
+      window: {},
+      document: {
+        currentScript: { dataset: { gaId: 'G-K7TBK1TGXX' } },
+        createElement: () => ({}),
+        head: { appendChild: (script) => scripts.push(script) },
+      },
+    };
+    runInNewContext(source, context);
+    if (!['fuquainc.com', 'www.fuquainc.com'].includes(hostname)) {
+      assert.equal(scripts.length, 0);
+      assert.equal(context.window.dataLayer, undefined);
+      continue;
+    }
+    assert.equal(scripts.length, 1);
+    assert.equal(scripts[0].async, true);
+    const config = context.window.dataLayer.find((args) => args[0] === 'config');
+    assert.equal(config[1], 'G-K7TBK1TGXX');
+    assert.equal(config[2].allow_google_signals, false);
+    assert.equal(config[2].allow_ad_personalization_signals, false);
+  }
+  const csp = JSON.parse(read('vercel.json')).headers[0].headers.find(header => header.key === 'Content-Security-Policy').value;
+  const connections = csp.split(';').find(directive => directive.trim().startsWith('connect-src'));
+  assert.match(connections, /https:\/\/analytics\.google\.com\/g\/collect/);
+  assert.match(connections, /https:\/\/www\.google\.com\/g\/collect/);
+  assert.doesNotMatch(connections, /doubleclick|googlesyndication|\*/);
 });
 
 test('published articles receive a generated 1200 by 630 social card', () => {

@@ -15,7 +15,12 @@
     window.dataLayer.push(arguments);
   };
   window.gtag('js', new Date());
-  window.gtag('config', measurementId);
+  // Traffic measurement only, matching the site's published privacy policy.
+  // Do not enable Google Signals or advertising personalization beacons.
+  window.gtag('config', measurementId, {
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+  });
 
   const script = document.createElement('script');
   script.async = true;
