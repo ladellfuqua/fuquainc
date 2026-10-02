@@ -1,0 +1,87 @@
+---
+import 'vanilla-cookieconsent/dist/cookieconsent.css';
+import '../styles/cookie-consent.css';
+---
+
+<script>
+  import * as CookieConsent from 'vanilla-cookieconsent';
+
+  function syncAnalytics() {
+    const allowed = CookieConsent.acceptedCategory('analytics');
+    (window as Window & { fuquaAnalyticsAllowed?: boolean }).fuquaAnalyticsAllowed = allowed;
+    window.dispatchEvent(new CustomEvent('fuqua:analytics-consent', { detail: allowed }));
+  }
+
+  CookieConsent.run({
+    revision: 1,
+    mode: 'opt-in',
+    hideFromBots: false,
+    disablePageInteraction: false,
+    cookie: {
+      name: 'fuqua_consent',
+      expiresAfterDays: 180,
+      sameSite: 'Lax',
+    },
+    guiOptions: {
+      consentModal: { layout: 'box wide', position: 'bottom left', equalWeightButtons: true },
+      preferencesModal: { layout: 'box', equalWeightButtons: true },
+    },
+    onConsent: syncAnalytics,
+    onChange: syncAnalytics,
+    categories: {
+      necessary: { enabled: true, readOnly: true },
+      analytics: { enabled: false },
+    },
+    language: {
+      default: 'en',
+      translations: {
+        en: {
+          consentModal: {
+            title: 'A small choice about cookies',
+            description: 'With your permission, we use Google Analytics to understand how this site is read. Optional analytics stays off until you accept. You can change your choice anytime.',
+            acceptAllBtn: 'Accept all',
+            acceptNecessaryBtn: 'Reject optional',
+            showPreferencesBtn: 'Preferences',
+            footer: '<a href="/privacy">Privacy policy</a>',
+          },
+          preferencesModal: {
+            title: 'Cookie preferences',
+            acceptAllBtn: 'Accept all',
+            acceptNecessaryBtn: 'Reject optional',
+            savePreferencesBtn: 'Save preferences',
+            closeIconLabel: 'Close cookie preferences',
+            sections: [
+              {
+                title: 'Your choice',
+                description: 'Choose whether to allow analytics. You can use the site and contact form either way. If you turn off analytics after accepting it, this page will refresh to stop tracking completely.',
+              },
+              {
+                title: 'Necessary',
+                description: 'The fuqua_consent cookie remembers your choice in this browser for 180 days. It is not used for analytics or advertising.',
+                linkedCategory: 'necessary',
+              },
+              {
+                title: 'Analytics',
+                description: 'Google Analytics helps us understand visits, pages read, and general device and region information. When allowed, it sets _ga and _ga_* cookies for up to 180 days, renewed with use. Advertising personalization and Google Signals are disabled. Turning this off removes these cookies from this site.',
+                linkedCategory: 'analytics',
+              },
+              {
+                title: 'More information',
+                description: 'Read our <a href="/privacy">privacy policy</a> for information about analytics, contact messages, and the services this site uses.',
+              },
+            ],
+          },
+        },
+      },
+    },
+  }).then(() => {
+    syncAnalytics();
+    // Links remain usable privacy-policy links if JavaScript fails to load.
+    document.querySelectorAll<HTMLAnchorElement>('[data-cookie-settings]').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        CookieConsent.showPreferences();
+      });
+    });
+  });
+</script>

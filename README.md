@@ -38,6 +38,14 @@ Store real values in Vercel and in an ignored local environment file. Never comm
 | `npm run audit:prod` | Fail on moderate-or-higher production dependency advisories |
 | `npm run quality` | Run the complete CI quality gate |
 
+## Cookie consent
+
+Self-hosted `vanilla-cookieconsent` provides the banner and preferences; there is no paid service or remote consent dashboard. Configuration lives in `src/components/CookieConsent.astro`, with styling in `src/styles/cookie-consent.css`. The `fuqua_consent` cookie stores browser-local preferences for 180 days.
+
+Google Analytics loads only after analytics consent, only in production builds on the live domains. `public/scripts/analytics.js` fails closed if the consent module is unavailable, checks consent again before delayed loading, clears old analytics cookies without consent, and disables analytics then refreshes the page after withdrawal. Preferences are saved before that refresh. No cookieless analytics pings are sent before opt-in.
+
+When adding a tracker, embed, membership, or payment service, review its actual cookies and requests (including authenticated pages). Gate optional tracking explicitly; do not automatically exempt every script from a payment or login provider. Update the privacy page and bump the consent `revision` when the purposes change materially. Future membership and checkout integration requires its own verification; the current banner does not implement those features or centralized consent records.
+
 ## Article publishing
 
 Articles live in `src/content/articles/`. See [docs/publishing.md](docs/publishing.md) for the author, preview, publish, update, and archive workflow.
