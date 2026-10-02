@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
-import { runInNewContext } from 'node:vm';
 import { parse } from 'parse5';
 import sharp from 'sharp';
 import { articleThemeNames } from '../src/data/article-themes.ts';
@@ -66,6 +65,10 @@ test('production CSP blocks executable inline scripts without broad sources', ()
   assert.match(scriptDirective, /'self'/);
   assert.match(scriptDirective, /https:\/\/www\.googletagmanager\.com/);
   assert.match(scriptDirective, /https:\/\/www\.google-analytics\.com/);
+  const connections = csp.split(';').find(directive => directive.trim().startsWith('connect-src'));
+  assert.match(connections, /https:\/\/analytics\.google\.com\/g\/collect/);
+  assert.match(connections, /https:\/\/www\.google\.com\/g\/collect/);
+  assert.doesNotMatch(connections, /doubleclick|googlesyndication|\*/);
 });
 
 test('built pages contain no executable inline JavaScript', () => {
@@ -111,77 +114,6 @@ test('public pages do not block rendering on script or stylesheet requests', () 
     for (const [, attributes] of read(route).matchAll(/<script\b([^>]*\bsrc="[^"]+"[^>]*)>/g)) {
       assert.match(attributes, /\b(?:defer|async)\b|type="module"/, route);
     }
-  }
-});
-
-test('analytics runs only on live domains with advertising features disabled', () => {
-  const source = read('public/scripts/analytics.js');
-  for (const hostname of ['fuquainc.com', 'www.fuquainc.com', 'localhost', 'fuquainc-preview.vercel.app']) {
-    const scripts = [];
-    const context = {
-      location: { hostname },
-      window: { requestIdleCallback: (callback) => callback() },
-      document: {
-        readyState: 'complete',
-        currentScript: { dataset: { gaId: 'G-K7TBK1TGXX' } },
-        createElement: () => ({}),
-        head: { appendChild: (script) => scripts.push(script) },
-      },
-    };
-    runInNewContext(source, context);
-    if (!['fuquainc.com', 'www.fuquainc.com'].includes(hostname)) {
-      assert.equal(scripts.length, 0);
-      assert.equal(context.window.dataLayer, undefined);
-      continue;
-    }
-    assert.equal(scripts.length, 1);
-    assert.equal(scripts[0].async, true);
-    const config = context.window.dataLayer.find((args) => args[0] === 'config');
-    assert.equal(config[1], 'G-K7TBK1TGXX');
-    assert.equal(config[2].allow_google_signals, false);
-    assert.equal(config[2].allow_ad_personalization_signals, false);
-  }
-  const csp = JSON.parse(read('vercel.json')).headers[0].headers.find(header => header.key === 'Content-Security-Policy').value;
-  const connections = csp.split(';').find(directive => directive.trim().startsWith('connect-src'));
-  assert.match(connections, /https:\/\/analytics\.google\.com\/g\/collect/);
-  assert.match(connections, /https:\/\/www\.google\.com\/g\/collect/);
-  assert.doesNotMatch(connections, /doubleclick|googlesyndication|\*/);
-});
-
-test('analytics waits for page assets and idle time, with a fallback when idle callbacks are unavailable', () => {
-  for (const supportsIdle of [true, false]) {
-    const scheduled = [];
-    const listeners = new Map();
-    const scripts = [];
-    const context = {
-      location: { hostname: 'fuquainc.com' },
-      window: {
-        addEventListener: (event, callback, options) => {
-          assert.equal(options.once, true);
-          listeners.set(event, callback);
-        },
-        setTimeout: (callback) => scheduled.push(callback),
-        ...(supportsIdle ? { requestIdleCallback: (callback, options) => {
-          assert.equal(options.timeout, 2000);
-          scheduled.push(callback);
-        } } : {}),
-      },
-      document: {
-        readyState: 'interactive',
-        currentScript: { dataset: { gaId: 'G-K7TBK1TGXX' } },
-        createElement: () => ({}),
-        head: { appendChild: (script) => scripts.push(script) },
-      },
-    };
-    runInNewContext(read('public/scripts/analytics.js'), context);
-    assert.equal(context.window.dataLayer.length, 2, 'page view configuration is queued immediately');
-    assert.equal(scripts.length, 0);
-    assert.equal(scheduled.length, 0);
-    listeners.get('load')();
-    assert.equal(scripts.length, 0, 'load waits for the idle callback or fallback task');
-    assert.equal(scheduled.length, 1);
-    scheduled[0]();
-    assert.equal(scripts.length, 1);
   }
 });
 

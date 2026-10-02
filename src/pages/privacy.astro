@@ -8,7 +8,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeaderBand from '../components/PageHeaderBand.astro';
 import PageMotion from '../components/PageMotion.astro';
 
-const updated = 'August 9, 2026';
+const updated = 'October 2, 2026';
 
 const policySections = [
   { id: 'collected', label: 'What is collected' },
@@ -36,7 +36,7 @@ const policySections = [
       <aside class="policy-meta page-reveal" aria-label="Policy details">
         <div class="policy-meta__date">
           <span>Last updated</span>
-          <time datetime="2026-08-09">{updated}</time>
+          <time datetime="2026-10-02">{updated}</time>
         </div>
 
         <nav class="policy-index" aria-label="Privacy policy sections">
@@ -71,9 +71,10 @@ const policySections = [
           <div class="policy-section__body">
             <p>
               <strong>Analytics.</strong> The site uses Google Analytics 4 to understand how visitors
-              use it — for example which pages are viewed, roughly where visits come from (country or
+              use it, only if you accept analytics cookies — for example which pages are viewed, roughly where visits come from (country or
               region), and general device and browser information. This is collected in aggregate to
-              improve the site. Google Analytics sets cookies to do this.
+              improve the site. Google Analytics sets cookies to do this. It is not loaded before you
+              accept analytics, and Google Signals and advertising personalization are disabled.
             </p>
             <p>
               <strong>Messages you send.</strong> If you contact Ladell through the site or by the
@@ -102,6 +103,20 @@ const policySections = [
             <h2>Cookies and analytics choices</h2>
           </header>
           <div class="policy-section__body">
+            <p>
+              Optional analytics is off by default. Choose Accept all, Reject optional, or Preferences
+              in the cookie banner. You can <a href="/privacy#choices" data-cookie-settings>change your cookie settings</a>
+              anytime here or in the footer. Rejecting analytics does not prevent you from using the site
+              or contact form. Turning it off after accepting refreshes the page to stop tracking and removes
+              this site's analytics cookies; it does not delete data already sent to Google.
+            </p>
+            <p>
+              The necessary <strong>fuqua_consent</strong> cookie remembers your choice in this browser
+              for 180 days. If allowed, Google Analytics uses <strong>_ga</strong> and <strong>_ga_*</strong>
+              cookies to distinguish visits and maintain session information, with a lifetime of up to
+              180 days renewed with use. Clearing cookies or using another browser may prompt you again.
+              The consent controls are hosted with this site; no separate consent provider receives your choice.
+            </p>
             <p>
               You can control or block cookies through your browser settings. You can also opt out of
               Google Analytics across all websites using Google's <a

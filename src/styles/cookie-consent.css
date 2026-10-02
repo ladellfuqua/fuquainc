@@ -1,0 +1,46 @@
+/* Keep consent controls within the site's ivory, navy, and plum palette. */
+#cc-main {
+  --cc-font-family: var(--font-sans);
+  --cc-bg: var(--c-ivory);
+  --cc-primary-color: var(--c-navy);
+  --cc-secondary-color: var(--c-graphite);
+  --cc-btn-primary-bg: var(--c-navy);
+  --cc-btn-primary-color: var(--c-ivory);
+  --cc-btn-primary-border-color: var(--c-navy);
+  --cc-btn-primary-hover-bg: var(--c-navy-soft);
+  --cc-btn-primary-hover-color: var(--c-ivory);
+  --cc-btn-primary-hover-border-color: var(--c-navy-soft);
+  --cc-btn-secondary-bg: var(--c-stone);
+  --cc-btn-secondary-color: var(--c-navy);
+  --cc-btn-secondary-border-color: var(--c-stone);
+  --cc-btn-secondary-hover-bg: var(--c-stone-line);
+  --cc-btn-secondary-hover-color: var(--c-navy);
+  --cc-btn-secondary-hover-border-color: var(--c-stone-line);
+  --cc-cookie-category-block-bg: var(--c-ivory-deep);
+  --cc-cookie-category-block-hover-bg: var(--c-stone);
+  --cc-cookie-category-block-border: var(--c-stone-line);
+  --cc-toggle-on-bg: var(--c-plum);
+  --cc-toggle-off-bg: var(--c-graphite);
+  --cc-toggle-readonly-bg: var(--c-graphite);
+  --cc-separator-border-color: var(--c-stone-line);
+  --cc-footer-bg: var(--c-ivory-deep);
+  --cc-footer-color: var(--c-graphite);
+  --cc-footer-border-color: var(--c-stone-line);
+  --cc-modal-border-radius: 5px;
+  --cc-btn-border-radius: 3px;
+}
+
+#cc-main .cm__title,
+#cc-main .pm__title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+
+#cc-main .cm { border: 1px solid var(--c-stone-line); }
+#cc-main .cm__btn, #cc-main .pm__btn { min-height: 44px; }
+#cc-main :focus-visible { outline: 2px solid var(--c-plum); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  #cc-main *, #cc-main *::before, #cc-main *::after { transition: none !important; }
+}
